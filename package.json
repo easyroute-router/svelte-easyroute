@@ -1,7 +1,7 @@
 {
   "name": "svelte-easyroute",
-  "version": "0.0.2",
-  "description": "Easy-to-use router for Svelte framework",
+  "version": "0.0.2a",
+  "description": "Easy-to-use router for Svelte framework.",
   "main": "router.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

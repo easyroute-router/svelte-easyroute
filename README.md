@@ -20,7 +20,11 @@ Why you should try it?
 ## How to use?
 In your Svelte project directory run 
 ```bash
-npm install --save svelte-easyroute
+# For WEBPACK templates
+npm install --save svelte-easyroute-webpack
+
+# For ROLLUP templates
+npm install --save svelte-easyroute-rollup
 ```
 
 Then, in your main.js file put this code

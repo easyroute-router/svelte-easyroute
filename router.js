@@ -1,4 +1,5 @@
-import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte"
+import RouterOutlet from "./RouterOutlet.svelte" // rollup
+import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
 
 class Router {
   constructor (routes) {
