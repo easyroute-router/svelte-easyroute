@@ -29,7 +29,7 @@ npm install --save svelte-easyroute-rollup
 
 Then, in your main.js file put this code
 ```javascript
-import {Router} from './router.js'
+import {Router} from 'svelte-easyroute-<%BUILDER%>' // Replace <%BUILDER%> with webpack or rollup
 export var router = new Router({
 routes:	[
 		{
@@ -63,7 +63,7 @@ Go to your main file (f.e. "App.svelte"). In the script tag put this:
 ```javascript 
 import { onMount } from 'svelte'
 export let router
-import RouterLink from './RouterLink'
+import RouterLink from 'svelte-easyroute-<%BUILDER%>/RouterLink.svelte' // Replace <%BUILDER%> with webpack or rollup
 
 onMount(()=> {
 	router.createOutlet()
