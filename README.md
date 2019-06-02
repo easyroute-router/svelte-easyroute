@@ -88,8 +88,8 @@ export let currentRoute
 
 function someFunc() {
     let queryName = currentRoute.query.name
-    let fullPath = currentRoute.query.fullPath
-    let breadcrumbs = currentRoute.query.route
+    let fullPath = currentRoute.fullPath
+    let breadcrumbs = currentRoute.route
 }
 ```
 * Programmaticaly navigate 
