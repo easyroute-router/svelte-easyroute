@@ -1,6 +1,6 @@
 {
   "name": "svelte-easyroute",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Easy-to-use router for Svelte framework",
   "main": "router.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/lyohaplotinka/svelte-easyroute/issues"
   },
-  "homepage": "https://github.com/lyohaplotinka/svelte-easyroute#readme",
+  "homepage": "https://lyoha.info/en/projects/svelterouter",
   "dependencies": {
     "svelte": "^3.4.4",
     "svelte-loader": "^2.13.4"
