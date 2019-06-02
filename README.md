@@ -108,3 +108,8 @@ You can use push method to navigate inside your app
 3. Router hooks (for accessing states before and after navigation)
 
 ### Thank you for reading this! I hope you'll enjoy Svelte Easyroute!
+
+#### Contact me:
+* [My website: https://lyoha.info/](https://lyoha.info/) (russian language!)
+* [Telegram: https://t.me/alexeysolovjov](https://t.me/alexeysolovjov)
+* [Email: plotinka@lyoha.info](mailto:plotinka@lyoha.info)
