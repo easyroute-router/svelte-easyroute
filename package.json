@@ -1,0 +1,30 @@
+{
+  "name": "svelte-easyroute",
+  "version": "0.0.1",
+  "description": "Easy-to-use router for Svelte framework",
+  "main": "router.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lyohaplotinka/svelte-easyroute.git"
+  },
+  "keywords": [
+    "svelte",
+    "router",
+    "route",
+    "framework",
+    "javascript"
+  ],
+  "author": "Lyoha Plotinka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lyohaplotinka/svelte-easyroute/issues"
+  },
+  "homepage": "https://github.com/lyohaplotinka/svelte-easyroute#readme",
+  "dependencies": {
+    "svelte": "^3.4.4",
+    "svelte-loader": "^2.13.4"
+  }
+}
