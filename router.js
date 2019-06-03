@@ -28,6 +28,9 @@ class Router {
   }
 
   parseHash () {
+    if (window.location.hash == "") {
+      this.push('/')
+    }
     let hash = window.location.hash.replace('#', '')
     var routeArray = hash.split('?')
     var routeInfo = {}
