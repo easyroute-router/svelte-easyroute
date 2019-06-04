@@ -3,17 +3,29 @@ import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
 
 class Router {
 
-  constructor (routes) {
+  constructor (params) {
+    var routes = params
     if (!routes || typeof routes != 'object') {
-      console.error('Wrong parameters given to Router constructor')
-      return false
+      throw Error('Wrong parameters given to Router constructor')
     }
-    this.mode = 'hash' // TODO: add 'history' mode
+    if (routes.mode != "history" && routes.mode != "hash") {
+      throw Error("Wrong router mode. Allowed only 'hash' or 'history'")
+    }
+    this.mode = routes.mode
     this.routes = routes.routes
     this.currentRouteComponent = routes.main
     this.afterUpdate = routes.callback
+    window.routermode = this.mode
     if (this.mode == 'hash') window.onhashchange = this.parseHash.bind(this)
-    if (this.mode == 'history') window.onpopstate = this.parseHash.bind(this)
+    if (this.mode == 'history') {
+      var self = this
+      window.addEventListener('svelteEasyrouteLinkClicked',function(event) {
+        self.parseHistory(event)
+      })
+      window.onpopstate = function(event) {
+        self.initHistoryMode()
+      }
+    }
   }
 
   createOutlet () {
@@ -28,7 +40,8 @@ class Router {
         router: this
       }
     })
-    this.parseHash()
+    if (this.mode == 'hash') this.parseHash()
+    if (this.mode == 'history') this.initHistoryMode()
     return outlet
   }
 
@@ -39,9 +52,18 @@ class Router {
     this.afterUpdate(routeIdx)
   }
 
+  initHistoryMode() {
+    let url = window.location.pathname + window.location.search
+    let stateObj = { path: url };
+    var event = new CustomEvent('svelteEasyrouteLinkClicked', 
+                { 
+                    'detail': stateObj 
+                });
+            window.dispatchEvent(event)
+  }
+
   parseHash () {
-    if (this.mode == 'hash') {
-      if (window.location.hash == "") {
+      if (window.location.hash.indexOf('#') == -1) {
         this.push('/')
       }
       let hash = window.location.hash.replace('#', '')
@@ -59,20 +81,37 @@ class Router {
       }
       this.currentRoute = routeInfo
       this.compareRoutes()
+  }
+
+  parseHistory(event) {
+    let path = event.detail.path
+    let detailObj = {path: path}
+    history.pushState(detailObj,"",path)
+    var routeArray = path.split('?')
+    var routeInfo = {}
+    routeInfo['fullPath'] = routeArray[0]
+    routeInfo['route'] = routeArray[0].split('/')
+    routeInfo['query'] = {}
+    if (routeArray[1]) {
+      var routeQuery = routeArray[1].split('&')
+      routeQuery.forEach((param) => {
+        let keyValue = param.split('=')
+        routeInfo['query'][keyValue[0]] = keyValue[1]
+      })
     }
-    else if (this.mode == 'history') {
-      if (history.state == null) {
-        this.push('/')
-      }
-      console.log(history.state)
-    }
+    this.currentRoute = routeInfo
+    this.compareRoutes()
   }
 
   push (url) {
     if (this.mode == 'hash') window.location.hash = url
     if (this.mode == 'history') {
-      let stateObj = { path: "/" };
-      history.pushState(stateObj, "", "/");
+      let stateObj = { path: url };
+      var event = new CustomEvent('svelteEasyrouteLinkClicked', 
+                { 
+                    'detail': stateObj 
+                });
+            window.dispatchEvent(event)
     }
   }
 
