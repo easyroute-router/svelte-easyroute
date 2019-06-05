@@ -1,2 +1,7 @@
 node_modules
 testapp
+.eslintrc.js
+Makefile
+bin
+dist
+README_temp.md
