@@ -1,2 +1,5 @@
 node_modules
 testapp
+.eslintrc.js
+Makefile
+bin
