@@ -1,6 +1,6 @@
 {
   "name": "svelte-easyroute",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Easy-to-use router for Svelte framework.",
   "main": "router.js",
   "scripts": {
