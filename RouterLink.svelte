@@ -1,4 +1,9 @@
-<span class="router-link" on:click={navigateRouter}>{text}</span>
+<div class="router-link" on:click={navigateRouter}>
+{#if text && text !== ""}
+{text}
+{/if}
+<slot></slot>
+</div>
 
 <script>
     export let to
@@ -19,9 +24,10 @@
 </script>
 
 <style>
-    span.router-link {
+    div.router-link {
         color: blue;
         text-decoration: underline;
         cursor: pointer;
+        display: inline-block;
     }
 </style>

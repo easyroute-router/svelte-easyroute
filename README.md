@@ -7,12 +7,12 @@
 
 **Svelte Easyroute** - is a simple and convenient router for [Svelte](https://svelte.dev/) framework.
 
-### Version 0.1.0 release!
+### Version 0.1.1 release!
 >
 >Here goes:
 >* History mode! Set mode with "mode" key when router creating;
 >* beforeEach and afterEach hooks;
->
+>* Slot for RouterLink
 
 Why you should try it? 
 
