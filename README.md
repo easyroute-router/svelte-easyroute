@@ -1,7 +1,8 @@
+![alt text](https://img.shields.io/npm/v/svelte-easyroute-rollup.svg "npm stats")
+
 ### Habitual router in your projects
 
-
-![alt text](https://lyoha.info/assets/images/svelte.png "Logo Title Text 1")
+![alt text](https://lyoha.info/assets/images/svelte.png "Easyroute Logo")
 
 
 **Svelte Easyroute** - is a simple and convenient router for [Svelte](https://svelte.dev/) framework.
