@@ -11,9 +11,9 @@
   CustomEvent.prototype = window.Event.prototype
 
   window.CustomEvent = CustomEvent
-})() // rollup
+})()
 
-//import RouterOutlet from './RouterOutlet.svelte'
+import RouterOutlet from './RouterOutlet.svelte' // rollup
 import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
 
 class Router {
