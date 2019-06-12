@@ -83,6 +83,12 @@ class Router {
         }
     }
 
+    /**
+     * historyPopState - what happens when we navigate
+     * in browser's history via browser's "back" and 
+     * "forward" buttons
+     * @param event 
+     */
     historyPopState(event) {
         let fakeEvent = {
             detail: {
@@ -92,6 +98,10 @@ class Router {
         this.parseHistory(fakeEvent,false);
     }
 
+    /**
+     * parseHash - parsing location hash to navigate
+     * in "hash" mode.
+     */
     async parseHash() {
         if (window.location.hash.indexOf('#') === -1) {
             this.push('/');
@@ -121,6 +131,12 @@ class Router {
         if (this.afterEach) this.afterEach(routeInfo, fromPath);
     }
 
+    /**
+     * parseHistory - parsing url to navigate
+     * in "history" mode. 
+     * @param event - event object (from links and etc.) 
+     * @param doPushState - boolean, tells us if we should fire pushState in history
+     */
     async parseHistory(event,doPushState: boolean = true) {
         if (event.detail.needAddBase && this.baseUrl.length) {
             let evPath = event.detail.path;
@@ -157,6 +173,9 @@ class Router {
         if (this.afterEach) this.afterEach(routeInfo, fromPath);
     }
 
+    /**
+     * createOutlet - creating RouterOutlet
+     */
     createOutlet () {
         let outletDiv = document.getElementById('router-outlet');
         if (!outletDiv) throw Error('Could not find element with id "router-outlet". Router NOT created...');
@@ -171,6 +190,13 @@ class Router {
         return outlet;
     }
 
+    /**
+     * beforeEachRoute - wrapper function for user-specified
+     * "beforeEach" method
+     * @param userFunc 
+     * @param to 
+     * @param from 
+     */
     beforeEachRoute(userFunc,to,from) {
         return new Promise((resolve, reject) => {
             if (!userFunc) resolve();
@@ -178,6 +204,11 @@ class Router {
         })
     }
 
+    /**
+     * parseParametedRoute - looking for ":" parts in path
+     * for dynamic routes matching
+     * @param url 
+     */
     parseParametedRoute (url) {
         var nBread = url.split('/');
         var matched = {};
@@ -214,6 +245,10 @@ class Router {
         }
     }
 
+    /**
+     * compareRoutes = the method where we passing
+     * new route index to outlet.
+     */
     compareRoutes() {
         let routeStringUrl = this.currentRoute.route;
         var routeString = routeStringUrl.join('/');
@@ -229,6 +264,10 @@ class Router {
         this.afterUpdate(routeIdx)
     }
 
+    /**
+     * initHistoryMode - first called after router
+     * creating with mode "history"
+     */
     initHistoryMode() {
         let url = window.location.pathname + window.location.search;
         let stateObj = { path: url, needAddBase: false };
@@ -239,6 +278,10 @@ class Router {
         window.dispatchEvent(event);
     }
 
+    /**
+     * push - Navigation method
+     * @param url - string
+     */
     push(url) {
         if (this.mode === 'hash') window.location.hash = url;
         if (this.mode === 'history') {
@@ -251,6 +294,11 @@ class Router {
         }
     }
 
+    /**
+     * pushByName - navigation between routes
+     * by route name.
+     * @param name 
+     */
     pushByName (name) {
         let matched = this.routes.filter((route) => route.name === name);
         if (!matched.length) {
