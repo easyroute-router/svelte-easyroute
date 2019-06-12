@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // @ts-ignore
 import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte"; // webpack
 // @ts-ignore
-import RouterOutlet from './RouterOutlet.svelte' // rollup
+import RouterOutlet from "./RouterOutlet.svelte" // rollup
 class Router {
     /**
      * Easyroute constructor
