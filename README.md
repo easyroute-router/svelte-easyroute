@@ -5,7 +5,7 @@
 ![alt text](https://lyoha.info/assets/images/svelte.png "Easyroute Logo")
 
 
-**Svelte Easyroute** - is a simple and convenient router for [Svelte](https://svelte.dev/) framework.
+**Svelte Easyroute** - is a simple and convenient router for [Svelte](https://svelte.dev/) framework. It is good svelte router shich supports history and hash mode, navigation guards, base path. If you need svelte router, try this one.
 
 ### Version 0.3.0 release!
 >
