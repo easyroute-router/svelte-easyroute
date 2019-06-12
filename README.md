@@ -7,11 +7,12 @@
 
 **Svelte Easyroute** - is a simple and convenient router for [Svelte](https://svelte.dev/) framework.
 
-### Version 0.2.0 release!
+### Version 0.3.0 release!
 >
 >Here goes:
->* Dynamic Route Matching: pass parameters in your route;
->* router.pushByName method;
+>* Fixed serious issues with History API (browser buttons "back" and "forward" now working in history mode);
+>* Added Base Url feature! Now you can specify a base path for your app routes;
+>* Router now written in Typescript.
 
 Why you should try it? 
 
