@@ -12,10 +12,10 @@
     function navigateRouter() {
         if (window.routermode == 'hash') window.location.hash = to
         if (window.routermode == 'history') {
-            let stateObj = { path: to };
+            let stateObj = { path: to, needAddBase: true };
             var event = new CustomEvent('svelteEasyrouteLinkClicked', 
                 { 
-                    'detail': stateObj 
+                    'detail': stateObj
                 });
             window.dispatchEvent(event)
         }

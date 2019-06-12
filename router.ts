@@ -10,7 +10,8 @@ interface RouterParams {
     afterUpdate: Function,
     beforeEach: Function,
     afterEach: Function,
-    callback: Function
+    callback: Function,
+    base: String
 }
 
 interface RouteInfo {
@@ -22,7 +23,7 @@ interface RouteInfo {
 // @ts-ignore
 import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
 // @ts-ignore
-//import RouterOutlet from './RouterOutlet.svelte' // rollup
+import RouterOutlet from './RouterOutlet.svelte' // rollup
 
 class Router {
 
@@ -33,6 +34,7 @@ class Router {
     afterEach: Function;
     currentRoute: RouteInfo;
     fullUrl: String;
+    baseUrl: String = "";
 
     /**
      * Easyroute constructor
@@ -50,6 +52,15 @@ class Router {
             this.mode = params.mode;
         } 
         window["routermode"] = this.mode;
+
+        if (params.base) {
+            var base = params.base;
+            if (base !== "") {
+                if (base[0] !== "/") base = "/" + base;
+                if (base[base.length-1] !== "/") base = base + "/";
+            }
+            this.baseUrl = base;
+        }
         this.routes = params.routes;
         this.afterUpdate = params.callback;
 
@@ -111,10 +122,18 @@ class Router {
     }
 
     async parseHistory(event,doPushState: boolean = true) {
-        let path = event.detail.path;
+        if (event.detail.needAddBase && this.baseUrl.length) {
+            let evPath = event.detail.path;
+            if (evPath[0] === "/") evPath = evPath.substring(1);
+            evPath = this.baseUrl + evPath;
+            event.detail.path = evPath;
+        }
+        if (event.detail.path.indexOf(this.baseUrl) == -1 && doPushState !== false) return false;
+        let path = event.detail.path.replace(this.baseUrl,"");
+        if (path[0] !== "/") path = "/"+path;
         this.fullUrl = path;
         let detailObj = { path: path };
-        if (doPushState) history.pushState(detailObj, '', path)
+        if (doPushState) history.pushState(detailObj, '', event.detail.path)
         var routeArray = path.split('?');
         var routeInfo: RouteInfo = {
             fullPath: routeArray[0],
@@ -212,7 +231,7 @@ class Router {
 
     initHistoryMode() {
         let url = window.location.pathname + window.location.search;
-        let stateObj = { path: url };
+        let stateObj = { path: url, needAddBase: false };
         var event = new CustomEvent('svelteEasyrouteLinkClicked',
         {
             'detail': stateObj
