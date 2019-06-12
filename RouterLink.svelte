@@ -13,7 +13,6 @@
         if (window.routermode == 'hash') window.location.hash = to
         if (window.routermode == 'history') {
             let stateObj = { path: to };
-            history.pushState(stateObj, "", to);
             var event = new CustomEvent('svelteEasyrouteLinkClicked', 
                 { 
                     'detail': stateObj 
