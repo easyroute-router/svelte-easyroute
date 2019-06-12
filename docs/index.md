@@ -1,7 +1,5 @@
 ![alt text](https://img.shields.io/npm/v/svelte-easyroute-rollup.svg "npm stats")
 
-If you want to use it with WEBPACK, go [HERE](https://www.npmjs.com/package/svelte-easyroute-webpack)
-
 ### Habitual router in your projects
 It is good svelte router shich supports history and hash mode, navigation guards, base path. If you need svelte router, try this one.
 
