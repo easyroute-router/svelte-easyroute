@@ -21,7 +21,7 @@ interface RouteInfo {
 }
 
 // @ts-ignore
-import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
+//import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
 // @ts-ignore
 import RouterOutlet from "./RouterOutlet.svelte" // rollup
 
@@ -35,6 +35,8 @@ class Router {
     currentRoute: RouteInfo;
     fullUrl: String;
     baseUrl: String = "";
+    silentModeHistory: Array<String> = [];
+    silentModeIdx: number = -1;
 
     /**
      * Easyroute constructor
@@ -45,8 +47,8 @@ class Router {
         if (!params || typeof params != "object") {
             throw Error('Wrong parameters given to Router constructor');
         }
-        if (params.mode !== "history" && params.mode !== "hash") {
-            console.warn('SVELTE EASYROUTE: Router "mode" is not set: should be "hash" or "history".\nAuto-setting: "hash"');
+        if (params.mode !== "history" && params.mode !== "hash" && params.mode !== "silent") {
+            console.warn('SVELTE EASYROUTE: Router "mode" is not set: should be "hash", "history" or "silent".\nAuto-setting: "hash"');
         }
         else {
             this.mode = params.mode;
@@ -81,6 +83,17 @@ class Router {
                 this.historyPopState(event)
             }.bind(this));
         }
+        if (this.mode === "silent") {
+            this.parseSilent({
+                detail: {
+                    path: "/",
+                    needAddBase: true
+                }
+            })
+            window.addEventListener('svelteEasyrouteSilentNavigated',function(event) {
+                this.parseSilent(event);
+            }.bind(this))
+        }
     }
 
     /**
@@ -102,7 +115,7 @@ class Router {
      * parseHash - parsing location hash to navigate
      * in "hash" mode.
      */
-    async parseHash() {
+    parseHash() {
         if (window.location.hash.indexOf('#') === -1) {
             this.push('/');
         }
@@ -125,10 +138,11 @@ class Router {
         if (this.currentRoute) fromPath = this.currentRoute;
         else fromPath = null;
 
-        await this.beforeEachRoute(this.beforeEach, routeInfo, fromPath);
-        this.currentRoute = routeInfo;
-        this.compareRoutes();
-        if (this.afterEach) this.afterEach(routeInfo, fromPath);
+        this.beforeEachRoute(this.beforeEach,routeInfo,fromPath).then(function(r){
+            this.currentRoute = routeInfo;
+            this.compareRoutes();
+            if (this.afterEach) this.afterEach(routeInfo, fromPath);
+        }.bind(this))
     }
 
     /**
@@ -137,7 +151,7 @@ class Router {
      * @param event - event object (from links and etc.) 
      * @param doPushState - boolean, tells us if we should fire pushState in history
      */
-    async parseHistory(event,doPushState: boolean = true) {
+    parseHistory(event,doPushState: boolean = true) {
         if (event.detail.needAddBase && this.baseUrl.length) {
             let evPath = event.detail.path;
             if (evPath[0] === "/") evPath = evPath.substring(1);
@@ -167,10 +181,67 @@ class Router {
         if (this.currentRoute) fromPath = this.currentRoute;
         else fromPath = null;
 
-        await this.beforeEachRoute(this.beforeEach, routeInfo, fromPath);
-        this.currentRoute = routeInfo;
-        this.compareRoutes();
-        if (this.afterEach) this.afterEach(routeInfo, fromPath);
+        this.beforeEachRoute(this.beforeEach,routeInfo,fromPath).then(function() {
+            this.currentRoute = routeInfo;
+            this.compareRoutes();
+            if (this.afterEach) this.afterEach(routeInfo, fromPath);
+        }.bind(this))
+    }
+
+    /**
+     * parseSilent - parsing address in silent mode
+     * @param event - event object
+     */
+    parseSilent(event) {
+        if (event.detail.needAddBase && this.baseUrl.length) {
+            let evPath = event.detail.path;
+            if (evPath[0] === "/") evPath = evPath.substring(1);
+            evPath = this.baseUrl + evPath;
+            event.detail.path = evPath;
+        }
+        if (event.detail.path.indexOf(this.baseUrl) == -1) return false;
+        let path = event.detail.path.replace(this.baseUrl,"");
+        if (path[0] !== "/") path = "/"+path;
+        this.fullUrl = path;
+        var routeArray = path.split('?');
+        var routeInfo: RouteInfo = {
+            fullPath: routeArray[0],
+            route: routeArray[0].split('/'),
+            query: {}
+        };
+        if (routeArray[1]) {
+            var routeQuery = routeArray[1].split('&');
+            routeQuery.forEach((param) => {
+              let keyValue = param.split('=')
+              routeInfo.query[keyValue[0]] = keyValue[1]
+            })
+        }
+        var fromPath: RouteInfo;
+        if (this.currentRoute) fromPath = this.currentRoute;
+        else fromPath = null;
+        this.beforeEachRoute(this.beforeEach,routeInfo,fromPath).then(function() {
+            this.currentRoute = routeInfo;
+            this.compareRoutes();
+            if (!event.detail.backAction) {
+                this.silentModeHistory.push(event.detail.path);
+                this.silentModeIdx++;
+            }
+            if (this.afterEach) this.afterEach(routeInfo, fromPath);
+        }.bind(this))
+    }
+
+    silentGoBack() {
+        if (this.mode !== "silent") return false;
+        if (this.silentModeIdx < 1) return false;
+        this.silentModeIdx--;
+        this.push(this.silentModeHistory[this.silentModeIdx],true)
+    }
+
+    silentGoForward() {
+        if (this.mode !== "silent") return false;
+        if (this.silentModeIdx === this.silentModeHistory.length - 1) return false;
+        this.silentModeIdx++;
+        this.push(this.silentModeHistory[this.silentModeIdx],true)
     }
 
     /**
@@ -246,6 +317,40 @@ class Router {
     }
 
     /**
+     * parseDefaultRoute - looking for "*" last parts in path
+     * for any route matching
+     * @param url 
+     */
+    parseDefaultRoute(url: String) : number {
+        if (url.trim() === '/') throw Error('Url is index!');
+        if (url[url.length-1] === '/') url = url.slice(0,-1);
+        if (url[0] === '/') url = url.slice(1,url.length);
+        var indexAnyRoute: number = -1;
+        for (var i = 0; i < this.routes.length; i++) {
+            let route = this.routes[i];
+            let routePath = route.path;
+            if (routePath.trim() === '*') indexAnyRoute = i;
+            if (routePath.trim() === '/') continue;
+            if (routePath[routePath.length-1] === '/') routePath = routePath.slice(0,-1);
+            if (routePath[0] === '/') routePath = routePath.slice(1,routePath.length);
+            var rBread = routePath.split('/');
+            var urlBread = url.split('/');
+            if (rBread.length !== urlBread.length) continue;
+            for (let k = 0; k < urlBread.length; k++) {
+                if (urlBread[k] === rBread[k] && k < urlBread.length - 1) continue;
+                else if (urlBread[k] !== rBread[k] && k < urlBread.length - 1) break;
+                else {
+                    if (k === urlBread.length-1 && rBread[k].trim() === '*') {
+                        return i
+                    }
+                }
+            }
+        }
+        if (indexAnyRoute !== -1) return indexAnyRoute
+        throw Error('Test')
+    }
+
+    /**
      * compareRoutes = the method where we passing
      * new route index to outlet.
      */
@@ -258,7 +363,11 @@ class Router {
             try {
                 routeIdx = this.parseParametedRoute(routeString);
             } catch (error) {
-                routeIdx = -1;
+                try {
+                    routeIdx = this.parseDefaultRoute(routeString);
+                } catch (error) {
+                    routeIdx = -1;
+                }
             }
         }
         this.afterUpdate(routeIdx)
@@ -282,15 +391,23 @@ class Router {
      * push - Navigation method
      * @param url - string
      */
-    push(url) {
+    push(url, backAction: boolean = false) {
         if (this.mode === 'hash') window.location.hash = url;
         if (this.mode === 'history') {
-        let stateObj = { path: url };
-        var event = new CustomEvent('svelteEasyrouteLinkClicked',
-            {
-            'detail': stateObj
-            });
-        window.dispatchEvent(event);
+            let stateObj = { path: url };
+            let event = new CustomEvent('svelteEasyrouteLinkClicked',
+                {
+                'detail': stateObj
+                });
+            window.dispatchEvent(event);
+        }
+        if (this.mode === 'silent') {
+            let stateObj = { path: url, backAction };
+            let event = new CustomEvent('svelteEasyrouteSilentNavigated',
+                {
+                'detail': stateObj
+                });
+            window.dispatchEvent(event);
         }
     }
 

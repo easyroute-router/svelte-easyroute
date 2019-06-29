@@ -151,12 +151,49 @@ export var router = new Router({
 	/* * */
 ```
 
-***
-# What is next?
-#### TODO list: 
-1. Bugfixes;
-2. Fully programaticaly navigation;
-3. Additional interesting routing modes.
+
+* Default routes
+Since version 1.0.0 Easyroute supports default routes. More than that, not just for index path, but for any level!
+```javascript
+export var router = new Router({
+	mode: "silent",
+	routes: [
+		{
+			path: "*",
+			component: page404,
+			name: "Not found"
+		},
+		{
+			path: "/blog/entry/*",
+			component: blog404,
+			name: "Entry not found"
+		}
+	]
+})
+```
+You can use it for 404 error page on zero level and or others level. 
+For example, if URL "/qwe/rty/uio/pas" has no defined component, Easyroute will show component "page404". And URL "/blog/entry/fdlkjglsdkhjfg" will show component "blog404".
+
+* Silent mode
+Since version 1.0.0 there is third router mode - "silent". You can use it if you don't want to change URL in address bar. Define your routes as usual:
+```javascript
+export var router = new Router({
+	mode: "silent",
+	routes: [
+		...
+	]
+})
+```
+Then, just place a regular RouterLink anywhere you want. 
+This mode has it's own history. You can use this two methods:
+```javascript
+	export let router
+
+	router.silentGoBack() // navigates your router back in silent mode
+	router.silentGoForward() // navigates your router forward in silent mode
+```
+**Why this mode not uses history api by default?**
+Because history api is not supported in some older versions of browsers. However, you can manipulate browser history in this mode using navigation hooks :)
 
 ### Thank you for reading this! I hope you'll enjoy Svelte Easyroute!
 

@@ -13,7 +13,15 @@
         if (window.routermode == 'hash') window.location.hash = to
         if (window.routermode == 'history') {
             let stateObj = { path: to, needAddBase: true };
-            var event = new CustomEvent('svelteEasyrouteLinkClicked', 
+            let event = new CustomEvent('svelteEasyrouteLinkClicked', 
+                { 
+                    'detail': stateObj
+                });
+            window.dispatchEvent(event)
+        }
+        if (window.routermode == 'silent') {
+            let stateObj = { path: to, needAddBase: true };
+            let event = new CustomEvent('svelteEasyrouteSilentNavigated', 
                 { 
                     'detail': stateObj
                 });

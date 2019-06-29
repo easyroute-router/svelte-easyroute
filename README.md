@@ -7,12 +7,16 @@
 
 **Svelte Easyroute** - is a simple and convenient router for [Svelte](https://svelte.dev/) framework. It is good svelte router shich supports history and hash mode, navigation guards, base path. If you need svelte router, try this one.
 
-### Version 0.3.0 release!
->
->Here goes:
->* Fixed serious issues with History API (browser buttons "back" and "forward" now working in history mode);
->* Added Base Url feature! Now you can specify a base path for your app routes;
->* Router now written in Typescript.
+>A few words about router:
+>* Create powerful SPA's with Svelte! Navigate between components without page reloading;
+>* Get information from query string and dynamicly matched routes;
+>* Programmatic navigation by URL string or by name;
+>* Navigation hooks before leaving current route and after loading new;
+>* Easy access to route parameters with simple "export let *" svelte variables;
+>* Create router links with text or any other content you like;
+>* Define your app base url;
+>* Define your app default component for undefined urls;
+>* Use one of three modes: hash (adds '#' symbol in address bar); history (uses History API); silent (uses built-in history and not changes current url in address bar).
 
 Why you should try it? 
 
