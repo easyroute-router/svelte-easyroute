@@ -103,12 +103,6 @@ class Router {
             }.bind(this));
         }
         if (this.mode === "silent") {
-            this.parseSilent({
-                detail: {
-                    path: "/",
-                    needAddBase: true
-                }
-            })
             window.addEventListener('svelteEasyrouteSilentNavigated',function(event) {
                 this.parseSilent(event);
             }.bind(this))
@@ -406,6 +400,14 @@ class Router {
         });
         if (this.mode === 'hash') this.parseHash();
         if (this.mode === 'history') this.initHistoryMode();
+        if (this.mode === 'silent') {
+            this.parseSilent({
+                detail: {
+                    path: "/",
+                    needAddBase: true
+                }
+            })
+        }
         return outlet;
     }
 
@@ -542,7 +544,7 @@ class Router {
     push(url, backAction: boolean = false) {
         if (this.mode === 'hash') window.location.hash = url;
         if (this.mode === 'history') {
-            let stateObj = { path: url };
+            let stateObj = { path: url, needAddBase: true };
             let event = new CustomEvent('svelteEasyrouteLinkClicked',
                 {
                 'detail': stateObj
@@ -550,7 +552,7 @@ class Router {
             window.dispatchEvent(event);
         }
         if (this.mode === 'silent') {
-            let stateObj = { path: url, backAction };
+            let stateObj = { path: url, backAction, needAddBase: true };
             let event = new CustomEvent('svelteEasyrouteSilentNavigated',
                 {
                 'detail': stateObj

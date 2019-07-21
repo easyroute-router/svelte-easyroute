@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.1]
+### Fixed
+- Navigation with "router.push" when added base path
+- Initiation of "silent" mode
+
 ## [1.0.0]
 ### Added
 - Silent mode
