@@ -357,15 +357,25 @@ class Router {
         var fromPath: RouteInfo;
         if (this.currentRoute) fromPath = this.currentRoute;
         else fromPath = null;
-        this.beforeEachRoute(this.beforeEach,routeInfo,fromPath).then(function() {
-            this.currentRoute = routeInfo;
-            this.compareRoutes();
-            if (!event.detail.backAction) {
-                this.silentModeHistory.push(event.detail.path);
-                this.silentModeIdx++;
-            }
-            if (this.afterEach) this.afterEach(routeInfo, fromPath);
-        }.bind(this))
+
+        if (this.transition !== null) {
+            this.transitionOut();
+        }
+
+        setTimeout(function(){
+            this.beforeEachRoute(this.beforeEach,routeInfo,fromPath).then(function(r){
+                this.currentRoute = routeInfo;
+                this.compareRoutes();
+                if (!event.detail.backAction) {
+                    this.silentModeHistory.push(event.detail.path);
+                    this.silentModeIdx++;
+                }
+                if (this.afterEach) this.afterEach(routeInfo, fromPath);
+                if (this.transition !== null) {
+                    this.transitionIn();
+                }
+            }.bind(this))
+        }.bind(this), this.transitionDuration.leavingDuration + 10);
     }
 
     silentGoBack() {
