@@ -12,6 +12,7 @@ class Router {
         this.baseUrl = "";
         this.silentModeHistory = [];
         this.silentModeIdx = -1;
+        this.transition = null;
         if (!params || typeof params != "object") {
             throw Error('Wrong parameters given to Router constructor');
         }
@@ -40,6 +41,16 @@ class Router {
         else {
             this.beforeEach = params.beforeEach;
         }
+        if (params.transition) {
+            this.transition = params.transition;
+            this.transitionDuration = this.getTransitionDurations();
+        }
+        else {
+            this.transitionDuration = {
+                enteringDuration: 0,
+                leavingDuration: 0
+            };
+        }
         if (this.mode === "hash") {
             window.onhashchange = this.parseHash.bind(this);
         }
@@ -56,6 +67,102 @@ class Router {
                 this.parseSilent(event);
             }.bind(this));
         }
+    }
+    getTransitionDurations() {
+        var styleRule;
+        var enteringDuration = 0;
+        var leavingDuration = 0;
+        for (let i = 0; i < document.styleSheets.length; i++) {
+            let rules = document.styleSheets[i]["rules"];
+            for (let k = 0; k < rules.length; k++) {
+                if (rules[k]["selectorText"].indexOf(`.${this.transition}-enter-active`) !== -1) {
+                    var duration = rules[k]["style"]["transitionDuration"];
+                    if (duration.indexOf('ms') !== -1) {
+                        if (duration.indexOf(',') !== -1) {
+                            let durArray = duration.split(',');
+                            durArray.sort(function (a, b) {
+                                return (Number(b.trim().replace('ms', '')) - Number(a.trim().replace('ms', '')));
+                            });
+                            duration = durArray[0];
+                        }
+                        duration = duration.replace('ms', '');
+                        duration = Number(duration);
+                    }
+                    else if (duration.indexOf('s') !== -1) {
+                        if (duration.indexOf(',') !== -1) {
+                            let durArray = duration.split(',');
+                            durArray.sort(function (a, b) {
+                                return (Number(b.trim().replace('s', '')) - Number(a.trim().replace('s', '')));
+                            });
+                            duration = durArray[0];
+                        }
+                        if (duration.indexOf('.') === 0)
+                            duration = '0' + duration;
+                        duration = duration.replace('s', '');
+                        duration = Number(duration) * 1000;
+                    }
+                    enteringDuration = duration;
+                }
+                if (rules[k]["selectorText"].indexOf(`.${this.transition}-leave-active`) !== -1) {
+                    var duration = rules[k]["style"]["transitionDuration"];
+                    if (duration.indexOf('ms') !== -1) {
+                        if (duration.indexOf(',') !== -1) {
+                            let durArray = duration.split(',');
+                            durArray.sort(function (a, b) {
+                                return (Number(b.trim().replace('ms', '')) - Number(a.trim().replace('ms', '')));
+                            });
+                            duration = durArray[0];
+                        }
+                        duration = duration.replace('ms', '');
+                        duration = Number(duration);
+                    }
+                    else if (duration.indexOf('s') !== -1) {
+                        if (duration.indexOf(',') !== -1) {
+                            let durArray = duration.split(',');
+                            durArray.sort(function (a, b) {
+                                return (Number(b.trim().replace('s', '')) - Number(a.trim().replace('s', '')));
+                            });
+                            duration = durArray[0];
+                        }
+                        if (duration.indexOf('.') === 0)
+                            duration = '0' + duration;
+                        duration = duration.replace('s', '');
+                        duration = Number(duration) * 1000;
+                    }
+                    leavingDuration = duration;
+                }
+            }
+        }
+        return {
+            enteringDuration,
+            leavingDuration
+        };
+    }
+    transitionOut() {
+        console.log(this.transitionDuration.leavingDuration);
+        var outlet = document.querySelector('#router-outlet');
+        outlet.classList.add(`${this.transition}-leave-active`);
+        outlet.classList.add(`${this.transition}-leave-to`);
+        outlet.classList.remove(`${this.transition}-enter-active`);
+        outlet.classList.remove(`${this.transition}-enter`);
+        outlet.classList.remove(`${this.transition}-enter-to`);
+        setTimeout(() => {
+            outlet.classList.add(`${this.transition}-leave`);
+        }, this.transitionDuration.leavingDuration + 10);
+    }
+    transitionIn() {
+        var outlet = document.querySelector('#router-outlet');
+        outlet.classList.remove(`${this.transition}-leave-active`);
+        outlet.classList.remove(`${this.transition}-leave`);
+        outlet.classList.remove(`${this.transition}-leave-to`);
+        outlet.classList.add(`${this.transition}-enter`);
+        outlet.classList.add(`${this.transition}-enter-active`);
+        outlet.classList.add(`${this.transition}-enter-to`);
+        setTimeout(() => {
+            outlet.classList.remove(`${this.transition}-enter`);
+            outlet.classList.remove(`${this.transition}-enter-active`);
+            outlet.classList.remove(`${this.transition}-enter-to`);
+        }, this.transitionDuration.enteringDuration + 10);
     }
     /**
      * historyPopState - what happens when we navigate
@@ -99,12 +206,20 @@ class Router {
             fromPath = this.currentRoute;
         else
             fromPath = null;
-        this.beforeEachRoute(this.beforeEach, routeInfo, fromPath).then(function (r) {
-            this.currentRoute = routeInfo;
-            this.compareRoutes();
-            if (this.afterEach)
-                this.afterEach(routeInfo, fromPath);
-        }.bind(this));
+        if (this.transition !== null) {
+            this.transitionOut();
+        }
+        setTimeout(function () {
+            this.beforeEachRoute(this.beforeEach, routeInfo, fromPath).then(function (r) {
+                this.currentRoute = routeInfo;
+                this.compareRoutes();
+                if (this.afterEach)
+                    this.afterEach(routeInfo, fromPath);
+                if (this.transition !== null) {
+                    this.transitionIn();
+                }
+            }.bind(this));
+        }.bind(this), this.transitionDuration.leavingDuration + 10);
     }
     /**
      * parseHistory - parsing url to navigate
@@ -147,12 +262,20 @@ class Router {
             fromPath = this.currentRoute;
         else
             fromPath = null;
-        this.beforeEachRoute(this.beforeEach, routeInfo, fromPath).then(function () {
-            this.currentRoute = routeInfo;
-            this.compareRoutes();
-            if (this.afterEach)
-                this.afterEach(routeInfo, fromPath);
-        }.bind(this));
+        if (this.transition !== null) {
+            this.transitionOut();
+        }
+        setTimeout(function () {
+            this.beforeEachRoute(this.beforeEach, routeInfo, fromPath).then(function () {
+                this.currentRoute = routeInfo;
+                this.compareRoutes();
+                if (this.afterEach)
+                    this.afterEach(routeInfo, fromPath);
+                if (this.transition !== null) {
+                    this.transitionIn();
+                }
+            }.bind(this));
+        }.bind(this), this.transitionDuration.leavingDuration + 10);
     }
     /**
      * parseSilent - parsing address in silent mode
@@ -190,16 +313,24 @@ class Router {
             fromPath = this.currentRoute;
         else
             fromPath = null;
-        this.beforeEachRoute(this.beforeEach, routeInfo, fromPath).then(function () {
-            this.currentRoute = routeInfo;
-            this.compareRoutes();
-            if (!event.detail.backAction) {
-                this.silentModeHistory.push(event.detail.path);
-                this.silentModeIdx++;
-            }
-            if (this.afterEach)
-                this.afterEach(routeInfo, fromPath);
-        }.bind(this));
+        if (this.transition !== null) {
+            this.transitionOut();
+        }
+        setTimeout(function () {
+            this.beforeEachRoute(this.beforeEach, routeInfo, fromPath).then(function (r) {
+                this.currentRoute = routeInfo;
+                this.compareRoutes();
+                if (!event.detail.backAction) {
+                    this.silentModeHistory.push(event.detail.path);
+                    this.silentModeIdx++;
+                }
+                if (this.afterEach)
+                    this.afterEach(routeInfo, fromPath);
+                if (this.transition !== null) {
+                    this.transitionIn();
+                }
+            }.bind(this));
+        }.bind(this), this.transitionDuration.leavingDuration + 10);
     }
     silentGoBack() {
         if (this.mode !== "silent")
