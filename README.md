@@ -16,7 +16,8 @@
 >* Create router links with text or any other content you like;
 >* Define your app base url;
 >* Define your app default component for undefined urls;
->* Use one of three modes: hash (adds '#' symbol in address bar); history (uses History API); silent (uses built-in history and not changes current url in address bar).
+>* Use one of three modes: hash (adds '#' symbol in address bar); history (uses History API); silent (uses built-in history and not changes current url in address bar);
+>* Use CSS-transitions just outside the box.
 
 Why you should try it? 
 

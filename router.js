@@ -1,5 +1,5 @@
 // @ts-ignore
-//import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
+import RouterOutlet from "!!svelte-loader!./RouterOutlet.svelte" // webpack
 // @ts-ignore
 import RouterOutlet from "./RouterOutlet.svelte"; // rollup
 class Router {
