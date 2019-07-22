@@ -24,6 +24,7 @@
   },
   "homepage": "https://lyoha.info/en/projects/svelterouter",
   "dependencies": {
+    "lodash": "^4.17.15",
     "svelte": "^3.4.4",
     "svelte-loader": "^2.13.4",
     "typescript": "^3.5.1"
