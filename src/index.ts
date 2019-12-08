@@ -5,6 +5,7 @@ import IRoute from "./interfaces/IRoute";
 import { RouterException } from "./exceptions/RouterException";
 
 import PathService from "./services/PathService";
+import HashBasedRouting from "./services/HashBasedRouting";
 
 const ROUTER_MODES : string[] = [
     "hash",
@@ -15,6 +16,7 @@ const ROUTER_MODES : string[] = [
 export default class Router implements IRouter {
 
     private pathService : PathService = new PathService();
+    private parser !: HashBasedRouting;
 
     public mode : string = "hash";
     public baseUrl : string = "/";
@@ -34,7 +36,7 @@ export default class Router implements IRouter {
         this.routes = this.pathService.getPathInformation(params.routes);
         this.afterUpdate = params.afterUpdate;
         this.beforeEach = params.beforeEach;
-        this.setSwitchingByMode();
+        this.setParser();
     }
 
     private static validateParameters (
@@ -61,9 +63,30 @@ export default class Router implements IRouter {
         return baseUrl;
     }
 
-    private setSwitchingByMode () {
+    private setParser () {
         if (this.mode === "hash") {
+            this.parser = new HashBasedRouting(this.routes);
+            // window.addEventListener("hashchange", () => {
+            //     this.parseRoute(window.location.hash);
+            // });
+        }
+    }
 
+    public parseRoute (
+        url : string
+    ) {
+        let matchedRoute : IRoute | null = this.parser.parse(url);
+        if (!matchedRoute) {
+            console.warn(`Easyroute :: no routes matched "${url}"`);
+            return;
+        }
+        let pathValues = matchedRoute.regexpPath!.exec(url) as string[];
+        pathValues = pathValues.slice(1, pathValues.length);
+        let urlParams : { [key : string] : string} = {};
+        for (let pathPart in pathValues) {
+            let value = pathValues[pathPart];
+            let key = matchedRoute.pathKeys![pathPart].name;
+            urlParams[key] = value;
         }
     }
 

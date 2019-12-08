@@ -26,6 +26,7 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "path-to-regexp": "^6.1.0",
+    "query-string": "^6.9.0",
     "svelte": "^3.4.4",
     "svelte-loader": "^2.13.4",
     "typescript": "^3.5.1"
