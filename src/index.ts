@@ -29,6 +29,7 @@ export default class Router implements IRouter {
     public afterEach : Function | undefined;
     public currentRoute : IRoute | undefined;
     public routeInfo : IRouteInfo | undefined;
+    public previousRoute : IRouteInfo | undefined;
     public fullUrl : string = "/";
 
     constructor(
@@ -89,9 +90,16 @@ export default class Router implements IRouter {
         this.routeInfo = this.urlParser.createRouteObject(matchedRoute, path, query, url);
     }
 
-    private async fireNavigation () {
-        // @TODO: call afterUpdate to change the component in the outlet
+    private _beforeEach (to : any, from : any) {
+        return new Promise((resolve) => {
+            if (!this.beforeEach) resolve();
+            this.beforeEach!(to, from, resolve);
+        })
+    }
 
+    private async fireNavigation () {
+        await this._beforeEach(this.routeInfo, this.previousRoute);
+        // @TODO: call afterUpdate to change the component in the outlet
     }
 
 }
