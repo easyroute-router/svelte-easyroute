@@ -5,11 +5,11 @@ let window = {};
 let router = new Router({
     routes: [
         {
-            path: '/test/:param/test2/:suka'
+            path: '/test/:param/test2/:paramtwo'
         }
     ]
 });
 
 // console.log(JSON.stringify(router.routes, null, 2));
 
-router.parseRoute('/test/gay/test2/malchik');
+router.parseRoute('/test/word1/test2/word2?queryparam[]=sobachka&queryparam[]=gusenica&queryparam[]=myach&queryparam[]=straus');

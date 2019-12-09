@@ -1,11 +1,13 @@
 import IRouterParams from "./interfaces/IRouterParams";
 import IRouter from "./interfaces/IRouter";
 import IRoute from "./interfaces/IRoute";
+import IRouteInfo from "./interfaces/IRouteInfo";
 
-import { RouterException } from "./exceptions/RouterException";
+import {RouterException} from "./exceptions/RouterException";
 
 import PathService from "./services/PathService";
 import HashBasedRouting from "./services/HashBasedRouting";
+import UrlParser from "./services/UrlParser";
 
 const ROUTER_MODES : string[] = [
     "hash",
@@ -16,6 +18,7 @@ const ROUTER_MODES : string[] = [
 export default class Router implements IRouter {
 
     private pathService : PathService = new PathService();
+    private urlParser : UrlParser = new UrlParser();
     private parser !: HashBasedRouting;
 
     public mode : string = "hash";
@@ -25,6 +28,7 @@ export default class Router implements IRouter {
     public beforeEach : Function | undefined;
     public afterEach : Function | undefined;
     public currentRoute : IRoute | undefined;
+    public routeInfo : IRouteInfo | undefined;
     public fullUrl : string = "/";
 
     constructor(
@@ -75,19 +79,19 @@ export default class Router implements IRouter {
     public parseRoute (
         url : string
     ) {
-        let matchedRoute : IRoute | null = this.parser.parse(url);
+        const [ path, query ] = url.split('?');
+        let matchedRoute : IRoute | null = this.parser.parse(path);
         if (!matchedRoute) {
             console.warn(`Easyroute :: no routes matched "${url}"`);
             return;
         }
-        let pathValues = matchedRoute.regexpPath!.exec(url) as string[];
-        pathValues = pathValues.slice(1, pathValues.length);
-        let urlParams : { [key : string] : string} = {};
-        for (let pathPart in pathValues) {
-            let value = pathValues[pathPart];
-            let key = matchedRoute.pathKeys![pathPart].name;
-            urlParams[key] = value;
-        }
+        this.currentRoute = matchedRoute;
+        this.routeInfo = this.urlParser.createRouteObject(matchedRoute, path, query, url);
+    }
+
+    private async fireNavigation () {
+        // @TODO: call afterUpdate to change the component in the outlet
+
     }
 
 }
