@@ -40,7 +40,6 @@ export default class Router implements IRouter {
         this.mode = params.mode || "hash";
         this.baseUrl = Router.formatBaseUrl(params.base);
         this.routes = this.pathService.getPathInformation(params.routes);
-        this.afterUpdate = params.afterUpdate;
         this.beforeEach = params.beforeEach;
         this.setParser();
     }
@@ -72,9 +71,10 @@ export default class Router implements IRouter {
     private setParser () {
         if (this.mode === "hash") {
             this.parser = new HashBasedRouting(this.routes);
-            // window.addEventListener("hashchange", () => {
-            //     this.parseRoute(window.location.hash);
-            // });
+            this.parseRoute(window.location.hash.replace("#",""));
+            window.addEventListener("hashchange", () => {
+                this.parseRoute(window.location.hash.replace("#",""));
+            });
         }
     }
 
@@ -93,18 +93,20 @@ export default class Router implements IRouter {
             routeObject: matchedRoute,
             routeInfo: this.routeInfo
         };
+        this.fireNavigation();
     }
 
     private _beforeEach (to : any, from : any) {
         return new Promise((resolve) => {
             if (!this.beforeEach) resolve();
             this.beforeEach!(to, from, resolve);
-        })
+        });
     }
 
     private async fireNavigation () {
         await this._beforeEach(this.routeInfo, this.previousRoute);
         // @TODO: call afterUpdate to change the component in the outlet
+        if (this.afterUpdate) this.afterUpdate();
     }
 
 }
