@@ -93,7 +93,6 @@ export default class Router implements IRouter {
             routeObject: matchedRoute,
             routeInfo: this.routeInfo
         };
-        console.log(this.currentRoute);
     }
 
     private _beforeEach (to : any, from : any) {
