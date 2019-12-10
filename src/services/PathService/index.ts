@@ -8,7 +8,8 @@
  * https://github.com/pillarjs/path-to-regexp
  */
 
-import {Key, pathToRegexp} from "path-to-regexp";
+import {Key} from "path-to-regexp";
+import pathToRegexp from "path-to-regexp";
 import IRoute from "../../interfaces/IRoute";
 import queryString from "query-string";
 

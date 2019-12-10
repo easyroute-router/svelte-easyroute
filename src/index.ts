@@ -88,6 +88,7 @@ export default class Router implements IRouter {
         }
         this.currentRoute = matchedRoute;
         this.routeInfo = this.urlParser.createRouteObject(matchedRoute, path, query, url);
+        console.log(this.routeInfo);
     }
 
     private _beforeEach (to : any, from : any) {
