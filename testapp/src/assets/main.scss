@@ -1,0 +1,18 @@
+div {
+    &.shadowbox {
+        box-shadow: 0px 0px 19px -4px rgba(0,0,0,0.22);
+    }
+}
+
+img {
+    &.img-fluid {
+        max-width: 40%;
+        margin: 0 auto;
+    }
+}
+
+pre {
+    background: gray;
+    color: white;
+    padding: 10px;
+}
