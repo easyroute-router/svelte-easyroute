@@ -1,13 +1,15 @@
 <script>
   export let to
 
+  const link = '#' + to
+
   function navigate (evt) {
     evt.preventDefault()
     evt.stopPropagation()
-    window.location.hash = `#${to}`
+    window.location.hash = link
   }
 </script>
 
-<a href="{to}" on:click={(evt) => {navigate(evt)}}>
+<a href="{link}" on:click={navigate}>
   <slot></slot>
 </a>

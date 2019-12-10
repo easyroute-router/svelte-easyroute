@@ -104,7 +104,7 @@ export default class Router implements IRouter {
     }
 
     private async fireNavigation () {
-        await this._beforeEach(this.routeInfo, this.previousRoute);
+        await this._beforeEach(this.currentRoute, this.previousRoute);
         // @TODO: call afterUpdate to change the component in the outlet
         if (this.afterUpdate) this.afterUpdate();
     }

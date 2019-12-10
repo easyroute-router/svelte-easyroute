@@ -3,7 +3,6 @@
   let _routeComponent = false;
   let _routeInfo = {};
   router.afterUpdate = () => {
-    console.log(router.currentRoute);
     _routeComponent = false;
     setTimeout(() => {
       _routeComponent = router.currentRoute.routeObject.component
