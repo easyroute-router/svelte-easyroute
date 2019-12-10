@@ -26,7 +26,7 @@ export default class UrlParser {
         for (let pathPart in pathValues) {
             let value = pathValues[pathPart];
             let key = matchedRoute.pathKeys![pathPart].name;
-            urlParams[key] = value;
+            if (typeof key !== "number") urlParams[key] = value;
         }
         return urlParams;
     }

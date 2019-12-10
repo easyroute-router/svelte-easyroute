@@ -5,7 +5,7 @@ let window = {};
 let router = new Router({
     routes: [
         {
-            path: '/test/*'
+            path: '/test/:1/test2/*'
         }
     ]
 });

@@ -2,6 +2,7 @@ import IRouterParams from "./interfaces/IRouterParams";
 import IRouter from "./interfaces/IRouter";
 import IRoute from "./interfaces/IRoute";
 import IRouteInfo from "./interfaces/IRouteInfo";
+import IRouteComplexData from "./interfaces/IRouteComplexData";
 
 import {RouterException} from "./exceptions/RouterException";
 
@@ -27,9 +28,9 @@ export default class Router implements IRouter {
     public afterUpdate : Function | undefined;
     public beforeEach : Function | undefined;
     public afterEach : Function | undefined;
-    public currentRoute : IRoute | undefined;
+    public currentRoute : IRouteComplexData | undefined;
+    public previousRoute : IRouteComplexData | undefined;
     public routeInfo : IRouteInfo | undefined;
-    public previousRoute : IRouteInfo | undefined;
     public fullUrl : string = "/";
 
     constructor(
@@ -86,9 +87,13 @@ export default class Router implements IRouter {
             console.warn(`Easyroute :: no routes matched "${url}"`);
             return;
         }
-        this.currentRoute = matchedRoute;
         this.routeInfo = this.urlParser.createRouteObject(matchedRoute, path, query, url);
-        console.log(this.routeInfo);
+        this.previousRoute =  this.currentRoute ? JSON.parse(JSON.stringify(this.currentRoute)) : undefined;
+        this.currentRoute = {
+            routeObject: matchedRoute,
+            routeInfo: this.routeInfo
+        };
+        console.log(this.currentRoute);
     }
 
     private _beforeEach (to : any, from : any) {
