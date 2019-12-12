@@ -14,5 +14,6 @@
   $: routeInfo = _routeInfo
 </script>
 
-<svelte:component this={routeComponent} currentRoute={routeInfo}/>
-
+<div id="svelte-easyroute-outlet">
+  <svelte:component this={routeComponent} currentRoute={routeInfo}/>
+</div>

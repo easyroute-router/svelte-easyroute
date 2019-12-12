@@ -9,6 +9,7 @@ import {RouterException} from "./exceptions/RouterException";
 import PathService from "./services/PathService";
 import HashBasedRouting from "./services/HashBasedRouting";
 import UrlParser from "./services/UrlParser";
+import CssTransitionService from "./services/CssTransitionService";
 
 const ROUTER_MODES : string[] = [
     "hash",
@@ -21,6 +22,7 @@ export default class Router implements IRouter {
     private pathService : PathService = new PathService();
     private urlParser : UrlParser = new UrlParser();
     private parser !: HashBasedRouting;
+    private transitionService : CssTransitionService | null;
 
     public mode : string = "hash";
     public baseUrl : string = "/";
@@ -41,6 +43,13 @@ export default class Router implements IRouter {
         this.baseUrl = Router.formatBaseUrl(params.base);
         this.routes = this.pathService.getPathInformation(params.routes);
         this.beforeEach = params.beforeEach;
+
+        if (params.transition) {
+            this.transitionService = new CssTransitionService(params.transition);
+        } else {
+            this.transitionService = null;
+        }
+
         this.setParser();
     }
 
@@ -76,6 +85,7 @@ export default class Router implements IRouter {
                 this.parseRoute(window.location.hash.replace("#",""));
             });
         }
+        // if (this.baseUrl) this.parseRoute(this.baseUrl);
     }
 
     public parseRoute (
@@ -96,17 +106,33 @@ export default class Router implements IRouter {
         this.fireNavigation();
     }
 
-    private _beforeEach (to : any, from : any) {
+    private _beforeEach
+    (
+        to : IRouteComplexData | undefined,
+        from : IRouteComplexData | undefined
+    ) {
         return new Promise((resolve) => {
             if (!this.beforeEach) resolve();
             this.beforeEach!(to, from, resolve);
         });
     }
 
+    private _afterEach
+    (
+        to : IRouteComplexData | undefined,
+        from : IRouteComplexData | undefined
+    ) {
+        if (!this.afterEach) return;
+        this.afterEach(to, from);
+    }
+
     private async fireNavigation () {
-        await this._beforeEach(this.currentRoute, this.previousRoute);
-        // @TODO: call afterUpdate to change the component in the outlet
-        if (this.afterUpdate) this.afterUpdate();
+        if (this.transitionService) this.transitionService.transitionIn();
+        setTimeout(async () => {
+            await this._beforeEach(this.currentRoute, this.previousRoute);
+            if (this.afterUpdate) this.afterUpdate();
+            this._afterEach(this.currentRoute, this.previousRoute);
+        }, this.transitionService!.enteringDuration);
     }
 
 }

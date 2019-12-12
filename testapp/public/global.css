@@ -59,3 +59,25 @@ button:active {
 button:focus {
 	border-color: #666;
 }
+
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+	transform: translateX(50px);
+}
+/*.fade-enter-active, .fade-leave-active {*/
+/*	transition: opacity .2s ease, transform 200ms ease;*/
+/*}*/
+
+.fade-enter-active {
+	transition: opacity .2s ease .4s, transform .2s ease;
+}
+
+.fade-leave-active {
+	transition: opacity .5s ease, transform .3s ease;
+	transition-delay: 500ms;
+}
+
+.fade-enter-to, .fade-leave {
+	opacity: 1;
+	transform: translateX(0px);
+}

@@ -6,11 +6,12 @@ import Index from './Index.svelte'
 import Test from './Test.svelte'
 import ParamsPlayground from './ParamsPlayground.svelte'
 
-import Router from '../../../dist/index'
+import Router from '../../dist/index'
 
 export var router = new Router({
 	base: "", // NOT required
 	mode: "hash",
+	transition: "fade",
 	routes: [
 		{
 			path: "/",

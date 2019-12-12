@@ -1,9 +1,8 @@
 <script>
 	import {onMount} from 'svelte'
-	import RouterLink from '../../../RouterLink.svelte'
-	export let name;
+	import RouterLink from '../../RouterLink.svelte'
 	export let router;
-	import RouterOutlet from '../../../RouterOutlet.svelte'
+	import RouterOutlet from '../../RouterOutlet.svelte'
 
 	onMount(()=> {
 	})
