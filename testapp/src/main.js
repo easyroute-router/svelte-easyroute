@@ -6,7 +6,8 @@ import Index from "./Index.svelte";
 import Test from "./Test.svelte";
 import ParamsPlayground from "./ParamsPlayground.svelte";
 import Nested from "./Nested.svelte";
-import NestedDeep from "./NestedDeep.svelte"
+import NestedDeep from "./NestedDeep.svelte";
+import NestedDeeper from "./NestedDeeper.svelte";
 
 import Router from "../../dist/index";
 
@@ -31,7 +32,13 @@ export var router = new Router({
                     children: [
                         {
                             path: "deep",
-                            component: NestedDeep
+                            component: NestedDeep,
+                            children: [
+                                {
+                                    path: "deeper",
+                                    component: NestedDeeper
+                                }
+                            ]
                         }
                     ]
                 }

@@ -1,7 +1,7 @@
 <script>
   export let route
   import {default as NestedOutlet} from "../../RouterNestedOutlet.svelte"
-  console.log('NEEEEEE',route)
+  console.log('neeeee',route)
 </script>
 
 <h1>Nested!</h1>

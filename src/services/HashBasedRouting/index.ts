@@ -21,7 +21,19 @@ export default class HashBasedRouting {
                     total.push(current);
                 return total;
             }, []);
+        console.log(matchedRoutes);
         if (matchedRoutes.length > 1) {
+            // for (let i = 0; i < matchedRoutes.length; i++) {
+            //     let matched: IRoute | undefined = matchedRoutes[0];
+            //     if (i === 0) matched.nested = matchedRoutes[i+1];
+            //     else {
+            //         for (let k = 0; k < i; k++) {
+            //             if (matched.nested) matched = matched.nested;
+            //         }
+            //         matched = matchedRoutes[i+1];
+            //     }
+            // }
+            // @TODO: Простроить цепочку нестедов в первый рут
             for (let i = 1; i < matchedRoutes.length; i++) {
                 matchedRoutes[i-1].nested = matchedRoutes[i];
             }

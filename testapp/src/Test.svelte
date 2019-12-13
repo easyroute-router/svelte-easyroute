@@ -7,8 +7,6 @@
 
     import {onMount} from 'svelte'
 
-    console.log('TEST NESTED',nested)
-
     let parsedRoute = JSON.stringify(currentRoute,false,2)
 </script>
 
