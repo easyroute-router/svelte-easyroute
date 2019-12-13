@@ -1,15 +1,20 @@
 <script>
     export let currentRoute
+    export let router
+    export let nested
+
+    import { default as NestedOutlet } from "../../RouterNestedOutlet.svelte"
 
     import {onMount} from 'svelte'
 
-    console.log(currentRoute)
+    console.log('TEST NESTED',nested)
 
     let parsedRoute = JSON.stringify(currentRoute,false,2)
 </script>
 
 <div class="container-fluid index-page mt-3">
     <h3 class="text-center">TEST page</h3>
+    <NestedOutlet route={nested}/>
     <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-md-4">

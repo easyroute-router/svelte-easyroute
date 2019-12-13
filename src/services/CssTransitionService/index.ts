@@ -60,6 +60,7 @@ export default class CssTransitionService {
             let rulesArray : Array<CSSRule> = Object.values(rules);
             let filteredRules = rulesArray.filter(rule => {
                 let operateRule : CSSStyleRule = rule as CSSStyleRule;
+                if (!operateRule.selectorText) return false;
                 return operateRule.selectorText.match(this.rule);
             });
             stylesArray.push(...filteredRules);

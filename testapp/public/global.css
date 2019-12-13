@@ -48,11 +48,16 @@ input[type="range"] {
 }
 
 button {
+	color: #333;
 	background-color: #f4f4f4;
 	outline: none;
 }
 
-button:active {
+button:disabled {
+	color: #999;
+}
+
+button:not(:disabled):active {
 	background-color: #ddd;
 }
 
@@ -60,11 +65,11 @@ button:focus {
 	border-color: #666;
 }
 
-.fade-enter, .fade-leave-to {
+.xfade-enter, .xfade-leave-to {
 	opacity: 0;
 	transform: translateX(50px);
 }
-.fade-enter-active, .fade-leave-active {
+.xfade-enter-active, .xfade-leave-active {
 	transition: opacity .2s ease, transform 200ms ease;
 }
 
@@ -78,7 +83,7 @@ button:focus {
 /*	transition-delay: 500ms;*/
 /*}*/
 
-.fade-enter-to, .fade-leave {
+.xfade-enter-to, .xfade-leave {
 	opacity: 1;
 	transform: translateX(0px);
 }

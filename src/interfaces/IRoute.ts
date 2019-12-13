@@ -7,5 +7,7 @@ export default interface IRoute {
     component?: SvelteComponent,
     regexpPath?: RegExp,
     pathKeys?: Key[],
-    query?: object | null
+    query?: object | null,
+    children?: IRoute[],
+    nested?: IRoute
 }

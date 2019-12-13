@@ -21,10 +21,33 @@ export default class PathService {
     constructor() {
     }
 
+    private parsePaths (
+        routes: IRoute[]
+    ) : IRoute[] {
+        let allRoutes: IRoute[] = [];
+        const recursive = (routesArray: IRoute[], parentPath : string = "") => {
+            routesArray.forEach((el) => {
+                if (parentPath.length) {
+                    parentPath = parentPath.replace(/\*/g,"");
+                    let elPath = el.path;
+                    if (elPath[0] !== "/") elPath = `/${elPath}`;
+                    el.path = parentPath + elPath;
+                }
+                allRoutes.push(el);
+                if (el.children && el.children.length) {
+                    recursive(el.children, el.path);
+                }
+            });
+        };
+        recursive(routes);
+        return allRoutes;
+    }
+
     public getPathInformation (
         routes: IRoute[]
     ) : IRoute[] {
-        return routes.map(route => {
+        let allRoutes : IRoute[] = this.parsePaths(routes);
+        return allRoutes.map(route => {
             let keysArray: Key[] = [];
             route.regexpPath = this.pathToRegexp(route.path, keysArray);
             route.pathKeys = keysArray;

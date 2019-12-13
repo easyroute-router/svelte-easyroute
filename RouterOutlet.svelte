@@ -17,5 +17,5 @@
 </script>
 
 <div class="svelte-easyroute-outlet">
-  <svelte:component this={routeComponent} currentRoute={routeInfo}/>
+  <svelte:component this={routeComponent} router={router} currentRoute={routeInfo} nested={router.currentRoute.routeObject.nested || false}/>
 </div>

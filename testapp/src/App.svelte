@@ -23,11 +23,12 @@
 	</pre><br>
 	<RouterLink to="/"><button type="button">Index</button></RouterLink>
 	<RouterLink to="/test"><button type="button">Test page</button></RouterLink>
+	<RouterLink to="/test/nested"><button type="button">Nested page</button></RouterLink>
 	<RouterLink to="/?name=Lyoha&status=plotinka"><button type="button">Index page with query</button></RouterLink>
 	<RouterLink to="/test?name=Alex&age=22"><button type="button">Test page with query</button></RouterLink>
 	<RouterLink to="/playground/easy/params/route"><button type="button">Router params playground</button></RouterLink>
 	<hr>
 </div>
 <div class="container mt-5 shadowbox">
-			<RouterOutlet router={router} />
+			<RouterOutlet router={router} nested={false} />
 </div>
