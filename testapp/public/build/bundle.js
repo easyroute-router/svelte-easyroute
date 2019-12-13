@@ -3518,8 +3518,10 @@ var app = (function (exports) {
                 //     }
                 // }
                 // @TODO: Простроить цепочку нестедов в первый рут
-                for (var i = 1; i < matchedRoutes.length; i++) {
-                    matchedRoutes[i - 1].nested = matchedRoutes[i];
+                var matchedParent = matchedRoutes[0];
+                for (var i = 0; i < matchedRoutes.length; i++) {
+                    matchedParent.nested = matchedRoutes[i];
+                    matchedParent = matchedParent.nested;
                 }
             }
             console.log(matchedRoutes[0]);
@@ -3937,7 +3939,7 @@ var app = (function (exports) {
                         component: Nested,
                         children: [
                             {
-                                path: "deep",
+                                path: "deep*",
                                 component: NestedDeep,
                                 children: [
                                     {

@@ -34,8 +34,10 @@ export default class HashBasedRouting {
             //     }
             // }
             // @TODO: Простроить цепочку нестедов в первый рут
-            for (let i = 1; i < matchedRoutes.length; i++) {
-                matchedRoutes[i-1].nested = matchedRoutes[i];
+            let matchedParent = matchedRoutes[0];
+            for (let i = 0; i < matchedRoutes.length; i++) {
+                matchedParent.nested = matchedRoutes[i];
+                matchedParent = matchedParent.nested;
             }
         }
         console.log(matchedRoutes[0]);
