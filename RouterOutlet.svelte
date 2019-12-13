@@ -12,10 +12,14 @@
 
   let tag = 'div'
 
+  let passingRouter = JSON.parse(JSON.stringify(router))
+  passingRouter._nested = router.currentRoute.routeObject.nested || false
+  console.log('Passing',passingRouter)
+
   $: routeComponent = _routeComponent
   $: routeInfo = _routeInfo
 </script>
 
 <div class="svelte-easyroute-outlet">
-  <svelte:component this={routeComponent} router={router} currentRoute={routeInfo} nested={router.currentRoute.routeObject.nested || false}/>
+  <svelte:component this={routeComponent} router={passingRouter} currentRoute={routeInfo}/>
 </div>

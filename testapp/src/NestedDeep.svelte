@@ -1,10 +1,8 @@
 <script>
-  export let route
+  export let router
   import {default as NestedOutlet} from "../../RouterNestedOutlet.svelte"
-  console.log('deeeep',route)
+  console.log('deeeep',router)
 </script>
 
 <h1>Nested Deep!</h1>
-{#if route}
-  <NestedOutlet route={route}/>
-{/if}
+  <NestedOutlet router={router}/>
