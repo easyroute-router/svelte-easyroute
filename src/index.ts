@@ -127,12 +127,11 @@ export default class Router implements IRouter {
     }
 
     private async fireNavigation () {
-        if (this.transitionService) this.transitionService.transitionIn();
-        setTimeout(async () => {
-            await this._beforeEach(this.currentRoute, this.previousRoute);
-            if (this.afterUpdate) this.afterUpdate();
-            this._afterEach(this.currentRoute, this.previousRoute);
-        }, this.transitionService!.enteringDuration);
+        if (this.transitionService) await this.transitionService.transitionOut();
+        await this._beforeEach(this.currentRoute, this.previousRoute);
+        if (this.afterUpdate) this.afterUpdate();
+        if (this.transitionService) await this.transitionService.transitionIn();
+        this._afterEach(this.currentRoute, this.previousRoute);
     }
 
 }

@@ -10,10 +10,12 @@
     },2)
   }
 
+  let tag = 'div'
+
   $: routeComponent = _routeComponent
   $: routeInfo = _routeInfo
 </script>
 
-<div id="svelte-easyroute-outlet">
+<div class="svelte-easyroute-outlet">
   <svelte:component this={routeComponent} currentRoute={routeInfo}/>
 </div>

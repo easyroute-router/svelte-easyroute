@@ -89,39 +89,41 @@ export default class CssTransitionService {
         this.leavingDuration = leavingDuration;
     }
 
-    public transitionOut() {
-        console.log(this.leavingDuration);
-        let outlet = document.querySelector("#svelte-easyroute-outlet");
+    public static delay (
+        time: number
+    ) : Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            },time);
+        });
+    }
+
+    public async transitionOut() {
+        let outlet = document.querySelector(".svelte-easyroute-outlet");
         if (outlet) {
             outlet.classList.add(`${this.transition}-leave-active`);
+            outlet.classList.add(`${this.transition}-leave`);
+            await CssTransitionService.delay(100);
+            outlet.classList.remove(`${this.transition}-leave`);
             outlet.classList.add(`${this.transition}-leave-to`);
-
-            outlet.classList.remove(`${this.transition}-enter-active`);
-            outlet.classList.remove(`${this.transition}-enter`);
-            outlet.classList.remove(`${this.transition}-enter-to`);
-
-            setTimeout(() => {
-                outlet!.classList.add(`${this.transition}-leave`);
-            }, this.leavingDuration + 10);
+            await CssTransitionService.delay(this.leavingDuration);
+            outlet.classList.remove(`${this.transition}-leave-active`);
+            outlet.classList.remove(`${this.transition}-leave-to`);
         }
     }
 
-    public transitionIn() {
-        let outlet = document.querySelector("#svelte-easyroute-outlet");
+    public async transitionIn () {
+        let outlet = document.querySelector(".svelte-easyroute-outlet");
         if (outlet) {
-            outlet.classList.remove(`${this.transition}-leave-active`);
-            outlet.classList.remove(`${this.transition}-leave`);
-            outlet.classList.remove(`${this.transition}-leave-to`);
-
-            outlet.classList.add(`${this.transition}-enter`)
             outlet.classList.add(`${this.transition}-enter-active`);
-            outlet.classList.add(`${this.transition}-enter-to`)
-
-            setTimeout(() => {
-                outlet!.classList.remove(`${this.transition}-enter`)
-                outlet!.classList.remove(`${this.transition}-enter-active`);
-                outlet!.classList.remove(`${this.transition}-enter-to`)
-            }, this.enteringDuration + 10);
+            outlet.classList.add(`${this.transition}-enter`);
+            await CssTransitionService.delay(100);
+            outlet.classList.remove(`${this.transition}-enter`);
+            outlet.classList.add(`${this.transition}-enter-to`);
+            await CssTransitionService.delay(this.enteringDuration);
+            outlet.classList.remove(`${this.transition}-enter-active`);
+            outlet.classList.remove(`${this.transition}-enter-to`);
         }
     }
 }
