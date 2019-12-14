@@ -92,7 +92,9 @@ export default class Router implements IRouter {
         url : string
     ) {
         const [ path, query ] = url.split('?');
-        let matchedRoute : IRoute | null = this.parser.parse(path);
+        let Matched = this.parser.parse(path);
+        let matchedRoute : IRoute | null = Matched!.route;
+        let transitionDepth = Matched!.transitionDepth;
         if (!matchedRoute) {
             console.warn(`Easyroute :: no routes matched "${url}"`);
             return;
@@ -103,7 +105,7 @@ export default class Router implements IRouter {
             routeObject: matchedRoute,
             routeInfo: this.routeInfo
         };
-        this.fireNavigation();
+        this.fireNavigation(transitionDepth);
     }
 
     private _beforeEach
@@ -126,11 +128,13 @@ export default class Router implements IRouter {
         this.afterEach(to, from);
     }
 
-    private async fireNavigation () {
-        if (this.transitionService) await this.transitionService.transitionOut();
+    private async fireNavigation (
+        transitionDepth: number
+    ) {
+        if (this.transitionService) await this.transitionService.transitionOut(transitionDepth);
         await this._beforeEach(this.currentRoute, this.previousRoute);
         if (this.afterUpdate) this.afterUpdate();
-        if (this.transitionService) await this.transitionService.transitionIn();
+        if (this.transitionService) await this.transitionService.transitionIn(transitionDepth);
         this._afterEach(this.currentRoute, this.previousRoute);
     }
 

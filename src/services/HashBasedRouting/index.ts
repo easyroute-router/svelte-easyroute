@@ -1,4 +1,5 @@
 import IRoute from "../../interfaces/IRoute";
+import IMatchedRoute from "../../interfaces/IMatchedRoute";
 
 export default class HashBasedRouting {
 
@@ -10,7 +11,7 @@ export default class HashBasedRouting {
 
     public parse (
         url : string
-    ) : IRoute | null {
+    ) : IMatchedRoute | null {
         this.routes = this.routes.map(route => {
             route.nested = undefined;
             return route;
@@ -21,26 +22,18 @@ export default class HashBasedRouting {
                     total.push(current);
                 return total;
             }, []);
-        console.log(matchedRoutes);
+        let nestingDepth : number | undefined = 0;
         if (matchedRoutes.length > 1) {
-            // for (let i = 0; i < matchedRoutes.length; i++) {
-            //     let matched: IRoute | undefined = matchedRoutes[0];
-            //     if (i === 0) matched.nested = matchedRoutes[i+1];
-            //     else {
-            //         for (let k = 0; k < i; k++) {
-            //             if (matched.nested) matched = matched.nested;
-            //         }
-            //         matched = matchedRoutes[i+1];
-            //     }
-            // }
-            // @TODO: Простроить цепочку нестедов в первый рут
             let matchedParent = matchedRoutes[0];
             for (let i = 0; i < matchedRoutes.length; i++) {
                 matchedParent.nested = matchedRoutes[i];
+                nestingDepth = matchedRoutes[i].nestingDepth;
                 matchedParent = matchedParent.nested;
             }
         }
-        console.log(matchedRoutes[0]);
-        return matchedRoutes[0] || null;
+        return {
+            route: matchedRoutes[0],
+            transitionDepth: nestingDepth || 0
+        };
     }
 }

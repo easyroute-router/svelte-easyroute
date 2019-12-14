@@ -9,5 +9,6 @@ export default interface IRoute {
     pathKeys?: Key[],
     query?: object | null,
     children?: IRoute[],
-    nested?: IRoute
+    nested?: IRoute,
+    nestingDepth?: number
 }

@@ -100,8 +100,12 @@ export default class CssTransitionService {
         });
     }
 
-    public async transitionOut() {
-        let outlet = document.querySelector(".svelte-easyroute-outlet");
+    public async transitionOut(
+        depth: number
+    ) {
+        if (depth === 0) depth = -1;
+        // let outlet = document.querySelector(".svelte-easyroute-outlet");
+        let outlet = document.querySelectorAll(".svelte-easyroute-outlet")[depth + 1];
         if (outlet) {
             outlet.classList.add(`${this.transition}-leave-active`);
             outlet.classList.add(`${this.transition}-leave`);
@@ -114,8 +118,12 @@ export default class CssTransitionService {
         }
     }
 
-    public async transitionIn () {
-        let outlet = document.querySelector(".svelte-easyroute-outlet");
+    public async transitionIn (
+        depth: number
+    ) {
+        if (depth === 0) depth = -1;
+        // let outlet = document.querySelector(".svelte-easyroute-outlet");
+        let outlet = document.querySelectorAll(".svelte-easyroute-outlet")[depth + 1]
         if (outlet) {
             outlet.classList.add(`${this.transition}-enter-active`);
             outlet.classList.add(`${this.transition}-enter`);

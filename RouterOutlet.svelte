@@ -2,19 +2,16 @@
   export let router;
   let _routeComponent = false;
   let _routeInfo = {};
+  let passingRouter
   router.afterUpdate = () => {
     _routeComponent = false;
     setTimeout(() => {
       _routeComponent = router.currentRoute.routeObject.component
       _routeInfo = router.currentRoute.routeInfo
+      passingRouter = JSON.parse(JSON.stringify(router))
+      passingRouter._nested = router.currentRoute.routeObject.nested || false
     },2)
   }
-
-  let tag = 'div'
-
-  let passingRouter = JSON.parse(JSON.stringify(router))
-  passingRouter._nested = router.currentRoute.routeObject.nested || false
-  console.log('Passing',passingRouter)
 
   $: routeComponent = _routeComponent
   $: routeInfo = _routeInfo
