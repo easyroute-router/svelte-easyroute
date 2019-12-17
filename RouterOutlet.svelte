@@ -1,4 +1,6 @@
 <script>
+  import { tick } from 'svelte'
+
   export let router;
   export let callback;
   export let transition;
@@ -31,13 +33,14 @@
   }
 
   router.afterUpdate = async () => {
+    window.dispatchEvent(new Event('RouterUpdate'))
     if (!router.currentRoute.routeObject.nested) await callback('out')
-    _routeComponent = false;
+    if (!router.currentRoute.routeObject.nested) _routeComponent = false;
+    await tick();
     await delay(2);
     _routeComponent = router.currentRoute.routeObject.component
     _routeInfo = router.currentRoute.routeInfo
-    passingRouter = JSON.parse(JSON.stringify(router))
-    passingRouter._nested = router.currentRoute.routeObject.nested || false
+    passingRouter = router
     if (!router.currentRoute.routeObject.nested) callback('in')
     console.log(passingRouter)
   }
