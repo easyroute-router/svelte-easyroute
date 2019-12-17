@@ -16,7 +16,9 @@ export default class CssTransitionService {
         this.rule = new RegExp(`.(${this.transition})-(enter-active|leave-active)`,"g");
         this.enterRule = new RegExp(`.(${this.transition})-enter-active`,"g");
         this.leaveRule = new RegExp(`.(${this.transition})-leave-active`,"g");
-        this.getTransitionDurations();
+        const durations = this.getTransitionDurations(this.transition);
+        this.enteringDuration = durations.enteringDuration;
+        this.leavingDuration = durations.leavingDuration;
     }
 
     private getDurationFromRule (
@@ -41,53 +43,61 @@ export default class CssTransitionService {
         return duration + delay;
     }
 
-    private getTransitionDurations () {
+    private getTransitionDurations (
+        transition: string
+    ) : any {
+        const transRule = new RegExp(`.(${transition})-(enter-active|leave-active)`, "g");
+        const transEnterRule = new RegExp(`.(${transition})-enter-active`, "g");
+        const transLeaveRule = new RegExp(`.(${transition})-leave-active`, "g");
+
         let enteringDuration: number = 0;
         let leavingDuration: number = 0;
 
-        const styles : CSSStyleSheet[] = <CSSStyleSheet[]>Array.from(document.styleSheets);
+        const styles: CSSStyleSheet[] = <CSSStyleSheet[]>Array.from(document.styleSheets);
 
         let stylesArray = [];
 
         for (let style of styles) {
-            let rules : CSSRuleList | null;
+            let rules: CSSRuleList | null;
             try {
                 rules = style.rules;
             } catch (e) {
                 rules = null;
             }
             if (!rules) continue;
-            let rulesArray : Array<CSSRule> = Object.values(rules);
+            let rulesArray: Array<CSSRule> = Object.values(rules);
             let filteredRules = rulesArray.filter(rule => {
-                let operateRule : CSSStyleRule = rule as CSSStyleRule;
+                let operateRule: CSSStyleRule = rule as CSSStyleRule;
                 if (!operateRule.selectorText) return false;
-                return operateRule.selectorText.match(this.rule);
+                return operateRule.selectorText.match(transRule);
             });
             stylesArray.push(...filteredRules);
         }
 
         for (let _styleRule of stylesArray) {
-            let styleRule : CSSStyleRule = _styleRule as CSSStyleRule;
+            let styleRule: CSSStyleRule = _styleRule as CSSStyleRule;
             const styleText = styleRule.cssText;
 
             // Case 1: One rule for both entering and leaving
-            if (styleText.match(this.rule)!.length === 2) {
+            if (styleText.match(transRule)!.length === 2) {
                 enteringDuration = leavingDuration = this.getDurationFromRule(styleRule);
             }
 
             // Case 2: single rule for enter and leaving
             // Entering
-            if (styleText.match(this.enterRule)) {
+            if (styleText.match(transEnterRule)) {
                 enteringDuration = this.getDurationFromRule(styleRule);
             }
             // Leaving
-            if (styleText.match(this.leaveRule)) {
+            if (styleText.match(transLeaveRule)) {
                 leavingDuration = this.getDurationFromRule(styleRule);
             }
         }
 
-        this.enteringDuration = enteringDuration;
-        this.leavingDuration = leavingDuration;
+        return {
+            enteringDuration,
+            leavingDuration
+        };
     }
 
     public static delay (
@@ -133,6 +143,48 @@ export default class CssTransitionService {
             await CssTransitionService.delay(this.enteringDuration);
             outlet.classList.remove(`${this.transition}-enter-active`);
             outlet.classList.remove(`${this.transition}-enter-to`);
+        }
+    }
+
+    public propTransitionDuration (
+        transition: string
+    ) : any {
+        return this.getTransitionDurations(transition);
+    }
+
+    public async propTransitionOut (
+        selector: string,
+        transition: string,
+        leavingDuration: number
+    ) {
+        let outlet = document.querySelector(selector);
+        if (outlet) {
+            outlet.classList.add(`${transition}-leave-active`);
+            outlet.classList.add(`${transition}-leave`);
+            await CssTransitionService.delay(100);
+            outlet.classList.remove(`${transition}-leave`);
+            outlet.classList.add(`${transition}-leave-to`);
+            await CssTransitionService.delay(leavingDuration);
+            outlet.classList.remove(`${transition}-leave-active`);
+            outlet.classList.remove(`${transition}-leave-to`);
+        }
+    }
+
+    public async propTransitionIn (
+        selector: string,
+        transition: string,
+        enteringDuration: number
+    ) {
+        let outlet = document.querySelector(selector);
+        if (outlet) {
+            outlet.classList.add(`${transition}-enter-active`);
+            outlet.classList.add(`${transition}-enter`);
+            await CssTransitionService.delay(100);
+            outlet.classList.remove(`${transition}-enter`);
+            outlet.classList.add(`${transition}-enter-to`);
+            await CssTransitionService.delay(enteringDuration);
+            outlet.classList.remove(`${transition}-enter-active`);
+            outlet.classList.remove(`${transition}-enter-to`);
         }
     }
 }

@@ -34,6 +34,7 @@ export default class Router implements IRouter {
     public previousRoute : IRouteComplexData | undefined;
     public routeInfo : IRouteInfo | undefined;
     public fullUrl : string = "/";
+    public newTransitionMode : boolean = false;
 
     constructor(
         params: IRouterParams
@@ -131,10 +132,10 @@ export default class Router implements IRouter {
     private async fireNavigation (
         transitionDepth: number
     ) {
-        if (this.transitionService) await this.transitionService.transitionOut(transitionDepth);
+        if (this.transitionService && !this.newTransitionMode) await this.transitionService.transitionOut(transitionDepth);
         await this._beforeEach(this.currentRoute, this.previousRoute);
         if (this.afterUpdate) this.afterUpdate();
-        if (this.transitionService) await this.transitionService.transitionIn(transitionDepth);
+        if (this.transitionService && !this.newTransitionMode) await this.transitionService.transitionIn(transitionDepth);
         this._afterEach(this.currentRoute, this.previousRoute);
     }
 
