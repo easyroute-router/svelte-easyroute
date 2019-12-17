@@ -960,7 +960,7 @@ var app = (function (exports) {
     		});
 
     	const routeroutlet = new RouterOutlet({
-    			props: { router: /*router*/ ctx[0], nested: false },
+    			props: { router: /*router*/ ctx[0] },
     			$$inline: true
     		});
 

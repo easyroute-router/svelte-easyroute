@@ -30,5 +30,5 @@
 	<hr>
 </div>
 <div class="container mt-5 shadowbox">
-			<RouterOutlet router={router} nested={false} />
+			<RouterOutlet router={router} />
 </div>
