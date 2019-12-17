@@ -1,5 +1,6 @@
 <script>
   export let router;
+  export let callback;
   export let transition;
 
   const newTransitionMode = transition !== undefined;
@@ -30,18 +31,14 @@
   }
 
   router.afterUpdate = async () => {
-    passingRouter = JSON.parse(JSON.stringify(router))
-    passingRouter._nested = router.currentRoute.routeObject.nested || false
-    if (newTransitionMode) {
-      await router.transitionService.propTransitionOut(selector, transition, durations.leavingDuration);
-    }
+    await callback('out')
     _routeComponent = false;
     await delay(2);
     _routeComponent = router.currentRoute.routeObject.component
     _routeInfo = router.currentRoute.routeInfo
-    if (newTransitionMode) {
-      await router.transitionService.propTransitionIn(selector, transition, durations.enteringDuration);
-    }
+    passingRouter = JSON.parse(JSON.stringify(router))
+    passingRouter._nested = router.currentRoute.routeObject.nested || false
+    callback('in')
     console.log(passingRouter)
   }
 

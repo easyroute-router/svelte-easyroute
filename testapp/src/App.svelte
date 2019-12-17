@@ -3,6 +3,7 @@
 	import RouterLink from '../../RouterLink.svelte'
 	export let router;
 	import RouterOutlet from '../../RouterOutlet.svelte'
+	import RouterTransition from '../../RouterTransition.svelte'
 
 	onMount(()=> {
 	})
@@ -30,5 +31,7 @@
 	<hr>
 </div>
 <div class="container mt-5 shadowbox">
-			<RouterOutlet router={router} transition="xfade" />
+	<RouterTransition name="xfade" let:callback>
+		<RouterOutlet router={router} callback={callback} />
+	</RouterTransition>
 </div>

@@ -535,7 +535,7 @@ var app = (function (exports) {
     			div = element("div");
     			if (switch_instance) create_component(switch_instance.$$.fragment);
     			attr_dev(div, "class", /*className*/ ctx[1]);
-    			add_location(div, file$1, 51, 0, 1475);
+    			add_location(div, file$1, 48, 0, 1263);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -610,6 +610,7 @@ var app = (function (exports) {
 
     function instance$1($$self, $$props, $$invalidate) {
     	let { router } = $$props;
+    	let { callback } = $$props;
     	let { transition } = $$props;
     	const newTransitionMode = transition !== undefined;
     	router.newTransitionMode = newTransitionMode;
@@ -641,26 +642,18 @@ var app = (function (exports) {
     	}
 
     	router.afterUpdate = async () => {
+    		await callback("out");
+    		$$invalidate(7, _routeComponent = false);
+    		await delay(2);
+    		$$invalidate(7, _routeComponent = router.currentRoute.routeObject.component);
+    		$$invalidate(8, _routeInfo = router.currentRoute.routeInfo);
     		$$invalidate(0, passingRouter = JSON.parse(JSON.stringify(router)));
     		$$invalidate(0, passingRouter._nested = router.currentRoute.routeObject.nested || false, passingRouter);
-
-    		if (newTransitionMode) {
-    			await router.transitionService.propTransitionOut(selector, transition, durations.leavingDuration);
-    		}
-
-    		$$invalidate(6, _routeComponent = false);
-    		await delay(2);
-    		$$invalidate(6, _routeComponent = router.currentRoute.routeObject.component);
-    		$$invalidate(7, _routeInfo = router.currentRoute.routeInfo);
-
-    		if (newTransitionMode) {
-    			await router.transitionService.propTransitionIn(selector, transition, durations.enteringDuration);
-    		}
-
+    		callback("in");
     		console.log(passingRouter);
     	};
 
-    	const writable_props = ["router", "transition"];
+    	const writable_props = ["router", "callback", "transition"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<RouterOutlet> was created with unknown prop '${key}'`);
@@ -668,12 +661,14 @@ var app = (function (exports) {
 
     	$$self.$set = $$props => {
     		if ("router" in $$props) $$invalidate(4, router = $$props.router);
-    		if ("transition" in $$props) $$invalidate(5, transition = $$props.transition);
+    		if ("callback" in $$props) $$invalidate(5, callback = $$props.callback);
+    		if ("transition" in $$props) $$invalidate(6, transition = $$props.transition);
     	};
 
     	$$self.$capture_state = () => {
     		return {
     			router,
+    			callback,
     			transition,
     			_routeComponent,
     			_routeInfo,
@@ -689,9 +684,10 @@ var app = (function (exports) {
 
     	$$self.$inject_state = $$props => {
     		if ("router" in $$props) $$invalidate(4, router = $$props.router);
-    		if ("transition" in $$props) $$invalidate(5, transition = $$props.transition);
-    		if ("_routeComponent" in $$props) $$invalidate(6, _routeComponent = $$props._routeComponent);
-    		if ("_routeInfo" in $$props) $$invalidate(7, _routeInfo = $$props._routeInfo);
+    		if ("callback" in $$props) $$invalidate(5, callback = $$props.callback);
+    		if ("transition" in $$props) $$invalidate(6, transition = $$props.transition);
+    		if ("_routeComponent" in $$props) $$invalidate(7, _routeComponent = $$props._routeComponent);
+    		if ("_routeInfo" in $$props) $$invalidate(8, _routeInfo = $$props._routeInfo);
     		if ("passingRouter" in $$props) $$invalidate(0, passingRouter = $$props.passingRouter);
     		if ("durations" in $$props) durations = $$props.durations;
     		if ("className" in $$props) $$invalidate(1, className = $$props.className);
@@ -705,22 +701,30 @@ var app = (function (exports) {
     	let routeInfo;
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*_routeComponent*/ 64) {
+    		if ($$self.$$.dirty[0] & /*_routeComponent*/ 128) {
     			 $$invalidate(2, routeComponent = _routeComponent);
     		}
 
-    		if ($$self.$$.dirty[0] & /*_routeInfo*/ 128) {
+    		if ($$self.$$.dirty[0] & /*_routeInfo*/ 256) {
     			 $$invalidate(3, routeInfo = _routeInfo);
     		}
     	};
 
-    	return [passingRouter, className, routeComponent, routeInfo, router, transition];
+    	return [
+    		passingRouter,
+    		className,
+    		routeComponent,
+    		routeInfo,
+    		router,
+    		callback,
+    		transition
+    	];
     }
 
     class RouterOutlet extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { router: 4, transition: 5 });
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { router: 4, callback: 5, transition: 6 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -736,7 +740,11 @@ var app = (function (exports) {
     			console_1.warn("<RouterOutlet> was created without expected prop 'router'");
     		}
 
-    		if (/*transition*/ ctx[5] === undefined && !("transition" in props)) {
+    		if (/*callback*/ ctx[5] === undefined && !("callback" in props)) {
+    			console_1.warn("<RouterOutlet> was created without expected prop 'callback'");
+    		}
+
+    		if (/*transition*/ ctx[6] === undefined && !("transition" in props)) {
     			console_1.warn("<RouterOutlet> was created without expected prop 'transition'");
     		}
     	}
@@ -749,6 +757,14 @@ var app = (function (exports) {
     		throw new Error("<RouterOutlet>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
+    	get callback() {
+    		throw new Error("<RouterOutlet>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set callback(value) {
+    		throw new Error("<RouterOutlet>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
     	get transition() {
     		throw new Error("<RouterOutlet>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
@@ -758,11 +774,484 @@ var app = (function (exports) {
     	}
     }
 
-    /* src/App.svelte generated by Svelte v3.16.4 */
-    const file$2 = "src/App.svelte";
+    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-    // (23:1) <RouterLink to="/">
-    function create_default_slot_5(ctx) {
+    function unwrapExports (x) {
+    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+    }
+
+    function createCommonjsModule(fn, module) {
+    	return module = { exports: {} }, fn(module, module.exports), module.exports;
+    }
+
+    var CssTransitionService_1 = createCommonjsModule(function (module, exports) {
+    var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
+    var __generator = (commonjsGlobal && commonjsGlobal.__generator) || function (thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
+    };
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var CssTransitionService = /** @class */ (function () {
+        function CssTransitionService(transitionName) {
+            this.transition = "";
+            this.enteringDuration = 0;
+            this.leavingDuration = 0;
+            this.transition = transitionName;
+            this.rule = new RegExp(".(" + this.transition + ")-(enter-active|leave-active)", "g");
+            this.enterRule = new RegExp(".(" + this.transition + ")-enter-active", "g");
+            this.leaveRule = new RegExp(".(" + this.transition + ")-leave-active", "g");
+            var durations = this.getTransitionDurations(this.transition);
+            this.enteringDuration = durations.enteringDuration;
+            this.leavingDuration = durations.leavingDuration;
+        }
+        CssTransitionService.prototype.getDurationFromRule = function (styleRule) {
+            var getMaxFromCSSString = function (key) {
+                if (key !== "transitionDuration" && key !== "transitionDelay")
+                    return 0;
+                var durations = styleRule.style[key];
+                var durationsArrayString = durations.split(",");
+                var durationsArray = durationsArrayString.map(function (duration) {
+                    var number = parseFloat(duration.replace(/a-zA-Z/g, "").trim());
+                    var measure = duration.replace(/[0-9](\.[0-9])?/g, "").trim();
+                    if (measure === "s")
+                        number = number * 1000;
+                    return number;
+                });
+                return Math.max.apply(Math, durationsArray);
+            };
+            var duration = getMaxFromCSSString("transitionDuration");
+            var delay = getMaxFromCSSString("transitionDelay");
+            return duration + delay;
+        };
+        CssTransitionService.prototype.getTransitionDurations = function (transition) {
+            var transRule = new RegExp(".(" + transition + ")-(enter-active|leave-active)", "g");
+            var transEnterRule = new RegExp(".(" + transition + ")-enter-active", "g");
+            var transLeaveRule = new RegExp(".(" + transition + ")-leave-active", "g");
+            var enteringDuration = 0;
+            var leavingDuration = 0;
+            var styles = Array.from(document.styleSheets);
+            var stylesArray = [];
+            for (var _i = 0, styles_1 = styles; _i < styles_1.length; _i++) {
+                var style = styles_1[_i];
+                var rules = void 0;
+                try {
+                    rules = style.rules;
+                }
+                catch (e) {
+                    rules = null;
+                }
+                if (!rules)
+                    continue;
+                var rulesArray = Object.values(rules);
+                var filteredRules = rulesArray.filter(function (rule) {
+                    var operateRule = rule;
+                    if (!operateRule.selectorText)
+                        return false;
+                    return operateRule.selectorText.match(transRule);
+                });
+                stylesArray.push.apply(stylesArray, filteredRules);
+            }
+            for (var _a = 0, stylesArray_1 = stylesArray; _a < stylesArray_1.length; _a++) {
+                var _styleRule = stylesArray_1[_a];
+                var styleRule = _styleRule;
+                var styleText = styleRule.cssText;
+                // Case 1: One rule for both entering and leaving
+                if (styleText.match(transRule).length === 2) {
+                    enteringDuration = leavingDuration = this.getDurationFromRule(styleRule);
+                }
+                // Case 2: single rule for enter and leaving
+                // Entering
+                if (styleText.match(transEnterRule)) {
+                    enteringDuration = this.getDurationFromRule(styleRule);
+                }
+                // Leaving
+                if (styleText.match(transLeaveRule)) {
+                    leavingDuration = this.getDurationFromRule(styleRule);
+                }
+            }
+            leavingDuration = leavingDuration + 10;
+            enteringDuration = enteringDuration + 10;
+            return {
+                enteringDuration: enteringDuration,
+                leavingDuration: leavingDuration
+            };
+        };
+        CssTransitionService.delay = function (time) {
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve();
+                }, time);
+            });
+        };
+        CssTransitionService.prototype.transitionOut = function (depth) {
+            return __awaiter(this, void 0, void 0, function () {
+                var outlet;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (depth === 0)
+                                depth = -1;
+                            outlet = document.querySelectorAll(".svelte-easyroute-outlet")[depth + 1];
+                            if (!outlet) return [3 /*break*/, 3];
+                            outlet.classList.add(this.transition + "-leave-active");
+                            outlet.classList.add(this.transition + "-leave");
+                            return [4 /*yield*/, CssTransitionService.delay(100)];
+                        case 1:
+                            _a.sent();
+                            outlet.classList.remove(this.transition + "-leave");
+                            outlet.classList.add(this.transition + "-leave-to");
+                            return [4 /*yield*/, CssTransitionService.delay(this.leavingDuration)];
+                        case 2:
+                            _a.sent();
+                            outlet.classList.remove(this.transition + "-leave-active");
+                            outlet.classList.remove(this.transition + "-leave-to");
+                            _a.label = 3;
+                        case 3: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        CssTransitionService.prototype.transitionIn = function (depth) {
+            return __awaiter(this, void 0, void 0, function () {
+                var outlet;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (depth === 0)
+                                depth = -1;
+                            outlet = document.querySelectorAll(".svelte-easyroute-outlet")[depth + 1];
+                            if (!outlet) return [3 /*break*/, 3];
+                            outlet.classList.add(this.transition + "-enter-active");
+                            outlet.classList.add(this.transition + "-enter");
+                            return [4 /*yield*/, CssTransitionService.delay(100)];
+                        case 1:
+                            _a.sent();
+                            outlet.classList.remove(this.transition + "-enter");
+                            outlet.classList.add(this.transition + "-enter-to");
+                            return [4 /*yield*/, CssTransitionService.delay(this.enteringDuration)];
+                        case 2:
+                            _a.sent();
+                            outlet.classList.remove(this.transition + "-enter-active");
+                            outlet.classList.remove(this.transition + "-enter-to");
+                            _a.label = 3;
+                        case 3: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        CssTransitionService.prototype.propTransitionDuration = function (transition) {
+            return this.getTransitionDurations(transition);
+        };
+        CssTransitionService.prototype.propTransitionOut = function (selector, transition, leavingDuration) {
+            return __awaiter(this, void 0, void 0, function () {
+                var outlet;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            outlet = document.querySelector(selector);
+                            if (!outlet) return [3 /*break*/, 3];
+                            outlet.classList.add(transition + "-leave-active");
+                            outlet.classList.add(transition + "-leave");
+                            return [4 /*yield*/, CssTransitionService.delay(100)];
+                        case 1:
+                            _a.sent();
+                            outlet.classList.remove(transition + "-leave");
+                            outlet.classList.add(transition + "-leave-to");
+                            return [4 /*yield*/, CssTransitionService.delay(leavingDuration)];
+                        case 2:
+                            _a.sent();
+                            outlet.classList.remove(transition + "-leave-active");
+                            outlet.classList.remove(transition + "-leave-to");
+                            _a.label = 3;
+                        case 3: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        CssTransitionService.prototype.propTransitionIn = function (selector, transition, enteringDuration) {
+            return __awaiter(this, void 0, void 0, function () {
+                var outlet;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            outlet = document.querySelector(selector);
+                            if (!outlet) return [3 /*break*/, 3];
+                            outlet.classList.add(transition + "-enter-active");
+                            outlet.classList.add(transition + "-enter");
+                            return [4 /*yield*/, CssTransitionService.delay(100)];
+                        case 1:
+                            _a.sent();
+                            outlet.classList.remove(transition + "-enter");
+                            outlet.classList.add(transition + "-enter-to");
+                            return [4 /*yield*/, CssTransitionService.delay(enteringDuration)];
+                        case 2:
+                            _a.sent();
+                            outlet.classList.remove(transition + "-enter-active");
+                            outlet.classList.remove(transition + "-enter-to");
+                            _a.label = 3;
+                        case 3: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        return CssTransitionService;
+    }());
+    exports.default = CssTransitionService;
+    });
+
+    var CssTransitionService = unwrapExports(CssTransitionService_1);
+
+    /* Users/alexeysolovjov/Desktop/work/svelte-easyroute/RouterTransition.svelte generated by Svelte v3.16.4 */
+
+    const { console: console_1$1 } = globals;
+    const file$2 = "Users/alexeysolovjov/Desktop/work/svelte-easyroute/RouterTransition.svelte";
+    const get_default_slot_changes = dirty => ({});
+    const get_default_slot_context = ctx => ({ callback: /*fireTransition*/ ctx[1] });
+
+    function create_fragment$2(ctx) {
+    	let div;
+    	let current;
+    	const default_slot_template = /*$$slots*/ ctx[12].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[11], get_default_slot_context);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			if (default_slot) default_slot.c();
+    			attr_dev(div, "class", /*classes*/ ctx[0]);
+    			add_location(div, file$2, 64, 0, 1822);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+
+    			if (default_slot) {
+    				default_slot.m(div, null);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (default_slot && default_slot.p && dirty[0] & /*$$scope*/ 2048) {
+    				default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[11], get_default_slot_context), get_slot_changes(default_slot_template, /*$$scope*/ ctx[11], dirty, get_default_slot_changes));
+    			}
+
+    			if (!current || dirty[0] & /*classes*/ 1) {
+    				attr_dev(div, "class", /*classes*/ ctx[0]);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (default_slot) default_slot.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { name } = $$props;
+    	const transitionService = new CssTransitionService();
+    	let transition = name;
+    	let durations;
+    	let _classes = [];
+
+    	if (transition) {
+    		durations = transitionService.propTransitionDuration(transition);
+    		console.log(durations);
+    	}
+
+    	const delay = ms => {
+    		return new Promise(resolve => {
+    				setTimeout(
+    					() => {
+    						resolve();
+    					},
+    					ms
+    				);
+    			});
+    	};
+
+    	let outlet = document.createElement("div");
+
+    	async function transitionOut() {
+    		outlet.classList.add(`${transition}-leave-active`);
+    		outlet.classList.add(`${transition}-leave`);
+    		$$invalidate(4, _classes = [...outlet.classList]);
+    		await delay(100);
+    		outlet.classList.remove(`${transition}-leave`);
+    		outlet.classList.add(`${transition}-leave-to`);
+    		$$invalidate(4, _classes = [...outlet.classList]);
+    		await delay(durations.leavingDuration);
+    		outlet.classList.remove(`${transition}-leave-active`);
+    		outlet.classList.remove(`${transition}-leave-to`);
+    		$$invalidate(4, _classes = [...outlet.classList]);
+    	}
+
+    	async function transitionIn() {
+    		outlet.classList.add(`${transition}-enter-active`);
+    		outlet.classList.add(`${transition}-enter`);
+    		$$invalidate(4, _classes = [...outlet.classList]);
+    		await delay(100);
+    		outlet.classList.remove(`${transition}-enter`);
+    		outlet.classList.add(`${transition}-enter-to`);
+    		$$invalidate(4, _classes = [...outlet.classList]);
+    		await delay(durations.leavingDuration);
+    		outlet.classList.remove(`${transition}-enter-active`);
+    		outlet.classList.remove(`${transition}-enter-to`);
+    		$$invalidate(4, _classes = [...outlet.classList]);
+    	}
+
+    	async function fireTransition(mode) {
+    		if (mode === "out") {
+    			await transitionOut();
+    		} else if (mode === "in") {
+    			await transitionIn();
+    		}
+    	}
+
+    	const writable_props = ["name"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<RouterTransition> was created with unknown prop '${key}'`);
+    	});
+
+    	let { $$slots = {}, $$scope } = $$props;
+
+    	$$self.$set = $$props => {
+    		if ("name" in $$props) $$invalidate(2, name = $$props.name);
+    		if ("$$scope" in $$props) $$invalidate(11, $$scope = $$props.$$scope);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return {
+    			name,
+    			transition,
+    			durations,
+    			_classes,
+    			outlet,
+    			classes
+    		};
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ("name" in $$props) $$invalidate(2, name = $$props.name);
+    		if ("transition" in $$props) transition = $$props.transition;
+    		if ("durations" in $$props) durations = $$props.durations;
+    		if ("_classes" in $$props) $$invalidate(4, _classes = $$props._classes);
+    		if ("outlet" in $$props) outlet = $$props.outlet;
+    		if ("classes" in $$props) $$invalidate(0, classes = $$props.classes);
+    	};
+
+    	let classes;
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty[0] & /*_classes*/ 16) {
+    			 $$invalidate(0, classes = _classes.join(" "));
+    		}
+    	};
+
+    	return [
+    		classes,
+    		fireTransition,
+    		name,
+    		durations,
+    		_classes,
+    		transitionService,
+    		transition,
+    		delay,
+    		outlet,
+    		transitionOut,
+    		transitionIn,
+    		$$scope,
+    		$$slots
+    	];
+    }
+
+    class RouterTransition extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { name: 2 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "RouterTransition",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || ({});
+
+    		if (/*name*/ ctx[2] === undefined && !("name" in props)) {
+    			console_1$1.warn("<RouterTransition> was created without expected prop 'name'");
+    		}
+    	}
+
+    	get name() {
+    		throw new Error("<RouterTransition>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<RouterTransition>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/App.svelte generated by Svelte v3.16.4 */
+    const file$3 = "src/App.svelte";
+
+    // (24:1) <RouterLink to="/">
+    function create_default_slot_6(ctx) {
     	let button;
 
     	const block = {
@@ -770,7 +1259,37 @@ var app = (function (exports) {
     			button = element("button");
     			button.textContent = "Index";
     			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 22, 20, 687);
+    			add_location(button, file$3, 23, 20, 749);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_6.name,
+    		type: "slot",
+    		source: "(24:1) <RouterLink to=\\\"/\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (25:1) <RouterLink to="/test">
+    function create_default_slot_5(ctx) {
+    	let button;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Test page";
+    			attr_dev(button, "type", "button");
+    			add_location(button, file$3, 24, 24, 823);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -784,23 +1303,23 @@ var app = (function (exports) {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(23:1) <RouterLink to=\\\"/\\\">",
+    		source: "(25:1) <RouterLink to=\\\"/test\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (24:1) <RouterLink to="/test">
+    // (26:1) <RouterLink to="/test/nested">
     function create_default_slot_4(ctx) {
     	let button;
 
     	const block = {
     		c: function create() {
     			button = element("button");
-    			button.textContent = "Test page";
+    			button.textContent = "Nested page";
     			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 23, 24, 761);
+    			add_location(button, file$3, 25, 31, 908);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -814,23 +1333,23 @@ var app = (function (exports) {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(24:1) <RouterLink to=\\\"/test\\\">",
+    		source: "(26:1) <RouterLink to=\\\"/test/nested\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (25:1) <RouterLink to="/test/nested">
+    // (27:1) <RouterLink to="/?name=Lyoha&status=plotinka">
     function create_default_slot_3(ctx) {
     	let button;
 
     	const block = {
     		c: function create() {
     			button = element("button");
-    			button.textContent = "Nested page";
+    			button.textContent = "Index page with query";
     			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 24, 31, 846);
+    			add_location(button, file$3, 26, 47, 1011);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -844,23 +1363,23 @@ var app = (function (exports) {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(25:1) <RouterLink to=\\\"/test/nested\\\">",
+    		source: "(27:1) <RouterLink to=\\\"/?name=Lyoha&status=plotinka\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (26:1) <RouterLink to="/?name=Lyoha&status=plotinka">
+    // (28:1) <RouterLink to="/test?name=Alex&age=22">
     function create_default_slot_2(ctx) {
     	let button;
 
     	const block = {
     		c: function create() {
     			button = element("button");
-    			button.textContent = "Index page with query";
+    			button.textContent = "Test page with query";
     			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 25, 47, 949);
+    			add_location(button, file$3, 27, 41, 1118);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -874,23 +1393,23 @@ var app = (function (exports) {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(26:1) <RouterLink to=\\\"/?name=Lyoha&status=plotinka\\\">",
+    		source: "(28:1) <RouterLink to=\\\"/test?name=Alex&age=22\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (27:1) <RouterLink to="/test?name=Alex&age=22">
+    // (29:1) <RouterLink to="/playground/easy/params/route">
     function create_default_slot_1(ctx) {
     	let button;
 
     	const block = {
     		c: function create() {
     			button = element("button");
-    			button.textContent = "Test page with query";
+    			button.textContent = "Router params playground";
     			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 26, 41, 1056);
+    			add_location(button, file$3, 28, 48, 1231);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -904,29 +1423,50 @@ var app = (function (exports) {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(27:1) <RouterLink to=\\\"/test?name=Alex&age=22\\\">",
+    		source: "(29:1) <RouterLink to=\\\"/playground/easy/params/route\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (28:1) <RouterLink to="/playground/easy/params/route">
+    // (33:1) <RouterTransition name="xfade" let:callback>
     function create_default_slot(ctx) {
-    	let button;
+    	let current;
+
+    	const routeroutlet = new RouterOutlet({
+    			props: {
+    				router: /*router*/ ctx[0],
+    				callback: /*callback*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
 
     	const block = {
     		c: function create() {
-    			button = element("button");
-    			button.textContent = "Router params playground";
-    			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 27, 48, 1169);
+    			create_component(routeroutlet.$$.fragment);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, button, anchor);
+    			mount_component(routeroutlet, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const routeroutlet_changes = {};
+    			if (dirty[0] & /*router*/ 1) routeroutlet_changes.router = /*router*/ ctx[0];
+    			if (dirty[0] & /*callback*/ 2) routeroutlet_changes.callback = /*callback*/ ctx[1];
+    			routeroutlet.$set(routeroutlet_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(routeroutlet.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(routeroutlet.$$.fragment, local);
+    			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(button);
+    			destroy_component(routeroutlet, detaching);
     		}
     	};
 
@@ -934,14 +1474,14 @@ var app = (function (exports) {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(28:1) <RouterLink to=\\\"/playground/easy/params/route\\\">",
+    		source: "(33:1) <RouterTransition name=\\\"xfade\\\" let:callback>",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$2(ctx) {
+    function create_fragment$3(ctx) {
     	let div0;
     	let h1;
     	let t1;
@@ -968,7 +1508,7 @@ var app = (function (exports) {
     	const routerlink0 = new RouterLink({
     			props: {
     				to: "/",
-    				$$slots: { default: [create_default_slot_5] },
+    				$$slots: { default: [create_default_slot_6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -977,7 +1517,7 @@ var app = (function (exports) {
     	const routerlink1 = new RouterLink({
     			props: {
     				to: "/test",
-    				$$slots: { default: [create_default_slot_4] },
+    				$$slots: { default: [create_default_slot_5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -986,7 +1526,7 @@ var app = (function (exports) {
     	const routerlink2 = new RouterLink({
     			props: {
     				to: "/test/nested",
-    				$$slots: { default: [create_default_slot_3] },
+    				$$slots: { default: [create_default_slot_4] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -995,7 +1535,7 @@ var app = (function (exports) {
     	const routerlink3 = new RouterLink({
     			props: {
     				to: "/?name=Lyoha&status=plotinka",
-    				$$slots: { default: [create_default_slot_2] },
+    				$$slots: { default: [create_default_slot_3] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -1004,7 +1544,7 @@ var app = (function (exports) {
     	const routerlink4 = new RouterLink({
     			props: {
     				to: "/test?name=Alex&age=22",
-    				$$slots: { default: [create_default_slot_1] },
+    				$$slots: { default: [create_default_slot_2] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -1013,16 +1553,23 @@ var app = (function (exports) {
     	const routerlink5 = new RouterLink({
     			props: {
     				to: "/playground/easy/params/route",
-    				$$slots: { default: [create_default_slot] },
+    				$$slots: { default: [create_default_slot_1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	const routeroutlet = new RouterOutlet({
+    	const routertransition = new RouterTransition({
     			props: {
-    				router: /*router*/ ctx[0],
-    				transition: "xfade"
+    				name: "xfade",
+    				$$slots: {
+    					default: [
+    						create_default_slot,
+    						({ callback }) => ({ 1: callback }),
+    						({ callback }) => [callback ? 2 : 0]
+    					]
+    				},
+    				$$scope: { ctx }
     			},
     			$$inline: true
     		});
@@ -1058,24 +1605,24 @@ var app = (function (exports) {
     			hr = element("hr");
     			t13 = space();
     			div1 = element("div");
-    			create_component(routeroutlet.$$.fragment);
+    			create_component(routertransition.$$.fragment);
     			attr_dev(h1, "class", "svelte-1kgcpkd");
-    			add_location(h1, file$2, 18, 1, 405);
-    			add_location(p, file$2, 19, 1, 437);
-    			add_location(br0, file$2, 20, 98, 577);
-    			add_location(br1, file$2, 20, 118, 597);
+    			add_location(h1, file$3, 19, 1, 467);
+    			add_location(p, file$3, 20, 1, 499);
+    			add_location(br0, file$3, 21, 98, 639);
+    			add_location(br1, file$3, 21, 118, 659);
     			set_style(pre, "max-width", "500px");
     			set_style(pre, "margin", "0 auto");
     			set_style(pre, "text-align", "left");
     			set_style(pre, "background", "#e2e2e2");
     			set_style(pre, "color", "black");
-    			add_location(pre, file$2, 20, 1, 480);
-    			add_location(br2, file$2, 21, 7, 662);
-    			add_location(hr, file$2, 28, 1, 1239);
+    			add_location(pre, file$3, 21, 1, 542);
+    			add_location(br2, file$3, 22, 7, 724);
+    			add_location(hr, file$3, 29, 1, 1301);
     			attr_dev(div0, "class", "container-fluid mt-3 mb-3 text-center");
-    			add_location(div0, file$2, 17, 0, 352);
+    			add_location(div0, file$3, 18, 0, 414);
     			attr_dev(div1, "class", "container mt-5 shadowbox");
-    			add_location(div1, file$2, 30, 0, 1251);
+    			add_location(div1, file$3, 31, 0, 1313);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1108,55 +1655,59 @@ var app = (function (exports) {
     			append_dev(div0, hr);
     			insert_dev(target, t13, anchor);
     			insert_dev(target, div1, anchor);
-    			mount_component(routeroutlet, div1, null);
+    			mount_component(routertransition, div1, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
     			const routerlink0_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 2) {
+    			if (dirty[0] & /*$$scope*/ 4) {
     				routerlink0_changes.$$scope = { dirty, ctx };
     			}
 
     			routerlink0.$set(routerlink0_changes);
     			const routerlink1_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 2) {
+    			if (dirty[0] & /*$$scope*/ 4) {
     				routerlink1_changes.$$scope = { dirty, ctx };
     			}
 
     			routerlink1.$set(routerlink1_changes);
     			const routerlink2_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 2) {
+    			if (dirty[0] & /*$$scope*/ 4) {
     				routerlink2_changes.$$scope = { dirty, ctx };
     			}
 
     			routerlink2.$set(routerlink2_changes);
     			const routerlink3_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 2) {
+    			if (dirty[0] & /*$$scope*/ 4) {
     				routerlink3_changes.$$scope = { dirty, ctx };
     			}
 
     			routerlink3.$set(routerlink3_changes);
     			const routerlink4_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 2) {
+    			if (dirty[0] & /*$$scope*/ 4) {
     				routerlink4_changes.$$scope = { dirty, ctx };
     			}
 
     			routerlink4.$set(routerlink4_changes);
     			const routerlink5_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 2) {
+    			if (dirty[0] & /*$$scope*/ 4) {
     				routerlink5_changes.$$scope = { dirty, ctx };
     			}
 
     			routerlink5.$set(routerlink5_changes);
-    			const routeroutlet_changes = {};
-    			if (dirty[0] & /*router*/ 1) routeroutlet_changes.router = /*router*/ ctx[0];
-    			routeroutlet.$set(routeroutlet_changes);
+    			const routertransition_changes = {};
+
+    			if (dirty[0] & /*$$scope, router, callback*/ 7) {
+    				routertransition_changes.$$scope = { dirty, ctx };
+    			}
+
+    			routertransition.$set(routertransition_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1166,7 +1717,7 @@ var app = (function (exports) {
     			transition_in(routerlink3.$$.fragment, local);
     			transition_in(routerlink4.$$.fragment, local);
     			transition_in(routerlink5.$$.fragment, local);
-    			transition_in(routeroutlet.$$.fragment, local);
+    			transition_in(routertransition.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
@@ -1176,7 +1727,7 @@ var app = (function (exports) {
     			transition_out(routerlink3.$$.fragment, local);
     			transition_out(routerlink4.$$.fragment, local);
     			transition_out(routerlink5.$$.fragment, local);
-    			transition_out(routeroutlet.$$.fragment, local);
+    			transition_out(routertransition.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -1189,13 +1740,13 @@ var app = (function (exports) {
     			destroy_component(routerlink5);
     			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(div1);
-    			destroy_component(routeroutlet);
+    			destroy_component(routertransition);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$2.name,
+    		id: create_fragment$3.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1204,7 +1755,7 @@ var app = (function (exports) {
     	return block;
     }
 
-    function instance$2($$self, $$props, $$invalidate) {
+    function instance$3($$self, $$props, $$invalidate) {
     	let { router } = $$props;
 
     	onMount(() => {
@@ -1235,13 +1786,13 @@ var app = (function (exports) {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { router: 0 });
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { router: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "App",
     			options,
-    			id: create_fragment$2.name
+    			id: create_fragment$3.name
     		});
 
     		const { ctx } = this.$$;
@@ -1264,7 +1815,7 @@ var app = (function (exports) {
     /* src/Index.svelte generated by Svelte v3.16.4 */
 
     const { Object: Object_1 } = globals;
-    const file$3 = "src/Index.svelte";
+    const file$4 = "src/Index.svelte";
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -1287,7 +1838,7 @@ var app = (function (exports) {
     			t0 = text(t0_value);
     			t1 = text(" ... ");
     			t2 = text(t2_value);
-    			add_location(p, file$3, 22, 24, 653);
+    			add_location(p, file$4, 22, 24, 653);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1315,7 +1866,7 @@ var app = (function (exports) {
     	return block;
     }
 
-    function create_fragment$3(ctx) {
+    function create_fragment$4(ctx) {
     	let div5;
     	let h3;
     	let t1;
@@ -1384,30 +1935,30 @@ var app = (function (exports) {
     			a1 = element("a");
     			a1.textContent = "Home page";
     			attr_dev(h3, "class", "text-center");
-    			add_location(h3, file$3, 9, 4, 189);
-    			add_location(h50, file$3, 13, 16, 345);
-    			add_location(pre0, file$3, 14, 16, 384);
+    			add_location(h3, file$4, 9, 4, 189);
+    			add_location(h50, file$4, 13, 16, 345);
+    			add_location(pre0, file$4, 14, 16, 384);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$3, 12, 12, 306);
-    			add_location(h51, file$3, 19, 16, 517);
-    			add_location(pre1, file$3, 20, 16, 556);
+    			add_location(div0, file$4, 12, 12, 306);
+    			add_location(h51, file$4, 19, 16, 517);
+    			add_location(pre1, file$4, 20, 16, 556);
     			attr_dev(div1, "class", "col-md-4");
-    			add_location(div1, file$3, 18, 12, 478);
-    			add_location(h52, file$3, 27, 16, 817);
+    			add_location(div1, file$4, 18, 12, 478);
+    			add_location(h52, file$4, 27, 16, 817);
     			attr_dev(a0, "href", "https://github.com/lyohaplotinka/svelte-easyroute");
-    			add_location(a0, file$3, 28, 19, 852);
-    			add_location(p0, file$3, 28, 16, 849);
+    			add_location(a0, file$4, 28, 19, 852);
+    			add_location(p0, file$4, 28, 16, 849);
     			attr_dev(a1, "href", "https://lyoha.info/en/projects/svelterouter");
-    			add_location(a1, file$3, 29, 19, 946);
-    			add_location(p1, file$3, 29, 16, 943);
+    			add_location(a1, file$4, 29, 19, 946);
+    			add_location(p1, file$4, 29, 16, 943);
     			attr_dev(div2, "class", "col-md-4");
-    			add_location(div2, file$3, 26, 12, 778);
+    			add_location(div2, file$4, 26, 12, 778);
     			attr_dev(div3, "class", "row");
-    			add_location(div3, file$3, 11, 8, 276);
+    			add_location(div3, file$4, 11, 8, 276);
     			attr_dev(div4, "class", "container-fluid mt-5");
-    			add_location(div4, file$3, 10, 4, 233);
+    			add_location(div4, file$4, 10, 4, 233);
     			attr_dev(div5, "class", "container-fluid index-page");
-    			add_location(div5, file$3, 8, 0, 144);
+    			add_location(div5, file$4, 8, 0, 144);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1476,7 +2027,7 @@ var app = (function (exports) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$3.name,
+    		id: create_fragment$4.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1485,7 +2036,7 @@ var app = (function (exports) {
     	return block;
     }
 
-    function instance$3($$self, $$props, $$invalidate) {
+    function instance$4($$self, $$props, $$invalidate) {
     	let { currentRoute } = $$props;
     	let parsedRoute = JSON.stringify(currentRoute, false, 2);
     	const writable_props = ["currentRoute"];
@@ -1513,13 +2064,13 @@ var app = (function (exports) {
     class Index extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { currentRoute: 0 });
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { currentRoute: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Index",
     			options,
-    			id: create_fragment$3.name
+    			id: create_fragment$4.name
     		});
 
     		const { ctx } = this.$$;
@@ -1541,9 +2092,9 @@ var app = (function (exports) {
 
     /* Users/alexeysolovjov/Desktop/work/svelte-easyroute/RouterNestedOutlet.svelte generated by Svelte v3.16.4 */
 
-    const file$4 = "Users/alexeysolovjov/Desktop/work/svelte-easyroute/RouterNestedOutlet.svelte";
+    const file$5 = "Users/alexeysolovjov/Desktop/work/svelte-easyroute/RouterNestedOutlet.svelte";
 
-    function create_fragment$4(ctx) {
+    function create_fragment$5(ctx) {
     	let div;
     	let current;
     	var switch_value = /*comp*/ ctx[0];
@@ -1564,7 +2115,7 @@ var app = (function (exports) {
     			div = element("div");
     			if (switch_instance) create_component(switch_instance.$$.fragment);
     			attr_dev(div, "class", "svelte-easyroute-outlet");
-    			add_location(div, file$4, 11, 0, 287);
+    			add_location(div, file$5, 11, 0, 287);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1623,7 +2174,7 @@ var app = (function (exports) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$4.name,
+    		id: create_fragment$5.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1632,7 +2183,7 @@ var app = (function (exports) {
     	return block;
     }
 
-    function instance$4($$self, $$props, $$invalidate) {
+    function instance$5($$self, $$props, $$invalidate) {
     	let { router } = $$props;
     	let comp = false;
     	let passingRouter;
@@ -1669,13 +2220,13 @@ var app = (function (exports) {
     class RouterNestedOutlet extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { router: 2 });
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, { router: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "RouterNestedOutlet",
     			options,
-    			id: create_fragment$4.name
+    			id: create_fragment$5.name
     		});
 
     		const { ctx } = this.$$;
@@ -1698,7 +2249,7 @@ var app = (function (exports) {
     /* src/Test.svelte generated by Svelte v3.16.4 */
 
     const { Object: Object_1$1 } = globals;
-    const file$5 = "src/Test.svelte";
+    const file$6 = "src/Test.svelte";
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -1721,7 +2272,7 @@ var app = (function (exports) {
     			t0 = text(t0_value);
     			t1 = text(" ... ");
     			t2 = text(t2_value);
-    			add_location(p, file$5, 27, 24, 816);
+    			add_location(p, file$6, 27, 24, 816);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1749,7 +2300,7 @@ var app = (function (exports) {
     	return block;
     }
 
-    function create_fragment$5(ctx) {
+    function create_fragment$6(ctx) {
     	let div5;
     	let h3;
     	let t1;
@@ -1828,30 +2379,30 @@ var app = (function (exports) {
     			a1 = element("a");
     			a1.textContent = "Home page";
     			attr_dev(h3, "class", "text-center");
-    			add_location(h3, file$5, 13, 4, 317);
-    			add_location(h50, file$5, 18, 16, 508);
-    			add_location(pre0, file$5, 19, 16, 547);
+    			add_location(h3, file$6, 13, 4, 317);
+    			add_location(h50, file$6, 18, 16, 508);
+    			add_location(pre0, file$6, 19, 16, 547);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$5, 17, 12, 469);
-    			add_location(h51, file$5, 24, 16, 680);
-    			add_location(pre1, file$5, 25, 16, 719);
+    			add_location(div0, file$6, 17, 12, 469);
+    			add_location(h51, file$6, 24, 16, 680);
+    			add_location(pre1, file$6, 25, 16, 719);
     			attr_dev(div1, "class", "col-md-4");
-    			add_location(div1, file$5, 23, 12, 641);
-    			add_location(h52, file$5, 32, 16, 980);
+    			add_location(div1, file$6, 23, 12, 641);
+    			add_location(h52, file$6, 32, 16, 980);
     			attr_dev(a0, "href", "https://github.com/lyohaplotinka/svelte-easyroute");
-    			add_location(a0, file$5, 33, 19, 1015);
-    			add_location(p0, file$5, 33, 16, 1012);
+    			add_location(a0, file$6, 33, 19, 1015);
+    			add_location(p0, file$6, 33, 16, 1012);
     			attr_dev(a1, "href", "https://lyoha.info/en/projects/svelterouter");
-    			add_location(a1, file$5, 34, 19, 1109);
-    			add_location(p1, file$5, 34, 16, 1106);
+    			add_location(a1, file$6, 34, 19, 1109);
+    			add_location(p1, file$6, 34, 16, 1106);
     			attr_dev(div2, "class", "col-md-4");
-    			add_location(div2, file$5, 31, 12, 941);
+    			add_location(div2, file$6, 31, 12, 941);
     			attr_dev(div3, "class", "row");
-    			add_location(div3, file$5, 16, 8, 439);
+    			add_location(div3, file$6, 16, 8, 439);
     			attr_dev(div4, "class", "container-fluid mt-5");
-    			add_location(div4, file$5, 15, 4, 396);
+    			add_location(div4, file$6, 15, 4, 396);
     			attr_dev(div5, "class", "container-fluid index-page mt-3");
-    			add_location(div5, file$5, 12, 0, 267);
+    			add_location(div5, file$6, 12, 0, 267);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1935,7 +2486,7 @@ var app = (function (exports) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$5.name,
+    		id: create_fragment$6.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1944,7 +2495,7 @@ var app = (function (exports) {
     	return block;
     }
 
-    function instance$5($$self, $$props, $$invalidate) {
+    function instance$6($$self, $$props, $$invalidate) {
     	let { currentRoute } = $$props;
     	let { router } = $$props;
     	let { nested } = $$props;
@@ -1983,13 +2534,13 @@ var app = (function (exports) {
     class Test extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$5, create_fragment$5, safe_not_equal, { currentRoute: 0, router: 1, nested: 3 });
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, { currentRoute: 0, router: 1, nested: 3 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Test",
     			options,
-    			id: create_fragment$5.name
+    			id: create_fragment$6.name
     		});
 
     		const { ctx } = this.$$;
@@ -2035,10 +2586,10 @@ var app = (function (exports) {
 
     /* src/ParamsPlayground.svelte generated by Svelte v3.16.4 */
 
-    const { console: console_1$1 } = globals;
-    const file$6 = "src/ParamsPlayground.svelte";
+    const { console: console_1$2 } = globals;
+    const file$7 = "src/ParamsPlayground.svelte";
 
-    function create_fragment$6(ctx) {
+    function create_fragment$7(ctx) {
     	let div;
     	let h1;
     	let br0;
@@ -2080,18 +2631,18 @@ var app = (function (exports) {
     			p2.textContent = "Feel free to change parameters in URL and see the results.";
     			t11 = space();
     			br1 = element("br");
-    			add_location(h1, file$6, 6, 4, 121);
-    			add_location(br0, file$6, 6, 30, 147);
-    			add_location(p0, file$6, 7, 4, 156);
+    			add_location(h1, file$7, 6, 4, 121);
+    			add_location(br0, file$7, 6, 30, 147);
+    			add_location(p0, file$7, 7, 4, 156);
     			set_style(pre0, "background", "lightgray");
     			set_style(pre0, "color", "black");
-    			add_location(pre0, file$6, 8, 4, 215);
-    			add_location(p1, file$6, 9, 4, 317);
-    			add_location(pre1, file$6, 10, 4, 367);
-    			add_location(p2, file$6, 11, 4, 428);
-    			add_location(br1, file$6, 12, 4, 498);
+    			add_location(pre0, file$7, 8, 4, 215);
+    			add_location(p1, file$7, 9, 4, 317);
+    			add_location(pre1, file$7, 10, 4, 367);
+    			add_location(p2, file$7, 11, 4, 428);
+    			add_location(br1, file$7, 12, 4, 498);
     			attr_dev(div, "class", "container-fluid mt-3 text-center");
-    			add_location(div, file$6, 5, 0, 70);
+    			add_location(div, file$7, 5, 0, 70);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2126,7 +2677,7 @@ var app = (function (exports) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$6.name,
+    		id: create_fragment$7.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2135,13 +2686,13 @@ var app = (function (exports) {
     	return block;
     }
 
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$7($$self, $$props, $$invalidate) {
     	let { currentRoute } = $$props;
     	console.log(currentRoute);
     	const writable_props = ["currentRoute"];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<ParamsPlayground> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$2.warn(`<ParamsPlayground> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$set = $$props => {
@@ -2162,20 +2713,20 @@ var app = (function (exports) {
     class ParamsPlayground extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, { currentRoute: 0 });
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, { currentRoute: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "ParamsPlayground",
     			options,
-    			id: create_fragment$6.name
+    			id: create_fragment$7.name
     		});
 
     		const { ctx } = this.$$;
     		const props = options.props || ({});
 
     		if (/*currentRoute*/ ctx[0] === undefined && !("currentRoute" in props)) {
-    			console_1$1.warn("<ParamsPlayground> was created without expected prop 'currentRoute'");
+    			console_1$2.warn("<ParamsPlayground> was created without expected prop 'currentRoute'");
     		}
     	}
 
@@ -2189,121 +2740,7 @@ var app = (function (exports) {
     }
 
     /* src/Nested.svelte generated by Svelte v3.16.4 */
-    const file$7 = "src/Nested.svelte";
-
-    function create_fragment$7(ctx) {
-    	let h1;
-    	let t1;
-    	let current;
-
-    	const nestedoutlet = new RouterNestedOutlet({
-    			props: { router: /*router*/ ctx[0] },
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			h1 = element("h1");
-    			h1.textContent = "Nested!";
-    			t1 = space();
-    			create_component(nestedoutlet.$$.fragment);
-    			add_location(h1, file$7, 5, 0, 114);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, h1, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(nestedoutlet, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const nestedoutlet_changes = {};
-    			if (dirty[0] & /*router*/ 1) nestedoutlet_changes.router = /*router*/ ctx[0];
-    			nestedoutlet.$set(nestedoutlet_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(nestedoutlet.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(nestedoutlet.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h1);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(nestedoutlet, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$7.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$7($$self, $$props, $$invalidate) {
-    	let { router } = $$props;
-    	const writable_props = ["router"];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Nested> was created with unknown prop '${key}'`);
-    	});
-
-    	$$self.$set = $$props => {
-    		if ("router" in $$props) $$invalidate(0, router = $$props.router);
-    	};
-
-    	$$self.$capture_state = () => {
-    		return { router };
-    	};
-
-    	$$self.$inject_state = $$props => {
-    		if ("router" in $$props) $$invalidate(0, router = $$props.router);
-    	};
-
-    	return [router];
-    }
-
-    class Nested extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, { router: 0 });
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Nested",
-    			options,
-    			id: create_fragment$7.name
-    		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || ({});
-
-    		if (/*router*/ ctx[0] === undefined && !("router" in props)) {
-    			console.warn("<Nested> was created without expected prop 'router'");
-    		}
-    	}
-
-    	get router() {
-    		throw new Error("<Nested>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set router(value) {
-    		throw new Error("<Nested>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
-    /* src/NestedDeep.svelte generated by Svelte v3.16.4 */
-    const file$8 = "src/NestedDeep.svelte";
+    const file$8 = "src/Nested.svelte";
 
     function create_fragment$8(ctx) {
     	let h1;
@@ -2318,7 +2755,7 @@ var app = (function (exports) {
     	const block = {
     		c: function create() {
     			h1 = element("h1");
-    			h1.textContent = "Nested Deep!";
+    			h1.textContent = "Nested!";
     			t1 = space();
     			create_component(nestedoutlet.$$.fragment);
     			add_location(h1, file$8, 5, 0, 114);
@@ -2369,6 +2806,120 @@ var app = (function (exports) {
     	const writable_props = ["router"];
 
     	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Nested> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ("router" in $$props) $$invalidate(0, router = $$props.router);
+    	};
+
+    	$$self.$capture_state = () => {
+    		return { router };
+    	};
+
+    	$$self.$inject_state = $$props => {
+    		if ("router" in $$props) $$invalidate(0, router = $$props.router);
+    	};
+
+    	return [router];
+    }
+
+    class Nested extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, { router: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Nested",
+    			options,
+    			id: create_fragment$8.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || ({});
+
+    		if (/*router*/ ctx[0] === undefined && !("router" in props)) {
+    			console.warn("<Nested> was created without expected prop 'router'");
+    		}
+    	}
+
+    	get router() {
+    		throw new Error("<Nested>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set router(value) {
+    		throw new Error("<Nested>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/NestedDeep.svelte generated by Svelte v3.16.4 */
+    const file$9 = "src/NestedDeep.svelte";
+
+    function create_fragment$9(ctx) {
+    	let h1;
+    	let t1;
+    	let current;
+
+    	const nestedoutlet = new RouterNestedOutlet({
+    			props: { router: /*router*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			h1 = element("h1");
+    			h1.textContent = "Nested Deep!";
+    			t1 = space();
+    			create_component(nestedoutlet.$$.fragment);
+    			add_location(h1, file$9, 5, 0, 114);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h1, anchor);
+    			insert_dev(target, t1, anchor);
+    			mount_component(nestedoutlet, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const nestedoutlet_changes = {};
+    			if (dirty[0] & /*router*/ 1) nestedoutlet_changes.router = /*router*/ ctx[0];
+    			nestedoutlet.$set(nestedoutlet_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(nestedoutlet.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(nestedoutlet.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h1);
+    			if (detaching) detach_dev(t1);
+    			destroy_component(nestedoutlet, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$9.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$9($$self, $$props, $$invalidate) {
+    	let { router } = $$props;
+    	const writable_props = ["router"];
+
+    	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<NestedDeep> was created with unknown prop '${key}'`);
     	});
 
@@ -2390,13 +2941,13 @@ var app = (function (exports) {
     class NestedDeep extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, { router: 0 });
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, { router: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "NestedDeep",
     			options,
-    			id: create_fragment$8.name
+    			id: create_fragment$9.name
     		});
 
     		const { ctx } = this.$$;
@@ -2414,16 +2965,6 @@ var app = (function (exports) {
     	set router(value) {
     		throw new Error("<NestedDeep>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
-    }
-
-    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-    function unwrapExports (x) {
-    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-    }
-
-    function createCommonjsModule(fn, module) {
-    	return module = { exports: {} }, fn(module, module.exports), module.exports;
     }
 
     var RouterException_1 = createCommonjsModule(function (module, exports) {
@@ -3454,252 +3995,6 @@ var app = (function (exports) {
 
     unwrapExports(UrlParser_1);
 
-    var CssTransitionService_1 = createCommonjsModule(function (module, exports) {
-    var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
-        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-        return new (P || (P = Promise))(function (resolve, reject) {
-            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-            step((generator = generator.apply(thisArg, _arguments || [])).next());
-        });
-    };
-    var __generator = (commonjsGlobal && commonjsGlobal.__generator) || function (thisArg, body) {
-        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-        function verb(n) { return function (v) { return step([n, v]); }; }
-        function step(op) {
-            if (f) throw new TypeError("Generator is already executing.");
-            while (_) try {
-                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-                if (y = 0, t) op = [op[0] & 2, t.value];
-                switch (op[0]) {
-                    case 0: case 1: t = op; break;
-                    case 4: _.label++; return { value: op[1], done: false };
-                    case 5: _.label++; y = op[1]; op = [0]; continue;
-                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                    default:
-                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                        if (t[2]) _.ops.pop();
-                        _.trys.pop(); continue;
-                }
-                op = body.call(thisArg, _);
-            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-        }
-    };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var CssTransitionService = /** @class */ (function () {
-        function CssTransitionService(transitionName) {
-            this.transition = "";
-            this.enteringDuration = 0;
-            this.leavingDuration = 0;
-            this.transition = transitionName;
-            this.rule = new RegExp(".(" + this.transition + ")-(enter-active|leave-active)", "g");
-            this.enterRule = new RegExp(".(" + this.transition + ")-enter-active", "g");
-            this.leaveRule = new RegExp(".(" + this.transition + ")-leave-active", "g");
-            var durations = this.getTransitionDurations(this.transition);
-            this.enteringDuration = durations.enteringDuration;
-            this.leavingDuration = durations.leavingDuration;
-        }
-        CssTransitionService.prototype.getDurationFromRule = function (styleRule) {
-            var getMaxFromCSSString = function (key) {
-                if (key !== "transitionDuration" && key !== "transitionDelay")
-                    return 0;
-                var durations = styleRule.style[key];
-                var durationsArrayString = durations.split(",");
-                var durationsArray = durationsArrayString.map(function (duration) {
-                    var number = parseFloat(duration.replace(/a-zA-Z/g, "").trim());
-                    var measure = duration.replace(/[0-9](\.[0-9])?/g, "").trim();
-                    if (measure === "s")
-                        number = number * 1000;
-                    return number;
-                });
-                return Math.max.apply(Math, durationsArray);
-            };
-            var duration = getMaxFromCSSString("transitionDuration");
-            var delay = getMaxFromCSSString("transitionDelay");
-            return duration + delay;
-        };
-        CssTransitionService.prototype.getTransitionDurations = function (transition) {
-            var transRule = new RegExp(".(" + transition + ")-(enter-active|leave-active)", "g");
-            var transEnterRule = new RegExp(".(" + transition + ")-enter-active", "g");
-            var transLeaveRule = new RegExp(".(" + transition + ")-leave-active", "g");
-            var enteringDuration = 0;
-            var leavingDuration = 0;
-            var styles = Array.from(document.styleSheets);
-            var stylesArray = [];
-            for (var _i = 0, styles_1 = styles; _i < styles_1.length; _i++) {
-                var style = styles_1[_i];
-                var rules = void 0;
-                try {
-                    rules = style.rules;
-                }
-                catch (e) {
-                    rules = null;
-                }
-                if (!rules)
-                    continue;
-                var rulesArray = Object.values(rules);
-                var filteredRules = rulesArray.filter(function (rule) {
-                    var operateRule = rule;
-                    if (!operateRule.selectorText)
-                        return false;
-                    return operateRule.selectorText.match(transRule);
-                });
-                stylesArray.push.apply(stylesArray, filteredRules);
-            }
-            for (var _a = 0, stylesArray_1 = stylesArray; _a < stylesArray_1.length; _a++) {
-                var _styleRule = stylesArray_1[_a];
-                var styleRule = _styleRule;
-                var styleText = styleRule.cssText;
-                // Case 1: One rule for both entering and leaving
-                if (styleText.match(transRule).length === 2) {
-                    enteringDuration = leavingDuration = this.getDurationFromRule(styleRule);
-                }
-                // Case 2: single rule for enter and leaving
-                // Entering
-                if (styleText.match(transEnterRule)) {
-                    enteringDuration = this.getDurationFromRule(styleRule);
-                }
-                // Leaving
-                if (styleText.match(transLeaveRule)) {
-                    leavingDuration = this.getDurationFromRule(styleRule);
-                }
-            }
-            return {
-                enteringDuration: enteringDuration,
-                leavingDuration: leavingDuration
-            };
-        };
-        CssTransitionService.delay = function (time) {
-            return new Promise(function (resolve) {
-                setTimeout(function () {
-                    resolve();
-                }, time);
-            });
-        };
-        CssTransitionService.prototype.transitionOut = function (depth) {
-            return __awaiter(this, void 0, void 0, function () {
-                var outlet;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (depth === 0)
-                                depth = -1;
-                            outlet = document.querySelectorAll(".svelte-easyroute-outlet")[depth + 1];
-                            if (!outlet) return [3 /*break*/, 3];
-                            outlet.classList.add(this.transition + "-leave-active");
-                            outlet.classList.add(this.transition + "-leave");
-                            return [4 /*yield*/, CssTransitionService.delay(100)];
-                        case 1:
-                            _a.sent();
-                            outlet.classList.remove(this.transition + "-leave");
-                            outlet.classList.add(this.transition + "-leave-to");
-                            return [4 /*yield*/, CssTransitionService.delay(this.leavingDuration)];
-                        case 2:
-                            _a.sent();
-                            outlet.classList.remove(this.transition + "-leave-active");
-                            outlet.classList.remove(this.transition + "-leave-to");
-                            _a.label = 3;
-                        case 3: return [2 /*return*/];
-                    }
-                });
-            });
-        };
-        CssTransitionService.prototype.transitionIn = function (depth) {
-            return __awaiter(this, void 0, void 0, function () {
-                var outlet;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (depth === 0)
-                                depth = -1;
-                            outlet = document.querySelectorAll(".svelte-easyroute-outlet")[depth + 1];
-                            if (!outlet) return [3 /*break*/, 3];
-                            outlet.classList.add(this.transition + "-enter-active");
-                            outlet.classList.add(this.transition + "-enter");
-                            return [4 /*yield*/, CssTransitionService.delay(100)];
-                        case 1:
-                            _a.sent();
-                            outlet.classList.remove(this.transition + "-enter");
-                            outlet.classList.add(this.transition + "-enter-to");
-                            return [4 /*yield*/, CssTransitionService.delay(this.enteringDuration)];
-                        case 2:
-                            _a.sent();
-                            outlet.classList.remove(this.transition + "-enter-active");
-                            outlet.classList.remove(this.transition + "-enter-to");
-                            _a.label = 3;
-                        case 3: return [2 /*return*/];
-                    }
-                });
-            });
-        };
-        CssTransitionService.prototype.propTransitionDuration = function (transition) {
-            return this.getTransitionDurations(transition);
-        };
-        CssTransitionService.prototype.propTransitionOut = function (selector, transition, leavingDuration) {
-            return __awaiter(this, void 0, void 0, function () {
-                var outlet;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            outlet = document.querySelector(selector);
-                            if (!outlet) return [3 /*break*/, 3];
-                            outlet.classList.add(transition + "-leave-active");
-                            outlet.classList.add(transition + "-leave");
-                            return [4 /*yield*/, CssTransitionService.delay(100)];
-                        case 1:
-                            _a.sent();
-                            outlet.classList.remove(transition + "-leave");
-                            outlet.classList.add(transition + "-leave-to");
-                            return [4 /*yield*/, CssTransitionService.delay(leavingDuration)];
-                        case 2:
-                            _a.sent();
-                            outlet.classList.remove(transition + "-leave-active");
-                            outlet.classList.remove(transition + "-leave-to");
-                            _a.label = 3;
-                        case 3: return [2 /*return*/];
-                    }
-                });
-            });
-        };
-        CssTransitionService.prototype.propTransitionIn = function (selector, transition, enteringDuration) {
-            return __awaiter(this, void 0, void 0, function () {
-                var outlet;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            outlet = document.querySelector(selector);
-                            if (!outlet) return [3 /*break*/, 3];
-                            outlet.classList.add(transition + "-enter-active");
-                            outlet.classList.add(transition + "-enter");
-                            return [4 /*yield*/, CssTransitionService.delay(100)];
-                        case 1:
-                            _a.sent();
-                            outlet.classList.remove(transition + "-enter");
-                            outlet.classList.add(transition + "-enter-to");
-                            return [4 /*yield*/, CssTransitionService.delay(enteringDuration)];
-                        case 2:
-                            _a.sent();
-                            outlet.classList.remove(transition + "-enter-active");
-                            outlet.classList.remove(transition + "-enter-to");
-                            _a.label = 3;
-                        case 3: return [2 /*return*/];
-                    }
-                });
-            });
-        };
-        return CssTransitionService;
-    }());
-    exports.default = CssTransitionService;
-    });
-
-    unwrapExports(CssTransitionService_1);
-
     var dist = createCommonjsModule(function (module, exports) {
     var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
         function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -3870,7 +4165,6 @@ var app = (function (exports) {
     var router = new Router({
         base: "", // NOT required
         mode: "hash",
-        transition: "xfade",
         routes: [
             {
                 path: "/",

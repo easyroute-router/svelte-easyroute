@@ -14,7 +14,6 @@ import Router from "../../dist/index";
 export var router = new Router({
     base: "", // NOT required
     mode: "hash",
-    transition: "xfade",
     routes: [
         {
             path: "/",

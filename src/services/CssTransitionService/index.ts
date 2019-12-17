@@ -94,6 +94,9 @@ export default class CssTransitionService {
             }
         }
 
+        leavingDuration = leavingDuration + 10;
+        enteringDuration = enteringDuration + 10;
+
         return {
             enteringDuration,
             leavingDuration
