@@ -31,14 +31,14 @@
   }
 
   router.afterUpdate = async () => {
-    await callback('out')
+    if (!router.currentRoute.routeObject.nested) await callback('out')
     _routeComponent = false;
     await delay(2);
     _routeComponent = router.currentRoute.routeObject.component
     _routeInfo = router.currentRoute.routeInfo
     passingRouter = JSON.parse(JSON.stringify(router))
     passingRouter._nested = router.currentRoute.routeObject.nested || false
-    callback('in')
+    if (!router.currentRoute.routeObject.nested) callback('in')
     console.log(passingRouter)
   }
 

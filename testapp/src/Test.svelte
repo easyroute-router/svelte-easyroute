@@ -4,6 +4,7 @@
     export let nested
 
     import { default as NestedOutlet } from "../../RouterNestedOutlet.svelte"
+    import RouterTransition from "../../RouterTransition.svelte"
 
     import {onMount} from 'svelte'
 
@@ -12,7 +13,9 @@
 
 <div class="container-fluid index-page mt-3">
     <h3 class="text-center">TEST page</h3>
-    <NestedOutlet router={router}/>
+    <RouterTransition name="xfade" let:callback>
+      <NestedOutlet router={router} callback={callback}/>
+    </RouterTransition>
     <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-md-4">

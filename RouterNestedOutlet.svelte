@@ -1,12 +1,29 @@
 <script>
+  import { onDestroy } from 'svelte'
   export let router
-  let comp = false
+  export let callback
+  let comp;
+  let _router = router
   let passingRouter
-  if (router._nested && router._nested.component) {
-    comp = router._nested.component
-    passingRouter = JSON.parse(JSON.stringify(router));
-    passingRouter._nested = router._nested.nested || false;
+  const delay = (ms) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      },ms)
+    })
   }
+  (async () => {
+    await callback('out');
+
+    if (router && router._nested && router._nested.component) {
+//      comp = false;
+      //await delay(2);
+      comp = router._nested.component
+      await callback('in');
+      passingRouter = JSON.parse(JSON.stringify(router));
+      passingRouter._nested = router._nested.nested || false;
+    }
+  })();
 </script>
 
 <div class="svelte-easyroute-outlet">
