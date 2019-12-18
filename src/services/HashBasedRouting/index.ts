@@ -33,7 +33,7 @@ export default class HashBasedRouting {
         }
         return {
             route: matchedRoutes[0],
-            transitionDepth: nestingDepth || 0
+            transitionDepth: nestingDepth || 0,
         };
     }
 }

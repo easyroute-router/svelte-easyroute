@@ -92,10 +92,11 @@ export default class Router implements IRouter {
     public parseRoute (
         url : string
     ) {
-        const [ path, query ] = url.split('?');
+        const [ path, query ] = url.split("?");
         let Matched = this.parser.parse(path);
         let matchedRoute : IRoute | null = Matched!.route;
-        let transitionDepth = Matched!.transitionDepth;
+        let nestingTo = Matched!.transitionDepth;
+        let nestingFrom = this.currentRoute?.nestingFrom || 0;
         if (!matchedRoute) {
             console.warn(`Easyroute :: no routes matched "${url}"`);
             return;
@@ -104,9 +105,11 @@ export default class Router implements IRouter {
         this.previousRoute =  this.currentRoute ? JSON.parse(JSON.stringify(this.currentRoute)) : undefined;
         this.currentRoute = {
             routeObject: matchedRoute,
-            routeInfo: this.routeInfo
+            routeInfo: this.routeInfo,
+            nestingTo,
+            nestingFrom
         };
-        this.fireNavigation(transitionDepth);
+        this.fireNavigation(nestingTo);
     }
 
     private _beforeEach

@@ -26,8 +26,14 @@ export var router = new Router({
             name: "Test",
             children: [
                 {
-                    path: "nested",
+                    path: "nested*",
                     component: Nested,
+                    children: [
+                        {
+                            path: "deep",
+                            component: NestedDeep
+                        }
+                    ]
                 },
                 {
                     path: "nesteddeep",

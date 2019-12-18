@@ -10,7 +10,6 @@
 
   if (transition) {
     durations = transitionService.propTransitionDuration(transition);
-    console.log(durations)
   }
 
   const delay = (ms) => {

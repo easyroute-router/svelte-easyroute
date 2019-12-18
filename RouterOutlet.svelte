@@ -29,7 +29,6 @@
     id = Math.random().toString(36).substring(7);
     className = `${className} router-${id} ${transition}-enter`
     selector = `.${selector}.router-${id}`
-    console.log(selector)
   }
 
   router.afterUpdate = async () => {
@@ -42,7 +41,6 @@
     _routeInfo = router.currentRoute.routeInfo
     passingRouter = router
     if (!router.currentRoute.routeObject.nested) callback('in')
-    console.log(passingRouter)
   }
 
   $: routeComponent = _routeComponent

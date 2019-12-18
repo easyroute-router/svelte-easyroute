@@ -3,5 +3,7 @@ import IRoute from "./IRoute";
 
 export default interface IRouteComplexData {
     routeInfo: IRouteInfo,
-    routeObject: IRoute
+    routeObject: IRoute,
+    nestingTo?: number,
+    nestingFrom?: number
 }
