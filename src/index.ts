@@ -96,7 +96,7 @@ export default class Router implements IRouter {
         let Matched = this.parser.parse(path);
         let matchedRoute : IRoute | null = Matched!.route;
         let nestingTo = Matched!.transitionDepth;
-        let nestingFrom = this.currentRoute?.nestingFrom || 0;
+        let nestingFrom = this.currentRoute?.nestingTo || 0;
         if (!matchedRoute) {
             console.warn(`Easyroute :: no routes matched "${url}"`);
             return;
@@ -109,6 +109,7 @@ export default class Router implements IRouter {
             nestingTo,
             nestingFrom
         };
+        console.log(this.currentRoute)
         this.fireNavigation(nestingTo);
     }
 

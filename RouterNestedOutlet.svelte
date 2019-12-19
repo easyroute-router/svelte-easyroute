@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   export let router
   export let callback = () => false;
   let comp;
@@ -18,24 +18,32 @@
 
   function getElementIndex(node) {
     let allOutlets = document.querySelectorAll('.svelte-easyroute-outlet');
-    console.log('NDND',[...allOutlets].indexOf(node));
     return [...allOutlets].indexOf(node)
+  }
+
+  function getComponent () {
+    let route = router.currentRoute.routeObject
+    for (let i = 0; i < index; i++) {
+      if (!route) break;
+      route = route.nested
+    }
+    if (route) component = route.component
+    else component = false
   }
 
   async function changeComponent (routerUpdate = true) {
     let nestingTo = router.currentRoute.nestingTo;
     index = getElementIndex(element);
-    console.log(index, nestingTo)
-    if (nestingTo === index) {
+    if (index <= nestingTo) {
       if (router && router.currentRoute.routeObject.nested && router.currentRoute.routeObject.nested.component) {
-        if (!routerUpdate) {
+        //if (!routerUpdate) {
           comp = false;
           await delay(2);
-        }
+        //}
         await callback('out')
+        getComponent()
         comp = component
         await callback('in');
-        console.log(comp)
         passingRouter = router;
       }
     }
@@ -45,14 +53,16 @@
 
   onMount(() => {
     index = getElementIndex(element)
-    let route = router.currentRoute.routeObject
-    for (let i = 0; i < index; i++) {
-      if (!route) break;
-      route = route.nested
-    }
-    if (route) component = route.component
-    else component = false
+    getComponent()
     changeComponent(false)
+  })
+
+  onDestroy(() => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      },3000)
+    })
   })
 
 

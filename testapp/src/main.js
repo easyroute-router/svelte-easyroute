@@ -36,7 +36,7 @@ export var router = new Router({
                     ]
                 },
                 {
-                    path: "nesteddeep",
+                    path: "nostoddoop",
                     component: NestedDeep
                 }
             ]
