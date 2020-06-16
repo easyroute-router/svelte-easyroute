@@ -6,7 +6,7 @@ const prod = mode === 'production';
 
 module.exports = {
 	entry: {
-		bundle: ['./demo-app/src/main.js']
+		bundle: ['./demo-app/src/main.js'],
 	},
 	resolve: {
 		alias: {
@@ -18,7 +18,8 @@ module.exports = {
 	output: {
 		path: __dirname + 'demo-app/public',
 		filename: '[name].js',
-		chunkFilename: '[name].[id].js'
+		chunkFilename: '[name].[id].js',
+		publicPath: "/"
 	},
 	module: {
 		rules: [
@@ -51,5 +52,11 @@ module.exports = {
 			filename: '[name].css'
 		})
 	],
+	devServer: {
+		historyApiFallback: true,
+		publicPath: '/',
+		index: '/',
+		contentBase: '/'
+	},
 	devtool: prod ? false: 'source-map'
 };

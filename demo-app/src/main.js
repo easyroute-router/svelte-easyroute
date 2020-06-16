@@ -8,7 +8,7 @@ import 'uikit/dist/css/uikit.css'
 import 'uikit/dist/js/uikit'
 
 const router = new Router({
-	mode: "hash", // "hash" or "history"
+	mode: "history", // "hash" or "history"
 	routes:[
 		{
 			path: '/',

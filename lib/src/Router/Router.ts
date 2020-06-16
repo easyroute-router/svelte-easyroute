@@ -23,6 +23,13 @@ export default class Router {
 
     private setParser() {
         switch (this.mode) {
+            case 'history':
+                this.parser = new HashParser(this.routes)
+                this.parseRoute(window.location.pathname)
+                window.addEventListener('popstate', (ev) => {
+                    ev.state ? this.parseRoute(ev.state.url) : this.parseRoute('/')
+                })
+                break
             case 'hash':
             default:
                 this.parser = new HashParser(this.routes)
@@ -49,6 +56,7 @@ export default class Router {
 
     public async parseRoute(url: string) {
         if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
+        if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
         const matched = this.parser?.parse(url.split('?')[0])
         const to = this.getTo(matched)
         const from = this.getFrom()
@@ -61,6 +69,16 @@ export default class Router {
     public navigate(url: string) {
         if (this.mode === 'hash') {
             window.location.hash = url
+        }
+        if (this.mode === 'history') {
+            window.history.pushState(
+                {
+                    url
+                },
+                'Test',
+                url
+            )
+            this.parseRoute(url)
         }
     }
 
