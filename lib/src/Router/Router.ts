@@ -9,6 +9,9 @@ export default class Router {
     private readonly routes: Route[] = []
     private parser: HashParser | null = null
 
+    public beforeEach: any = null
+    public afterEach: any = null
+
     public currentMatched: any = Observable<Route[]>([])
     public currentRouteData: any = Observable({params: {}, query: {}, name: ''})
 
@@ -31,11 +34,28 @@ export default class Router {
         }
     }
 
-    public parseRoute(url: string) {
+    private getTo(matched: Route[]): Route {
+        const depths: number[] = matched.map(route => route.nestingDepth as number)
+        const maxDepth = Math.max(...depths)
+        return matched.find(route => route.nestingDepth === maxDepth) as Route
+    }
+
+    private getFrom(): Route {
+        const current: Route[] = this.currentMatched.getValue
+        const depths: number[] = current.map(route => route.nestingDepth as number)
+        const maxDepth = Math.max(...depths)
+        return current.find(route => route.nestingDepth === maxDepth) as Route
+    }
+
+    public async parseRoute(url: string) {
         if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
         const matched = this.parser?.parse(url.split('?')[0])
+        const to = this.getTo(matched)
+        const from = this.getFrom()
+        await this.beforeHook(to, from)
         this.currentRouteData.setValue(UrlParser.createRouteObject(matched, url))
         this.currentMatched.setValue(matched)
+        this.afterHook(to, from)
     }
 
     public navigate(url: string) {
@@ -48,6 +68,16 @@ export default class Router {
         this.navigate(data)
     }
 
+    private beforeHook(to: Route, from: Route) {
+        return new Promise(resolve => {
+            if (!this.beforeEach) resolve()
+            this.beforeEach(to, from, resolve)
+        })
+    }
+
+    private afterHook(to: Route, from: Route) {
+        this.afterEach && this.afterEach(to, from)
+    }
 
     get mode() {
         return this.settings.mode
