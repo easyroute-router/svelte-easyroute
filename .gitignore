@@ -2,3 +2,4 @@ node_modules
 Makefile
 dist
 /testapp/node_modules/
+.idea
