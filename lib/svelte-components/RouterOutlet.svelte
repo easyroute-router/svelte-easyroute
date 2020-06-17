@@ -42,4 +42,4 @@
     pickRoute(_router.currentMatched.getValue)
 </script>
 
-<svelte:component this={currentComponent} currentRoute={routeData} />
+<svelte:component this={currentComponent} currentRoute={routeData} router={_router} />

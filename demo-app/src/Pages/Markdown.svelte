@@ -2,6 +2,7 @@
     import MarkdownIt from 'markdown-it'
 
     export let currentRoute
+    export let router
     console.log(currentRoute)
     const md = new MarkdownIt()
     let currentMdText = ''
@@ -19,6 +20,7 @@
 
             if (xhr.status !== 200) {
                 console.error(xhr.status, xhr.statusText)
+                router.push('/not-found')
                 currentMdText = ''
             } else {
                 currentMdText = xhr.responseText
@@ -27,7 +29,7 @@
         }
     }
 
-    $: updateContent(currentRoute.path)
+    $: currentRoute.fullPath && currentRoute.name === 'Page' && updateContent(currentRoute.fullPath)
     $: renderedContent = md.render(currentMdText)
 </script>
 
