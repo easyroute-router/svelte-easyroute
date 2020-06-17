@@ -1,6 +1,5 @@
 <script>
     import {RouterOutlet, RouterLink} from "../../../lib";
-    export let router
     export let currentRoute
     $: activeRoute = currentRoute.name
 </script>

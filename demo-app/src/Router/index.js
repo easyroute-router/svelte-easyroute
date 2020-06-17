@@ -39,9 +39,7 @@ const routes = [
 ]
 
 export default async function createRouter() {
-    console.log(_router)
     const module = await _router
-    console.log(module)
     const Router = module.default
     const router = new Router({
         mode: 'hash',

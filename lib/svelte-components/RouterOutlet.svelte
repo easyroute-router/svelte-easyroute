@@ -44,7 +44,6 @@
 
     function pickRoute(routes) {
         const currentRoute = routes.find(route => route.nestingDepth === currentDepth)
-        console.log(currentRoute)
         if (currentRoute) {
             const component = currentRoute.component
             try {

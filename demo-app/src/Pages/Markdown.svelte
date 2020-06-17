@@ -3,7 +3,6 @@
 
     export let currentRoute
     export let router
-    console.log(currentRoute)
     const md = new MarkdownIt()
     let currentMdText = ''
     let doDelay = false

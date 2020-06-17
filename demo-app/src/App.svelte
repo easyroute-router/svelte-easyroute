@@ -3,4 +3,4 @@
 	export let router
 </script>
 
-<RouterOutlet transition={'fade'} router={router} />
+<RouterOutlet router={router} />
