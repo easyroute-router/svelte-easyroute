@@ -6,6 +6,7 @@
     console.log(currentRoute)
     const md = new MarkdownIt()
     let currentMdText = ''
+    let doDelay = false
 
     function updateContent() {
         const slug = currentRoute.params.slug
@@ -23,13 +24,17 @@
                 router.push('/not-found')
                 currentMdText = ''
             } else {
-                currentMdText = xhr.responseText
+                const delay = doDelay ? 200 : 0
+                setTimeout(() => {
+                    currentMdText = xhr.responseText
+                }, delay)
+                doDelay = true
             }
 
         }
     }
 
-    $: currentRoute.fullPath && currentRoute.name === 'Page' && updateContent(currentRoute.fullPath)
+    $: currentRoute.fullPath && currentRoute.name === 'Page' && updateContent(true)
     $: renderedContent = md.render(currentMdText)
 </script>
 

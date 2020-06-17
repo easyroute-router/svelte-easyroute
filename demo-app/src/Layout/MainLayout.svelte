@@ -67,7 +67,7 @@
         </div>
         <div class="uk-width-expand">
             <div class="uk-card uk-card-default uk-card-body">
-                <RouterOutlet />
+                <RouterOutlet transition="fade" forceRemount={true} />
             </div>
         </div>
     </div>
