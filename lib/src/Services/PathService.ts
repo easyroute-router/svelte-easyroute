@@ -51,11 +51,12 @@ export default class PathService {
     }
 
     public static stripBase(url: string, base: string) {
+        if (!base) return url
         return url.replace(`${base}/`, '')
     }
 
     public static constructUrl(url: string, base: string){
-        if (url.includes(base)) return url
+        if (!base || url.includes(base)) return url
         else return `/${urljoin(base, url)}`
     }
 }

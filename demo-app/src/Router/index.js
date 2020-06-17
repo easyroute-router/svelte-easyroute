@@ -1,6 +1,8 @@
 import MainLayout from "../Layout/MainLayout.svelte";
 import NotFound from "../Pages/NotFound.svelte"
-import Router from '../../../lib/index'
+// import Router from '../../../lib/index'
+
+const _router = import(/* webpackChunkName: "router" */ '../../../lib/index.js')
 
 const routes = [
     {
@@ -36,10 +38,14 @@ const routes = [
     }
 ]
 
-const router = new Router({
-    base: 'easyroute/v2',
-    mode: 'history',
-    routes
-})
-
-export default router
+export default async function createRouter() {
+    console.log(_router)
+    const module = await _router
+    console.log(module)
+    const Router = module.default
+    const router = new Router({
+        mode: 'hash',
+        routes
+    })
+    return router
+}

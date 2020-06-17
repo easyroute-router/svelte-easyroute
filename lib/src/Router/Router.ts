@@ -3,7 +3,6 @@ import PathService from "../Services/PathService";
 import HashParser from "../Parsers/HashParser";
 import Observable from "../Utils/Observable";
 import UrlParser from "../Services/UrlParser";
-import urljoin from "url-join";
 
 export default class Router {
     private pathService = new PathService()
@@ -81,7 +80,6 @@ export default class Router {
     }
 
     public async parseRoute(url: string) {
-        console.log(url)
         if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
         if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
         const matched = this.parser?.parse(url.split('?')[0])
