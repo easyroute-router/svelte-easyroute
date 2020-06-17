@@ -1,6 +1,7 @@
 import { pathToRegexp } from 'path-to-regexp'
 import { Route } from "../Router/types";
 import generateId from "../Utils/IdGenerator";
+import urljoin from "url-join";
 
 export default class PathService {
 
@@ -47,5 +48,14 @@ export default class PathService {
             route.pathKeys = keysArray;
             return route;
         });
+    }
+
+    public static stripBase(url: string, base: string) {
+        return url.replace(`${base}/`, '')
+    }
+
+    public static constructUrl(url: string, base: string){
+        if (url.includes(base)) return url
+        else return `/${urljoin(base, url)}`
     }
 }

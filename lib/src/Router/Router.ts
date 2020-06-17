@@ -3,6 +3,7 @@ import PathService from "../Services/PathService";
 import HashParser from "../Parsers/HashParser";
 import Observable from "../Utils/Observable";
 import UrlParser from "../Services/UrlParser";
+import urljoin from "url-join";
 
 export default class Router {
     private pathService = new PathService()
@@ -28,19 +29,19 @@ export default class Router {
                 this.parser = new HashParser(this.routes)
                 this.parseRoute(window.location.pathname)
                 window.addEventListener('popstate', (ev) => {
-                    ev.state ? this.parseRoute(ev.state.url) : this.parseRoute('/')
+                    ev.state ? this.parseRoute(PathService.stripBase(ev.state.url, this.base)) : this.parseRoute('/')
                 })
                 break
             case 'hash':
             default:
                 this.parser = new HashParser(this.routes)
-                this.parseRoute(window.location.hash || '/#/')
+                this.parseRoute(PathService.stripBase(window.location.hash, this.base) || '/')
                 window.addEventListener('hashchange', () => {
                     if (this.ignoreEvents) {
                         this.ignoreEvents = false
                         return
                     }
-                    this.parseRoute(window.location.hash)
+                    this.parseRoute(PathService.stripBase(window.location.hash, this.base))
                 })
                 break
         }
@@ -80,6 +81,7 @@ export default class Router {
     }
 
     public async parseRoute(url: string) {
+        console.log(url)
         if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
         if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
         const matched = this.parser?.parse(url.split('?')[0])
@@ -87,7 +89,7 @@ export default class Router {
         const from = this.getFrom()
         const allowNext = await this.beforeHook(to, from)
         if (!allowNext) return
-        this.changeUrl(url)
+        this.changeUrl(PathService.constructUrl(url, this.base))
         this.currentRouteData.setValue(UrlParser.createRouteObject(matched, url))
         this.currentMatched.setValue(matched)
         this.afterHook(to, from)

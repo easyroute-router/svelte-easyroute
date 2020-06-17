@@ -37,7 +37,8 @@ const routes = [
 ]
 
 const router = new Router({
-    mode: 'hash',
+    base: 'easyroute/v2',
+    mode: 'history',
     routes
 })
 
