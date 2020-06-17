@@ -30,7 +30,8 @@ export default class UrlParser {
                 params: pathParams,
                 query: queryParams,
                 name: currentMatched.name,
-                fullPath: url
+                fullPath: url,
+                meta: currentMatched.meta ?? {}
             }
         }
         return {

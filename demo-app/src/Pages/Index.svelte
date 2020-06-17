@@ -1,7 +1,6 @@
 <script>
     import RouterOutlet from '../../../lib/svelte-components/RouterOutlet.svelte'
     export let currentRoute
-    console.log(currentRoute)
 </script>
 
 <h2>Welcome to Svelte Easyroute homepage!</h2>

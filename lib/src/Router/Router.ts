@@ -19,7 +19,9 @@ export default class Router {
     constructor(private settings: RouterSettings) {
         this.routes = this.pathService.getPathInformation(settings.routes)
         console.log(this.routes)
-        this.setParser()
+        setTimeout(() => {
+            this.setParser()
+        }, 0)
     }
 
     private setParser() {
@@ -51,7 +53,7 @@ export default class Router {
         const maxDepth = Math.max(...depths)
         const currentRoute = matched.find(route => route.nestingDepth === maxDepth) as Route
         if (!currentRoute) return null
-        return UrlParser.createRouteObject([currentRoute], url)
+        return Object.freeze(UrlParser.createRouteObject([currentRoute], url))
     }
 
     private getFrom(): any {
@@ -61,7 +63,7 @@ export default class Router {
         const currentRoute = current.find(route => route.nestingDepth === maxDepth) as Route
         if (!currentRoute) return null
         const url = this.currentRouteData.getValue.fullPath
-        return UrlParser.createRouteObject([currentRoute], url)
+        return Object.freeze(UrlParser.createRouteObject([currentRoute], url))
     }
 
     private changeUrl(url: string) {
@@ -88,7 +90,7 @@ export default class Router {
         const allowNext = await this.beforeHook(to, from)
         if (!allowNext) return
         this.changeUrl(PathService.constructUrl(url, this.base))
-        this.currentRouteData.setValue(UrlParser.createRouteObject(matched, url))
+        this.currentRouteData.setValue(to)
         this.currentMatched.setValue(matched)
         this.afterHook(to, from)
     }
@@ -102,7 +104,7 @@ export default class Router {
         this.navigate(data)
     }
 
-    private beforeHook(to: Route, from: Route) {
+    private async beforeHook(to: Route, from: Route) {
         return new Promise(resolve => {
             const next = (command?: HookCommand) => {
                 if (command !== null && command !== undefined) {

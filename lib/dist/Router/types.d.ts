@@ -10,6 +10,7 @@ export interface Route {
     nested?: any;
     id?: string;
     parentId?: string | null;
+    meta?: any;
 }
 export interface RouterSettings {
     mode: string;

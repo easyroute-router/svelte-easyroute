@@ -10,6 +10,7 @@ export default class UrlParser {
         query: QueryString.ParsedQuery<string>;
         name: string | undefined;
         fullPath: string;
+        meta: any;
         url?: undefined;
     } | {
         params: {};
@@ -17,5 +18,6 @@ export default class UrlParser {
         name: null;
         url: null;
         fullPath?: undefined;
+        meta?: undefined;
     };
 }
