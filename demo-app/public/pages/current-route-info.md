@@ -16,6 +16,15 @@ That's it!
   "query": {
     "name": "Alex",
     "age": "23"
+  },
+  "meta": {
+    "pageTitle": "Title!"
   }
 }
 ```
+
+By default route info object is immutable, 
+however, you can see `meta` field in the example above. 
+
+Just like in VueRouter, you can pass any data to route
+with this field. You can also add data in `beforeEach` hook.

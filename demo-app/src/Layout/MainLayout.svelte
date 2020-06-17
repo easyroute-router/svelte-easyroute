@@ -56,8 +56,18 @@
                             </RouterLink>
                         </li>
                         <li>
+                            <RouterLink to="/page/programmatic-navigation">
+                                Programmatic navigation
+                            </RouterLink>
+                        </li>
+                        <li>
                             <RouterLink to="/page/nested-routes">
                                 Nested routes
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/page/css-transitions">
+                                CSS transitions
                             </RouterLink>
                         </li>
                     </ul>
