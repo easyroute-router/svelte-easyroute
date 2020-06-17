@@ -18,3 +18,5 @@ export interface RouterSettings {
     base: string
     routes: Route[]
 }
+
+export type HookCommand = string | false | true

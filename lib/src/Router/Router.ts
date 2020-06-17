@@ -1,4 +1,4 @@
-import {Route, RouterSettings} from "./types";
+import {Route, RouterSettings, HookCommand} from "./types";
 import PathService from "../Services/PathService";
 import HashParser from "../Parsers/HashParser";
 import Observable from "../Utils/Observable";
@@ -8,6 +8,7 @@ export default class Router {
     private pathService = new PathService()
     private readonly routes: Route[] = []
     private parser: HashParser | null = null
+    private ignoreEvents = false
 
     public beforeEach: any = null
     public afterEach: any = null
@@ -33,40 +34,37 @@ export default class Router {
             case 'hash':
             default:
                 this.parser = new HashParser(this.routes)
-                this.parseRoute(window.location.hash)
+                this.parseRoute(window.location.hash || '/#/')
                 window.addEventListener('hashchange', () => {
+                    if (this.ignoreEvents) {
+                        this.ignoreEvents = false
+                        return
+                    }
                     this.parseRoute(window.location.hash)
                 })
                 break
         }
     }
 
-    private getTo(matched: Route[]): Route {
+    private getTo(matched: Route[], url: string): any {
         const depths: number[] = matched.map(route => route.nestingDepth as number)
         const maxDepth = Math.max(...depths)
-        return matched.find(route => route.nestingDepth === maxDepth) as Route
+        const currentRoute = matched.find(route => route.nestingDepth === maxDepth) as Route
+        if (!currentRoute) return null
+        return UrlParser.createRouteObject([currentRoute], url)
     }
 
-    private getFrom(): Route {
+    private getFrom(): any {
         const current: Route[] = this.currentMatched.getValue
         const depths: number[] = current.map(route => route.nestingDepth as number)
         const maxDepth = Math.max(...depths)
-        return current.find(route => route.nestingDepth === maxDepth) as Route
+        const currentRoute = current.find(route => route.nestingDepth === maxDepth) as Route
+        if (!currentRoute) return null
+        const url = this.currentRouteData.getValue.fullPath
+        return UrlParser.createRouteObject([currentRoute], url)
     }
 
-    public async parseRoute(url: string) {
-        if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
-        if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
-        const matched = this.parser?.parse(url.split('?')[0])
-        const to = this.getTo(matched)
-        const from = this.getFrom()
-        await this.beforeHook(to, from)
-        this.currentRouteData.setValue(UrlParser.createRouteObject(matched, url))
-        this.currentMatched.setValue(matched)
-        this.afterHook(to, from)
-    }
-
-    public navigate(url: string) {
+    private changeUrl(url: string) {
         if (this.mode === 'hash') {
             window.location.hash = url
         }
@@ -78,8 +76,26 @@ export default class Router {
                 'Test',
                 url
             )
-            this.parseRoute(url)
         }
+    }
+
+    public async parseRoute(url: string) {
+        if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
+        if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
+        const matched = this.parser?.parse(url.split('?')[0])
+        const to = this.getTo(matched, url)
+        const from = this.getFrom()
+        const allowNext = await this.beforeHook(to, from)
+        if (!allowNext) return
+        this.changeUrl(url)
+        this.currentRouteData.setValue(UrlParser.createRouteObject(matched, url))
+        this.currentMatched.setValue(matched)
+        this.afterHook(to, from)
+    }
+
+    public navigate(url: string) {
+        this.ignoreEvents = true
+        this.parseRoute(url)
     }
 
     public push(data: string) {
@@ -88,8 +104,19 @@ export default class Router {
 
     private beforeHook(to: Route, from: Route) {
         return new Promise(resolve => {
-            if (!this.beforeEach) resolve()
-            this.beforeEach(to, from, resolve)
+            const next = (command?: HookCommand) => {
+                if (command !== null && command !== undefined) {
+                    if (command === false) {
+                        resolve(false)
+                    }
+                    if (typeof command === 'string') {
+                        this.parseRoute(command)
+                        resolve(false)
+                    }
+                } else resolve(true)
+            }
+            if (!this.beforeEach) resolve(true)
+            else this.beforeEach(to, from, next)
         })
     }
 

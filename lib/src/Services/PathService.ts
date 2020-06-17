@@ -1,12 +1,10 @@
 import { pathToRegexp } from 'path-to-regexp'
-import queryString from 'query-string'
 import { Route } from "../Router/types";
 import generateId from "../Utils/IdGenerator";
 
 export default class PathService {
 
     private readonly pathToRegexp : any = pathToRegexp;
-    private readonly queryString : any = queryString;
 
     private parsePaths (
         routes: Route[]

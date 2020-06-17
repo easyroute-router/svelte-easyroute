@@ -1,4 +1,4 @@
-import QueryString, { ParsedQuery } from 'query-string'
+import QueryString from 'query-string'
 import {Route} from "../Router/types";
 
 export default class UrlParser {
