@@ -1,5 +1,5 @@
 <script>
-	import RouterOutlet from '../../lib/svelte-components/RouterOutlet.svelte'
+	import { RouterOutlet } from '../../lib'
 	export let router
 </script>
 

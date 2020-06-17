@@ -1,6 +1,5 @@
 <script>
-    import RouterOutlet from "../../../lib/svelte-components/RouterOutlet.svelte";
-    import RouterLink from "../../../lib/svelte-components/RouterLink.svelte";
+    import {RouterOutlet, RouterLink} from "../../../lib";
     export let router
     export let currentRoute
     $: activeRoute = currentRoute.name

@@ -1,5 +1,6 @@
 import MainLayout from "../Layout/MainLayout.svelte";
-import Router from "../../../lib/dist";
+import NotFound from "../Pages/NotFound.svelte"
+import Router from '../../../lib/index'
 
 const routes = [
     {
@@ -16,15 +17,28 @@ const routes = [
                 name: 'Page',
                 path: 'page/:slug',
                 component: () => import(/*webpackChunkName: "mdpage" */ '../Pages/Markdown.svelte')
+            },
+            {
+                path: '(.*)',
+                component: NotFound
             }
         ]
     },
+    {
+        path: '(.*)',
+        component: MainLayout,
+        children: [
+            {
+                path: '(.*)',
+                component: NotFound
+            }
+        ]
+    }
 ]
 
 const router = new Router({
     mode: 'hash',
     routes
 })
-
 
 export default router
