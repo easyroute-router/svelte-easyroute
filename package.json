@@ -1,6 +1,6 @@
 {
-  "name": "svelte-app",
-  "version": "1.0.0",
+  "name": "svelte-easyroute",
+  "version": "2.0.0",
   "devDependencies": {
     "@types/lodash": "^4.14.155",
     "@types/path-to-regexp": "^1.7.0",
@@ -22,9 +22,10 @@
     "webpack-dev-server": "^3.3.1"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config config/webpack.config.js",
-    "dev": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
-    "router:dev": "tsc --watch"
+    "build:app": "cross-env NODE_ENV=production webpack --config config/webpack.config.js",
+    "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
+    "dev:router": "tsc --watch",
+    "build:router": "tsc"
   },
   "dependencies": {
     "lodash": "^4.17.15",
