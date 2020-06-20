@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -19,7 +20,7 @@ module.exports = {
 		path: __dirname + './../demo-app/public',
 		filename: '[name].js',
 		chunkFilename: '[name].[id].js',
-		publicPath: "/"
+		publicPath: ""
 	},
 	module: {
 		rules: [
@@ -43,7 +44,15 @@ module.exports = {
 					prod ? MiniCssExtractPlugin.loader : 'style-loader',
 					'css-loader'
 				]
-			}
+			},
+			{
+				test: /\.(png|jpe?g|gif|svg)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+					},
+				],
+			},
 		]
 	},
 	mode,

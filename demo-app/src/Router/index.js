@@ -25,9 +25,13 @@ const routes = [
                 component: () => import(/*webpackChunkName: "mdpage" */ '../Pages/Markdown.svelte')
             },
             {
+                path: 'playground/:param1/:param2',
+                component: () => import(/* webpackChunkName: "playground" */ '../Pages/Playground.svelte')
+            },
+            {
                 path: '(.*)',
                 component: NotFound
-            }
+            },
         ]
     },
     {

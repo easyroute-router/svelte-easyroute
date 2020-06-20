@@ -2,6 +2,8 @@
     import {RouterOutlet} from "../../../lib";
     import MainMenu from "../Components/MainMenu.svelte";
 
+    import logo from '../assets/logo.png'
+
     export let currentRoute
     $: activeRoute = currentRoute.name
 </script>
@@ -9,7 +11,7 @@
 <div class="main-layout">
     <nav class="uk-navbar-container" uk-navbar>
         <div class="uk-navbar-left">
-            <a class="uk-navbar-item uk-logo" href="#/">Svelte Easyroute v2</a>
+            <a class="uk-navbar-item uk-logo" href="#/"><img style="width: 25rem" src="{ logo }"></a>
         </div>
     </nav>
     <div uk-grid style="margin-top: 2rem">

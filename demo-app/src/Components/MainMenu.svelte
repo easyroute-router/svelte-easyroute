@@ -44,4 +44,10 @@
             CSS transitions
         </RouterLink>
     </li>
+    <li class="uk-nav-divider"></li>
+    <li>
+        <RouterLink to="/playground/demo/params?text=query">
+            Playground
+        </RouterLink>
+    </li>
 </ul>
