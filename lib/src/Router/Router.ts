@@ -28,7 +28,7 @@ export default class Router {
         switch (this.mode) {
             case 'history':
                 this.parser = new HashParser(this.routes)
-                this.parseRoute(window.location.pathname)
+                this.parseRoute(`${window.location.pathname}${window.location.search}`)
                 window.addEventListener('popstate', (ev) => {
                     ev.state ? this.parseRoute(PathService.stripBase(ev.state.url, this.base)) : this.parseRoute('/')
                 })

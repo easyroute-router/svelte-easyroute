@@ -1,4 +1,5 @@
 import App from './App.svelte';
+import './global.css'
 import 'uikit/dist/css/uikit.css'
 import 'uikit/dist/js/uikit'
 

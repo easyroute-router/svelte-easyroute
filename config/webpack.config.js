@@ -1,6 +1,8 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const mode = process.env.NODE_ENV || 'development';
 const prod = mode === 'production';
@@ -18,9 +20,9 @@ module.exports = {
 	},
 	output: {
 		path: __dirname + './../demo-app/public',
-		filename: '[name].js',
-		chunkFilename: '[name].[id].js',
-		publicPath: ""
+		filename: 'js/[name].[contenthash].js',
+		chunkFilename: 'js/[name].[contenthash].js',
+		publicPath: "/"
 	},
 	module: {
 		rules: [
@@ -47,25 +49,31 @@ module.exports = {
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-					},
-				],
+				loader: 'file-loader',
+				options: {
+					name: 'assets/[name].[contenthash].[ext]'
+				}
 			},
 		]
 	},
 	mode,
 	plugins: [
+		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
-			filename: '[name].css'
-		})
+			filename: 'css/[name].[contenthash].css'
+		}),
+		new HtmlWebpackPlugin({
+			template: "demo-app/src/index_template.html"
+		}),
+		new CopyPlugin({
+			patterns: [
+				{ from: "*", to: "pages", context: "demo-app/src/texts" },
+			],
+		}),
+
 	],
+	devtool: prod ? false: 'source-map',
 	devServer: {
-		historyApiFallback: true,
-		publicPath: '/',
-		index: '/',
-		contentBase: '/'
-	},
-	devtool: prod ? false: 'source-map'
+		historyApiFallback: true
+	}
 };
