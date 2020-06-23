@@ -73,8 +73,7 @@ module.exports = {
 				{ from: "*", to: "pages", context: "demo-app/src/texts" },
 			],
 		}),
-		new PrerenderSPAPlugin({
-			// Required - The path to the webpack-outputted app to prerender.
+		prod && new PrerenderSPAPlugin({
 			staticDir: path.join(__dirname, './../demo-app/public'),
 			minify: {
 				collapseBooleanAttributes: true,
@@ -86,7 +85,6 @@ module.exports = {
 			renderer: new Renderer({
 				renderAfterTime: 1000
 			}),
-			// Required - Routes to render.
 			routes: [
 				'/',
 				'/page/installation',
@@ -101,7 +99,7 @@ module.exports = {
 			],
 		})
 
-	],
+	].filter(Boolean),
 	devtool: prod ? false: 'source-map',
 	devServer: {
 		historyApiFallback: true
