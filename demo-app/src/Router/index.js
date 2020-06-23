@@ -50,7 +50,7 @@ export default async function createRouter() {
     const module = await _router
     const Router = module.default
     const router = new Router({
-        mode: 'silent',
+        mode: 'history',
         routes
     })
 

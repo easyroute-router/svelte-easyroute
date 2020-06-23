@@ -40,8 +40,18 @@
         </RouterLink>
     </li>
     <li>
+        <RouterLink to="/page/navigation-guards">
+            Navigation guards
+        </RouterLink>
+    </li>
+    <li>
         <RouterLink to="/page/css-transitions">
             CSS transitions
+        </RouterLink>
+    </li>
+    <li>
+        <RouterLink to="/page/silent-mode">
+            Silent mode
         </RouterLink>
     </li>
     <li class="uk-nav-divider"></li>

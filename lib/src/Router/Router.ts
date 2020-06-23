@@ -142,6 +142,7 @@ export default class Router {
         if (this.mode !== 'silent') {
             window.history.go(howFar)
         } else {
+            console.log(this.silentControl!.go(howFar))
             this.parseRoute(this.silentControl!.go(howFar), false)
         }
     }

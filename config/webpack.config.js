@@ -95,6 +95,8 @@ module.exports = {
 				'/page/programmatic-navigation',
 				'/page/nested-routes',
 				'/page/css-transitions',
+				'/page/navigation-guards',
+				'/page/silent-mode',
 				'/playground/demo/params'
 			],
 		})

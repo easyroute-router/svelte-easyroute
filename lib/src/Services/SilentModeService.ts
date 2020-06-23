@@ -25,11 +25,10 @@ export default class SilentModeService {
     public go(howFar: number): string {
         const goResult = this.currentHistoryPosition + howFar
         const previousObject = this.history[goResult]
-        console.log(this.history)
         if (previousObject) {
             this.currentHistoryPosition = goResult
             return previousObject.fullPath
         }
-        return ''
+        return this.history[0].fullPath
     }
 }
