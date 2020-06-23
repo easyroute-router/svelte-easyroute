@@ -1,4 +1,4 @@
-import { pathToRegexp } from 'path-to-regexp'
+import { pathToRegexp, Key } from 'path-to-regexp'
 import { Route } from '../Router/types'
 import generateId from '../Utils/IdGenerator'
 import urljoin from 'url-join'
@@ -41,7 +41,7 @@ export default class PathService {
   public getPathInformation(routes: Route[]): Route[] {
     const allRoutes: Route[] = this.parsePaths(routes)
     return allRoutes.map((route) => {
-      const keysArray: any[] = []
+      const keysArray: Key[] = []
       route.regexpPath = this.pathToRegexp(route.path, keysArray)
       route.pathKeys = keysArray
       return route

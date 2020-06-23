@@ -1,12 +1,15 @@
-import QueryString from 'query-string'
-import { Route } from '../Router/types'
+import QueryString, { ParsedQuery } from 'query-string'
+import { Route, RouteObject } from '../Router/types'
 
 export default class UrlParser {
-  private static getQueryParams(queryString: string) {
+  private static getQueryParams(queryString: string): ParsedQuery {
     return QueryString.parse(queryString)
   }
 
-  private static getPathParams(matchedRoute: Route, url: string) {
+  private static getPathParams(
+    matchedRoute: Route,
+    url: string
+  ): { [key: string]: string } {
     let pathValues: string[] = matchedRoute.regexpPath!.exec(url) as string[]
     pathValues = pathValues.slice(1, pathValues.length)
     const urlParams: { [key: string]: string } = {}
@@ -18,7 +21,10 @@ export default class UrlParser {
     return urlParams
   }
 
-  public static createRouteObject(matchedRoutes: Route[], url: string) {
+  public static createRouteObject(
+    matchedRoutes: Route[],
+    url: string
+  ): RouteObject {
     const depths: number[] = matchedRoutes.map(
       (route) => route.nestingDepth as number
     )
@@ -40,9 +46,7 @@ export default class UrlParser {
     }
     return {
       params: {},
-      query: {},
-      name: null,
-      url: null
+      query: {}
     }
   }
 }

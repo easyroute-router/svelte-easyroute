@@ -1,14 +1,14 @@
-import { Route } from '../Router/types'
+import { RouteObject } from '../Router/types'
 
 export default class SilentModeService {
-  private history: any[] = []
+  private history: RouteObject[] = []
   private currentHistoryPosition = 0
 
-  constructor(firstRoute: Route) {
+  constructor(firstRoute: RouteObject) {
     this.appendHistory(firstRoute)
   }
 
-  public appendHistory(data: Route | Route[]) {
+  public appendHistory(data: RouteObject | RouteObject[]) {
     if (Array.isArray(data)) {
       this.history.push(...data)
       this.currentHistoryPosition += data.length
@@ -27,8 +27,8 @@ export default class SilentModeService {
     const previousObject = this.history[goResult]
     if (previousObject) {
       this.currentHistoryPosition = goResult
-      return previousObject.fullPath
+      return previousObject?.fullPath ?? ''
     }
-    return this.history[0].fullPath
+    return this.history[0].fullPath ?? ''
   }
 }

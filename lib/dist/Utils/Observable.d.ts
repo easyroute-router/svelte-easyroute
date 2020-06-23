@@ -1,5 +1,3 @@
-export default function Observable<T>(
-  initValue: T
-): {
-  value: T
-}
+export default function Observable<T>(initValue: T): {
+    value: T;
+};

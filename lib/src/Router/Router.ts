@@ -111,6 +111,7 @@ export default class Router {
     if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
     if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
     const matched = this.parser?.parse(url.split('?')[0])
+    if (!matched) return
     const to = this.getTo(matched, url)
     const from = this.getFrom()
     if (this.mode === 'silent' && !this.silentControl) {
