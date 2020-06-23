@@ -6,11 +6,14 @@ import 'uikit/dist/js/uikit'
 import router from './Router'
 
 async function bootstrap() {
+	const appContainer = document.getElementById('app')
+
 	const app = new App({
-		target: document.body,
+		target: document.getElementById('app'),
+		hydrate: true,
 		props: {
 			name: 'world',
-			router: await router()
+			router: await router(),
 		}
 	});
 	window.app = app

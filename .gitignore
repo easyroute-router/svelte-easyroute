@@ -3,3 +3,4 @@ Makefile
 ./dist
 /testapp/node_modules/
 .idea
+demo-app/public

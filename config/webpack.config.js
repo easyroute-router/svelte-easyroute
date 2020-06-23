@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
 
 const mode = process.env.NODE_ENV || 'development';
 const prod = mode === 'production';
@@ -32,7 +34,8 @@ module.exports = {
 					loader: 'svelte-loader',
 					options: {
 						emitCss: true,
-						hotReload: true
+						hotReload: true,
+						hydratable: true
 					}
 				}
 			},
@@ -63,13 +66,40 @@ module.exports = {
 			filename: 'css/[name].[contenthash].css'
 		}),
 		new HtmlWebpackPlugin({
-			template: "demo-app/src/index_template.html"
+			template: "demo-app/src/index_template.ejs"
 		}),
 		new CopyPlugin({
 			patterns: [
 				{ from: "*", to: "pages", context: "demo-app/src/texts" },
 			],
 		}),
+		new PrerenderSPAPlugin({
+			// Required - The path to the webpack-outputted app to prerender.
+			staticDir: path.join(__dirname, './../demo-app/public'),
+			minify: {
+				collapseBooleanAttributes: true,
+				collapseWhitespace: true,
+				decodeEntities: true,
+				keepClosingSlash: true,
+				sortAttributes: true
+			},
+			renderer: new Renderer({
+				renderAfterTime: 1000
+			}),
+			// Required - Routes to render.
+			routes: [
+				'/',
+				'/page/installation',
+				'/page/getting-started',
+				'/page/dynamic-matching',
+				'/page/current-route-info',
+				'/page/router-links',
+				'/page/programmatic-navigation',
+				'/page/nested-routes',
+				'/page/css-transitions',
+				'/playground/demo/params'
+			],
+		})
 
 	],
 	devtool: prod ? false: 'source-map',
