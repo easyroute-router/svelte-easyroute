@@ -96,7 +96,7 @@ export default class Router {
         if (this.mode === 'silent' && !this.silentControl) {
             this.silentControl = new SilentModeService(to)
         }
-        if (this.silentControl) {
+        if (this.silentControl && doPushState) {
             this.silentControl.appendHistory(to)
         }
         const allowNext = await this.beforeHook(to, from)
@@ -142,7 +142,7 @@ export default class Router {
         if (this.mode !== 'silent') {
             window.history.go(howFar)
         } else {
-            this.silentControl?.go(howFar)
+            this.parseRoute(this.silentControl!.go(howFar), false)
         }
     }
 

@@ -1,5 +1,5 @@
 <script>
-    import {RouterOutlet} from "../../../lib";
+    import {RouterOutlet, RouterLink} from "../../../lib";
     import MainMenu from "../Components/MainMenu.svelte";
 
     import logo from '../assets/logo.png'
@@ -12,7 +12,7 @@
 <div class="main-layout">
     <nav class="uk-navbar-container" uk-navbar>
         <div class="uk-navbar-left">
-            <a class="uk-navbar-item uk-logo" href="#/"><img style="width: 25rem" src="{ logo }"></a>
+            <RouterLink class="uk-navbar-item uk-logo" to="/"><img style="width: 25rem" src="{ logo }"></RouterLink>
         </div>
         <div class="uk-navbar-right">
             <div style="margin-right: 2rem">
