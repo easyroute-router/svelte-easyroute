@@ -1,23 +1,23 @@
-import {SvelteComponent} from "svelte/internal";
+import { SvelteComponent } from 'svelte/internal'
 
 export interface Route {
-    path?: string
-    component?: SvelteComponent
-    name?: string,
-    regexpPath?: RegExp
-    pathKeys?: any
-    children?: Route[],
-    nestingDepth?: number
-    nested?: any
-    id?: string
-    parentId?: string | null
-    meta?: any
+  path?: string
+  component?: SvelteComponent
+  name?: string
+  regexpPath?: RegExp
+  pathKeys?: any
+  children?: Route[]
+  nestingDepth?: number
+  nested?: any
+  id?: string
+  parentId?: string | null
+  meta?: any
 }
 
 export interface RouterSettings {
-    mode: string
-    base: string
-    routes: Route[]
+  mode: string
+  base: string
+  routes: Route[]
 }
 
 export type HookCommand = string | false | true

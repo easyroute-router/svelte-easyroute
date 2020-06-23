@@ -1,1 +1,1 @@
-export default function generateId(): string;
+export default function generateId(): string
