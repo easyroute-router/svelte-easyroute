@@ -22,6 +22,7 @@
     "style-loader": "^0.23.1",
     "svelte": "^3.0.0",
     "svelte-loader": "2.13.3",
+    "ts-loader": "^7.0.5",
     "ts-node-dev": "^1.0.0-pre.48",
     "typescript": "^3.9.5",
     "uikit": "^3.5.4",

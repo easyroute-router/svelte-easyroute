@@ -3,12 +3,14 @@ import PathService from "../Services/PathService";
 import HashParser from "../Parsers/HashParser";
 import Observable from "../Utils/Observable";
 import UrlParser from "../Services/UrlParser";
+import SilentModeService from "../Services/SilentModeService";
 
 export default class Router {
     private pathService = new PathService()
     private readonly routes: Route[] = []
     private parser: HashParser | null = null
     private ignoreEvents = false
+    private silentControl: SilentModeService | null = null
 
     public beforeEach: any = null
     public afterEach: any = null
@@ -26,11 +28,15 @@ export default class Router {
 
     private setParser() {
         switch (this.mode) {
-            case 'history':
+            case 'silent':
                 this.parser = new HashParser(this.routes)
                 this.parseRoute(`${window.location.pathname}${window.location.search}`)
+                break
+            case 'history':
+                this.parser = new HashParser(this.routes)
+                this.parseRoute(`${window.location.pathname}${window.location.search}`, false)
                 window.addEventListener('popstate', (ev) => {
-                    ev.state ? this.parseRoute(PathService.stripBase(ev.state.url, this.base)) : this.parseRoute('/')
+                    ev.state ? this.parseRoute(PathService.stripBase(ev.state.url, this.base), false) : this.parseRoute('/', false)
                 })
                 break
             case 'hash':
@@ -66,11 +72,11 @@ export default class Router {
         return Object.freeze(UrlParser.createRouteObject([currentRoute], url))
     }
 
-    private changeUrl(url: string) {
+    private changeUrl(url: string, doPushState = true) {
         if (this.mode === 'hash') {
             window.location.hash = url
         }
-        if (this.mode === 'history') {
+        if (this.mode === 'history' && doPushState) {
             window.history.pushState(
                 {
                     url
@@ -81,15 +87,21 @@ export default class Router {
         }
     }
 
-    public async parseRoute(url: string) {
+    public async parseRoute(url: string, doPushState = true) {
         if (this.mode === 'hash' && url.includes('#')) url = url.replace('#', '')
         if (this.mode === 'history' && url.includes('#')) url = url.replace('#', '')
         const matched = this.parser?.parse(url.split('?')[0])
         const to = this.getTo(matched, url)
         const from = this.getFrom()
+        if (this.mode === 'silent' && !this.silentControl) {
+            this.silentControl = new SilentModeService(to)
+        }
+        if (this.silentControl) {
+            this.silentControl.appendHistory(to)
+        }
         const allowNext = await this.beforeHook(to, from)
         if (!allowNext) return
-        this.changeUrl(PathService.constructUrl(url, this.base))
+        this.changeUrl(PathService.constructUrl(url, this.base), doPushState)
         this.currentRouteData.setValue(to)
         this.currentMatched.setValue(matched)
         this.afterHook(to, from)
@@ -98,10 +110,6 @@ export default class Router {
     public navigate(url: string) {
         this.ignoreEvents = true
         this.parseRoute(url)
-    }
-
-    public push(data: string) {
-        this.navigate(data)
     }
 
     private async beforeHook(to: Route, from: Route) {
@@ -124,6 +132,22 @@ export default class Router {
 
     private afterHook(to: Route, from: Route) {
         this.afterEach && this.afterEach(to, from)
+    }
+
+    public push(data: string) {
+        this.navigate(data)
+    }
+
+    public go(howFar: number) {
+        if (this.mode !== 'silent') {
+            window.history.go(howFar)
+        } else {
+            this.silentControl?.go(howFar)
+        }
+    }
+
+    public back() {
+        this.go(-1)
     }
 
     get mode() {

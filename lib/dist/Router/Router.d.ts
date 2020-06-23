@@ -5,6 +5,7 @@ export default class Router {
     private readonly routes;
     private parser;
     private ignoreEvents;
+    private silentControl;
     beforeEach: any;
     afterEach: any;
     currentMatched: any;
@@ -14,11 +15,13 @@ export default class Router {
     private getTo;
     private getFrom;
     private changeUrl;
-    parseRoute(url: string): Promise<void>;
+    parseRoute(url: string, doPushState?: boolean): Promise<void>;
     navigate(url: string): void;
-    push(data: string): void;
     private beforeHook;
     private afterHook;
+    push(data: string): void;
+    go(howFar: number): void;
+    back(): void;
     get mode(): string;
     get base(): string;
     get currentRoute(): any;
