@@ -25,7 +25,7 @@ export interface RouteObject {
 
 export interface RouterSettings {
   mode: string
-  base: string
+  base?: string
   routes: Route[]
 }
 

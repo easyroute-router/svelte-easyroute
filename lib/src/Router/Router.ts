@@ -30,7 +30,6 @@ export default class Router {
 
   constructor(private settings: RouterSettings) {
     this.routes = this.pathService.getPathInformation(settings.routes)
-    console.log(this.routes)
     setTimeout(() => {
       this.setParser()
     }, 0)
@@ -202,7 +201,7 @@ export default class Router {
   }
 
   get base() {
-    return this.settings.base
+    return this.settings.base ?? ''
   }
 
   get currentRoute() {
