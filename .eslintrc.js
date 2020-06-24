@@ -10,7 +10,9 @@ module.exports = {
         'plugin:prettier/recommended'
     ],
     rules: {
-        '@typescript-eslint/explicit-module-boundary-types': 'off'
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
     },
     ignorePatterns: [
         "**/dist/**",

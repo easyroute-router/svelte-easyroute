@@ -1,4 +1,5 @@
-import { RouterSettings } from './types';
+import { Route, RouterSettings, Callback, RouteObject } from './types';
+import Observable from '../Utils/Observable';
 export default class Router {
     private settings;
     private pathService;
@@ -6,10 +7,10 @@ export default class Router {
     private parser;
     private ignoreEvents;
     private silentControl;
-    beforeEach: any;
-    afterEach: any;
-    currentMatched: any;
-    currentRouteData: any;
+    beforeEach: Callback | null;
+    afterEach: Callback | null;
+    currentMatched: Observable<Route[]>;
+    currentRouteData: Observable<RouteObject>;
     constructor(settings: RouterSettings);
     private setParser;
     private getTo;
@@ -24,5 +25,5 @@ export default class Router {
     back(): void;
     get mode(): string;
     get base(): string;
-    get currentRoute(): any;
+    get currentRoute(): RouteObject;
 }

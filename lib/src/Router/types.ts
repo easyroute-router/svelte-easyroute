@@ -30,3 +30,4 @@ export interface RouterSettings {
 }
 
 export type HookCommand = string | false | true
+export type Callback = (...args: any[]) => void

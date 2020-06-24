@@ -1,4 +1,10 @@
-import { Route, RouterSettings, HookCommand } from './types'
+import {
+  Route,
+  RouterSettings,
+  HookCommand,
+  Callback,
+  RouteObject
+} from './types'
 import PathService from '../Services/PathService'
 import HashParser from '../Parsers/HashParser'
 import Observable from '../Utils/Observable'
@@ -12,11 +18,15 @@ export default class Router {
   private ignoreEvents = false
   private silentControl: SilentModeService | null = null
 
-  public beforeEach: any = null
-  public afterEach: any = null
+  public beforeEach: Callback | null = null
+  public afterEach: Callback | null = null
 
-  public currentMatched: any = Observable<Route[]>([])
-  public currentRouteData: any = Observable({ params: {}, query: {}, name: '' })
+  public currentMatched = new Observable<Route[]>([])
+  public currentRouteData = new Observable<RouteObject>({
+    params: {},
+    query: {},
+    name: ''
+  })
 
   constructor(private settings: RouterSettings) {
     this.routes = this.pathService.getPathInformation(settings.routes)
@@ -66,7 +76,7 @@ export default class Router {
     }
   }
 
-  private getTo(matched: Route[], url: string): any {
+  private getTo(matched: Route[], url: string): RouteObject {
     const depths: number[] = matched.map(
       (route) => route.nestingDepth as number
     )
@@ -74,11 +84,20 @@ export default class Router {
     const currentRoute = matched.find(
       (route) => route.nestingDepth === maxDepth
     ) as Route
-    if (!currentRoute) return null
+    if (!currentRoute)
+      return {
+        params: {},
+        query: {}
+      }
     return Object.freeze(UrlParser.createRouteObject([currentRoute], url))
   }
 
-  private getFrom(): any {
+  private getFrom(): RouteObject {
+    if (!this.currentMatched.getValue)
+      return {
+        params: {},
+        query: {}
+      }
     const current: Route[] = this.currentMatched.getValue
     const depths: number[] = current.map(
       (route) => route.nestingDepth as number
@@ -87,12 +106,18 @@ export default class Router {
     const currentRoute = current.find(
       (route) => route.nestingDepth === maxDepth
     ) as Route
-    if (!currentRoute) return null
+    if (!currentRoute)
+      return {
+        params: {},
+        query: {}
+      }
     const url = this.currentRouteData.getValue.fullPath
-    return Object.freeze(UrlParser.createRouteObject([currentRoute], url))
+    return Object.freeze(
+      UrlParser.createRouteObject([currentRoute], url as string)
+    )
   }
 
-  private changeUrl(url: string, doPushState = true) {
+  private changeUrl(url: string, doPushState = true): void {
     if (this.mode === 'hash') {
       window.location.hash = url
     }

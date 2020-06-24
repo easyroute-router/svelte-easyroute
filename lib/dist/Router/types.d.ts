@@ -28,3 +28,4 @@ export interface RouterSettings {
     routes: Route[];
 }
 export declare type HookCommand = string | false | true;
+export declare type Callback = (...args: any[]) => void;
