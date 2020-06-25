@@ -11,5 +11,7 @@
 </script>
 
 <div class="page-content">
-    {@html renderedContent}
+    <article>
+        {@html renderedContent}
+    </article>
 </div>
