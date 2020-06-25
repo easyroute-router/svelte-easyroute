@@ -42,7 +42,8 @@
     "uikit": "^3.5.4",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.3.1",
+    "nprogress": "^0.2.0"
   },
   "scripts": {
     "build:app": "cross-env NODE_ENV=production webpack --progress --config config/webpack.config.js",
@@ -54,7 +55,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "nprogress": "^0.2.0",
     "path-to-regexp": "^6.1.0",
     "query-string": "^6.13.1",
     "url-join": "^4.0.1"
