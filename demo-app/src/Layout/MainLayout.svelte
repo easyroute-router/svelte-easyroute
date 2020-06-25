@@ -17,8 +17,7 @@
             </div>
             <div class="uk-navbar-right">
                 <div style="margin-right: 2rem">
-                    <button type="button" on:click={ () => router.back() }>Back</button>
-                    <button type="button" on:click={ () => router.go(1) }>Forward</button>
+                    <a class="github-button" href="https://github.com/lyohaplotinka/svelte-easyroute" data-size="large" data-show-count="true" aria-label="Star lyohaplotinka/svelte-easyroute on GitHub">GitHub</a>
                 </div>
             </div>
         </div>
