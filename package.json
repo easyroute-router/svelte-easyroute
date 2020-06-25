@@ -1,7 +1,25 @@
 {
-  "name": "svelte-easyroute",
-  "version": "2.0.0",
-  "main": "lib/dist/index.js",
+  "name": "svsrt",
+  "description": "Svelte Easyroute 2 test package",
+  "version": "2.0.2-0",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lyohaplotinka/svelte-easyroute.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lyohaplotinka/svelte-easyroute/issues"
+  },
+  "homepage": "https://easyroute.lyoha.info",
+  "keywords": [
+    "svelte",
+    "router",
+    "route",
+    "framework",
+    "javascript"
+  ],
+  "author": "Lyoha Plotinka",
+  "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.10.3",
     "@types/jest": "^26.0.0",
