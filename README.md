@@ -1,64 +1,43 @@
-# svelte app
+![alt text](https://img.shields.io/npm/v/svelte-easyroute.svg "npm stats")
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template-webpack.
+### Habitual router in your projects
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
-
-```bash
-npx degit sveltejs/template-webpack svelte-app
-cd svelte-app
-```
-
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
+![alt text](https://easyroute.lyoha.info/assets/logo.640381ffb6b33843108bca9c5601e46f.png "Easyroute Logo")
 
 
-## Get started
+**Svelte Easyroute** - is a simple and convenient 
+router for [Svelte](https://svelte.dev/). 
+It is good svelte router which supports history 
+and hash mode, navigation guards, base path. 
+If you need a router for svelte, try this one.
 
-Install the dependencies...
+TL;DR Features:
 
-```bash
-cd svelte-app
-npm install
-```
+* Config-based router (just like Vue Router)
+* Dynamic route matching
+* Nested routes
+* Lazy route component loading outside the box
+* Programmatic navigation
+* Named routes
+* Hash, history and silent modes
+* CSS transitions
 
-...then start webpack:
+Why you should try it? 
 
-```bash
-npm run dev
-```
+>**1. Well-known syntax**  
+>It was inspired by the router for Vue.js, so this router will be understandable to many of you.
+>
+>**2. Still developing**  
+>Many features of the router are still ahead. Already now it can be used in projects, and I’m happy to know what will make it better.
+>
+>**3. Community-friendly**  
+>Repository cloning and pull requests are welcome! Together we can make the perfect tool for developing on Svelte
 
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and the page should reload with your changes.
+## How to use?
 
+Please see [DOCUMENTATION](https://easyroute.lyoha.info). Router is still developing and new features are coming out frequently.
 
-## Deploying to the web
-
-### With [now](https://zeit.co/now)
-
-Install `now` if you haven't already:
-
-```bash
-npm install -g now
-```
-
-Then, from within your project folder:
-
-```bash
-now
-```
-
-As an alternative, use the [Now desktop client](https://zeit.co/download) and simply drag the unzipped project folder to the taskbar icon.
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public
-```
+#### Contact me:
+* [My website: https://lyoha.info/](https://lyoha.info/) (russian language!)
+* [Telegram: https://t.me/alexeysolovjov](https://t.me/alexeysolovjov)
+* [Email: plotinka@lyoha.info](mailto:plotinka@lyoha.info)
