@@ -25,6 +25,7 @@
     "express-history-api-fallback": "^2.2.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "jest": "^26.1.0",
     "markdown-it": "^11.0.0",
     "mini-css-extract-plugin": "^0.6.0",
@@ -48,12 +49,18 @@
     "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
     "dev:router": "tsc --watch",
     "build:router": "tsc",
-    "lint": "eslint '*/**/*.{js,ts}' --fix"
+    "lint": "eslint '*/**/*.{js,ts}' --fix",
+    "test": "jest"
   },
   "dependencies": {
     "lodash": "^4.17.15",
     "path-to-regexp": "^6.1.0",
     "query-string": "^6.13.1",
     "url-join": "^4.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
   }
 }

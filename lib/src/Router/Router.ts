@@ -152,9 +152,9 @@ export default class Router {
     this.afterHook(to, from)
   }
 
-  public navigate(url: string) {
+  public async navigate(url: string) {
     this.ignoreEvents = true
-    this.parseRoute(url)
+    await this.parseRoute(url)
   }
 
   private async beforeHook(to: Route, from: Route) {
@@ -179,8 +179,8 @@ export default class Router {
     this.afterEach && this.afterEach(to, from)
   }
 
-  public push(data: string) {
-    this.navigate(data)
+  public async push(data: string) {
+    await this.navigate(data)
   }
 
   public go(howFar: number) {
