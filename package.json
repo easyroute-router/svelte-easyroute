@@ -1,7 +1,7 @@
 {
-  "name": "svsrt",
-  "description": "Svelte Easyroute 2 test package",
-  "version": "2.0.2-0",
+  "name": "svelte-easyroute",
+  "description": "Config-based router for Svelte",
+  "version": "2.0.0",
   "main": "lib/dist/index.js",
   "repository": {
     "type": "git",
