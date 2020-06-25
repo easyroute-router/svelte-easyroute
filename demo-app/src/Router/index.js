@@ -1,9 +1,7 @@
 import MainLayout from '../Layout/MainLayout.svelte'
 import NotFound from '../Pages/NotFound.svelte'
 import { fetchSlugMarkdown } from './utils'
-// import Router from '../../../lib/index'
-
-const _router = import(/* webpackChunkName: "router" */ '../../../lib/index.js')
+import Router from '../../../lib/index'
 
 const routes = [
   {
@@ -57,36 +55,32 @@ const routes = [
   }
 ]
 
-export default async function createRouter() {
-  const module = await _router
-  const Router = module.default
-  const router = new Router({
-    mode: 'history',
-    routes
-  })
+const router = new Router({
+  mode: 'history',
+  routes
+})
 
-  router.beforeEach = async (to, from, next) => {
-    if (to.name === 'Page') {
-      console.log(`[BeforeEachHook]: fetching page data`)
-      const { slug } = to.params
-      try {
-        to.meta.pageText = await fetchSlugMarkdown(slug)
-        const titlePart = to.meta.pageText.split('\n')[0].replace(/^(#+ )/, '')
-        document.title = titlePart
-          ? `${titlePart} | Svelte Easyroute`
-          : 'Svelte Easyroute'
-        next()
-      } catch (e) {
-        console.error(e)
-        next('/not-found')
-      }
-    } else {
-      document.title = to.meta.title
-        ? `${to.meta.title} | Svelte Easyroute`
+router.beforeEach = async (to, from, next) => {
+  if (to.name === 'Page') {
+    console.log(`[BeforeEachHook]: fetching page data`)
+    const { slug } = to.params
+    try {
+      to.meta.pageText = await fetchSlugMarkdown(slug)
+      const titlePart = to.meta.pageText.split('\n')[0].replace(/^(#+ )/, '')
+      document.title = titlePart
+        ? `${titlePart} | Svelte Easyroute`
         : 'Svelte Easyroute'
       next()
+    } catch (e) {
+      console.error(e)
+      next('/not-found')
     }
+  } else {
+    document.title = to.meta.title
+      ? `${to.meta.title} | Svelte Easyroute`
+      : 'Svelte Easyroute'
+    next()
   }
-
-  return router
 }
+
+export default router
