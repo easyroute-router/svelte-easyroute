@@ -1,7 +1,7 @@
 node_modules
-testapp
-.eslintrc.js
 Makefile
-bin
-dist
-README_temp.md
+./dist
+/testapp/node_modules/
+.idea
+demo-app/public
+router-builds
