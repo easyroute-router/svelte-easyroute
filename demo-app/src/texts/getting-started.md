@@ -17,6 +17,11 @@ const router = new Router({
             path: '/about/me',
             component: About,
             name: 'About me'
+        },
+        {
+            path: '/lazy-load',
+            component: () => import('src/LazyPage.svelte'),
+            name: 'This is a lazy-loading page'
         }
     ]
 })
