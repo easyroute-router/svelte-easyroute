@@ -1,5 +1,5 @@
 <script>
-    import {RouterOutlet, RouterLink} from "../../../lib";
+    import {RouterOutlet, RouterLink} from "../../../lib/dist";
     import MainMenu from "../Components/MainMenu.svelte";
 
     import logo from '../assets/logo.png'

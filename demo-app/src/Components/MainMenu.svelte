@@ -1,5 +1,5 @@
 <script>
-    import { RouterLink } from '../../../lib'
+    import { RouterLink } from '../../../lib/dist'
 </script>
 
 <ul class="uk-nav uk-nav-default">

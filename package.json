@@ -2,7 +2,7 @@
   "name": "svsrt",
   "description": "Svelte Easyroute 2 test package",
   "version": "2.0.2-0",
-  "main": "lib/index.js",
+  "main": "lib/dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lyohaplotinka/svelte-easyroute.git"
@@ -72,6 +72,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "jest-transform-svelte": "^2.1.1",
     "lodash": "^4.17.15",
     "path-to-regexp": "^6.1.0",
     "query-string": "^6.13.1",

@@ -1,7 +1,7 @@
 import MainLayout from '../Layout/MainLayout.svelte'
 import NotFound from '../Pages/NotFound.svelte'
 import { fetchSlugMarkdown } from './utils'
-import Router from '../../../lib/index'
+import Router from '../../../lib/dist'
 import nprogress from 'nprogress'
 
 const routes = [

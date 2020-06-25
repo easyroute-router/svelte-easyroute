@@ -1,5 +1,5 @@
 <script>
-	import { RouterOutlet } from '../../lib'
+	import { RouterOutlet } from '../../lib/dist'
 	export let router
 </script>
 
