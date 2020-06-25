@@ -15,7 +15,10 @@ const routes = [
         path: '',
         component: () =>
           import(/*webpackChunkName: "Index" */ '../Pages/Index.svelte'),
-        name: 'Index'
+        name: 'Index',
+        meta: {
+          title: 'Welcome'
+        }
       },
       {
         name: 'Page',
@@ -28,6 +31,9 @@ const routes = [
       },
       {
         path: 'playground/:param1/:param2',
+        meta: {
+          title: 'Playground'
+        },
         component: () =>
           import(
             /* webpackChunkName: "playground" */ '../Pages/Playground.svelte'
@@ -64,14 +70,22 @@ export default async function createRouter() {
       console.log(`[BeforeEachHook]: fetching page data`)
       const { slug } = to.params
       try {
-        const data = await fetchSlugMarkdown(slug)
-        to.meta.pageText = data
+        to.meta.pageText = await fetchSlugMarkdown(slug)
+        const titlePart = to.meta.pageText.split('\n')[0].replace(/^(#+ )/, '')
+        document.title = titlePart
+          ? `${titlePart} | Svelte Easyroute`
+          : 'Svelte Easyroute'
         next()
       } catch (e) {
         console.error(e)
         next('/not-found')
       }
-    } else next()
+    } else {
+      document.title = to.meta.title
+        ? `${to.meta.title} | Svelte Easyroute`
+        : 'Svelte Easyroute'
+      next()
+    }
   }
 
   return router

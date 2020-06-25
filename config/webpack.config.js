@@ -66,7 +66,8 @@ module.exports = {
       filename: 'css/[name].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
-      template: 'demo-app/src/index_template.ejs'
+      template: 'demo-app/src/index_template.ejs',
+      title: 'Svelte Easyroute'
     }),
     new CopyPlugin({
       patterns: [{ from: '*', to: 'pages', context: 'demo-app/src/texts' }]
