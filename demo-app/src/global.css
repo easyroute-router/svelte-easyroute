@@ -56,3 +56,16 @@ table {
 	opacity: 0;
 	transform: translateX(10px);
 }
+
+#nprogress .bar {
+	background: #ff3e00!important;
+}
+
+#nprogress .peg {
+	box-shadow: 0 0 10px #ff3e00, 0 0 5px #ff3e00;
+}
+
+#nprogress .spinner-icon {
+	border-top-color: #ff3e00!important;
+	border-left-color: #ff3e00!important;
+}

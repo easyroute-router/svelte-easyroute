@@ -70,7 +70,14 @@ module.exports = {
       title: 'Svelte Easyroute'
     }),
     new CopyPlugin({
-      patterns: [{ from: '*', to: 'pages', context: 'demo-app/src/texts' }]
+      patterns: [
+        { from: '*', to: 'pages', context: 'demo-app/src/texts' },
+        {
+          from: '*',
+          to: './',
+          context: 'demo-app/src/assets/favicons'
+        }
+      ]
     }),
     prod &&
       new PrerenderSPAPlugin({

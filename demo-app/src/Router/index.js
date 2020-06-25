@@ -2,6 +2,7 @@ import MainLayout from '../Layout/MainLayout.svelte'
 import NotFound from '../Pages/NotFound.svelte'
 import { fetchSlugMarkdown } from './utils'
 import Router from '../../../lib/index'
+import nprogress from 'nprogress'
 
 const routes = [
   {
@@ -61,6 +62,7 @@ const router = new Router({
 })
 
 router.beforeEach = async (to, from, next) => {
+  nprogress.start()
   if (to.name === 'Page') {
     console.log(`[BeforeEachHook]: fetching page data`)
     const { slug } = to.params
@@ -81,6 +83,10 @@ router.beforeEach = async (to, from, next) => {
       : 'Svelte Easyroute'
     next()
   }
+}
+
+router.afterEach = () => {
+  nprogress.done()
 }
 
 export default router

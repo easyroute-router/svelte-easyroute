@@ -2,7 +2,7 @@ import App from './App.svelte'
 import './global.css'
 import 'uikit/dist/css/uikit.css'
 import 'uikit/dist/js/uikit'
-
+import 'nprogress/nprogress.css'
 import router from './Router'
 
 const app = new App({
