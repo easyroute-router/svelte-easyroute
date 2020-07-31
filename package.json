@@ -22,8 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.10.3",
+    "@testing-library/svelte": "^3.0.0",
     "@types/jest": "^26.0.0",
-    "@types/lodash": "^4.14.155",
     "@types/node": "^14.0.13",
     "@types/path-to-regexp": "^1.7.0",
     "@types/query-string": "^6.3.0",
@@ -45,8 +45,10 @@
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
+    "jest-transform-svelte": "^2.1.1",
     "markdown-it": "^11.0.0",
     "mini-css-extract-plugin": "^0.6.0",
+    "nprogress": "^0.2.0",
     "prerender-spa-plugin": "^3.4.0",
     "prettier": "^2.0.5",
     "serve": "^11.0.0",
@@ -60,8 +62,7 @@
     "uikit": "^3.5.4",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1",
-    "nprogress": "^0.2.0"
+    "webpack-dev-server": "^3.3.1"
   },
   "scripts": {
     "build:app": "cross-env NODE_ENV=production webpack --progress --config config/webpack.config.js",
@@ -72,8 +73,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "jest-transform-svelte": "^2.1.1",
-    "lodash": "^4.17.15",
     "path-to-regexp": "^6.1.0",
     "query-string": "^6.13.1",
     "url-join": "^4.0.1"

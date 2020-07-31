@@ -1,6 +1,6 @@
 import { Route } from '../Router/types'
 import { getRoutesTreeChain } from '../Utils/BuildRoutesTree'
-import uniqBy from 'lodash/uniqBy'
+import { uniqueById } from '../Utils/uniqueBy'
 
 export default class HashBasedRouting {
   constructor(private routes: Route[]) {}
@@ -20,7 +20,7 @@ export default class HashBasedRouting {
         ...getRoutesTreeChain(this.routes, route.id as string)
       ]
     })
-    const unique = uniqBy(allMatched, 'id')
+    const unique = uniqueById(allMatched)
     if (!unique) {
       throw new Error('[Easyroute] No routes matched')
     }

@@ -1,5 +1,5 @@
 <script>
-    import { setContext, getContext, onDestroy } from 'svelte'
+    import { setContext, getContext, onDestroy, onMount } from 'svelte'
     import { getTransitionDurations, delay } from './utils'
 
     export let router = null
@@ -9,7 +9,7 @@
     const context = getContext('easyrouteContext')
     const currentDepth = context ? context.depth + 1 || 0 : 0
     const _router = context ? context.router || router : router
-    const unsubscribe = _router.currentMatched.subscribe((routes) => { pickRoute(routes) })
+    let unsubscribe = undefined
     const transitionData = transition ? getTransitionDurations(transition) : null
 
     let currentComponent = null
@@ -63,7 +63,9 @@
         unsubscribe && unsubscribe()
     })
 
-    pickRoute(_router.currentMatched.getValue)
+    onMount(() => {
+        unsubscribe = _router.currentMatched.subscribe((routes) => { pickRoute(routes) })
+    })
 </script>
 
 <div class="easyroute-outlet{ transitionClassName ? ` ${transitionClassName}` : '' }">

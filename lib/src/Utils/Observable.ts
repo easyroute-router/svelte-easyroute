@@ -14,6 +14,7 @@ export default class Observable<T> {
   public subscribe(listener: ObservableListener) {
     const id = generateId()
     this._subscribersQueue[id] = listener
+    listener(this.getValue)
     return () => {
       delete this._subscribersQueue[id]
     }
