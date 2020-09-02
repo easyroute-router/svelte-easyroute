@@ -1,6 +1,7 @@
 <script>
     import {RouterOutlet, RouterLink} from "../../../lib/dist";
     import MainMenu from "../Components/MainMenu.svelte";
+    const pkg = require('../../../package.json')
 
     import logo from '../assets/logo.png'
 
@@ -16,6 +17,7 @@
             </div>
             <div class="uk-navbar-right">
                 <div style="margin-right: 2rem">
+                    <span style="color:lightgray; margin-right: 1rem">v{ pkg.version }</span>
                     <a class="github-button" href="https://github.com/lyohaplotinka/svelte-easyroute" data-size="large" data-show-count="true" aria-label="Star lyohaplotinka/svelte-easyroute on GitHub">GitHub</a>
                 </div>
             </div>
