@@ -4,8 +4,7 @@
 
     import logo from '../assets/logo.png'
 
-    export let currentRoute
-    export let router
+    export let currentRoute = null
     $: activeRoute = currentRoute.name
 </script>
 
@@ -13,7 +12,7 @@
     <header>
         <div class="uk-navbar-container uk-navbar">
             <div class="uk-navbar-left">
-                <RouterLink class="uk-navbar-item uk-logo" to="/"><img style="width: 25rem" src="{ logo }"></RouterLink>
+                <RouterLink class="uk-navbar-item uk-logo" to="/"><img alt="easyroute-logo" style="width: 25rem" src="{ logo }"></RouterLink>
             </div>
             <div class="uk-navbar-right">
                 <div style="margin-right: 2rem">

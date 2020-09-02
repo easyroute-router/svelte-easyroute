@@ -1,7 +1,7 @@
 {
   "name": "svelte-easyroute",
   "description": "Config-based router for Svelte",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "lib/dist/index.js",
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
     "babel-jest": "^26.1.0",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "connect-history-api-fallback": "^1.6.0",
     "copy-webpack-plugin": "^6.0.2",
@@ -62,21 +63,20 @@
     "uikit": "^3.5.4",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
-  },
-  "scripts": {
-    "build:app": "cross-env NODE_ENV=production webpack --progress --config config/webpack.config.js",
-    "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
-    "dev:router": "tsc --watch",
-    "build:router": "tsc",
-    "lint": "eslint '*/**/*.{js,ts}' --fix",
-    "test": "jest"
-  },
-  "dependencies": {
+    "webpack-dev-server": "^3.3.1",
     "path-to-regexp": "^6.1.0",
     "query-string": "^6.13.1",
     "url-join": "^4.0.1"
   },
+  "scripts": {
+    "build:app": "webpack --mode=production --progress --config config/webpack.config.js",
+    "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
+    "dev:router": "webpack --mode=development --progress --watch --config config/webpack.config.router.js",
+    "build:router": "webpack --mode=production --progress --config config/webpack.config.router.js",
+    "lint": "eslint '*/**/*.{js,ts}' --fix",
+    "test": "jest"
+  },
+  "dependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint && npm run test"

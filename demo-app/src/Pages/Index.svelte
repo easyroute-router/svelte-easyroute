@@ -1,6 +1,5 @@
 <script>
     import RouterOutlet from '../../../lib/svelte-components/RouterOutlet.svelte'
-    export let currentRoute
 </script>
 
 <article>

@@ -18,6 +18,7 @@ module.exports = {
     '**/dist/**',
     '**/config/**',
     '**/public/**',
-    '**/router-builds/**'
+    '**/router-builds/**',
+    '**/__tests__/**'
   ]
 }
