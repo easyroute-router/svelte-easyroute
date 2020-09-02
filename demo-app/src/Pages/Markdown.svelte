@@ -1,8 +1,7 @@
 <script>
     import MarkdownIt from 'markdown-it'
 
-    export let currentRoute
-    export let router
+    export let currentRoute = null
     const md = new MarkdownIt()
     let currentMdText = ''
     let doDelay = false

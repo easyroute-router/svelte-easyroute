@@ -1,4 +1,5 @@
 const path = require('path')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: './lib/src/Router/Router.ts',
@@ -6,7 +7,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        loader: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/
       }
     ]
@@ -15,7 +16,10 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js']
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, '../router-builds')
-  }
+    filename: 'svelte-easyroute.umd.js',
+    libraryTarget: 'umd',
+    library: 'svelte-easyroute',
+    path: path.resolve(__dirname, '../lib/dist/router')
+  },
+  plugins: [new CleanWebpackPlugin()]
 }

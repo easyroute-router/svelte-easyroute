@@ -6,8 +6,7 @@
 
 
 **Svelte Easyroute** - is a simple and convenient 
-router for [Svelte](https://svelte.dev/). 
-It is good svelte router which supports history 
+router for [Svelte](https://svelte.dev/) just like Vue Router. Supports history 
 and hash mode, navigation guards, base path. 
 If you need a router for svelte, try this one.
 

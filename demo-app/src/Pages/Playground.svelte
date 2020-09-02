@@ -1,5 +1,5 @@
 <script>
-    export let currentRoute
+    export let currentRoute = null
 
     $: param1 = currentRoute.params.param1
     $: param2 = currentRoute.params.param2
