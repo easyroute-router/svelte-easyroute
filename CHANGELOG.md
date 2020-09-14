@@ -1,3 +1,6 @@
+### v2.1.4
+* Core logic of router is now in separated package - `easyroute-core` [(repo)](https://github.com/lyohaplotinka/easyroute)
+
 ### v2.1.3
 * Seamless compatibility with both Rollup and Webpack: building router with Rollup now;
 * renamed main router export file for TypeScript declarations reasons;
