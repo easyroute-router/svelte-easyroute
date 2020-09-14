@@ -1,5 +1,5 @@
 <script>
-    import {RouterOutlet, RouterLink} from "../../../lib/dist";
+    import {RouterOutlet, RouterLink} from "../../../lib";
     import MainMenu from "../Components/MainMenu.svelte";
     const pkg = require('../../../package.json')
 
