@@ -1,3 +1,6 @@
+### v2.1.4-1
+* Updated easyroute-core to 1.0.1 (due o modules bug)
+
 ### v2.1.4
 * Core logic of router is now in separated package - `easyroute-core` [(repo)](https://github.com/lyohaplotinka/easyroute)
 
