@@ -23,6 +23,12 @@ That's it!
 }
 ```
 
+You can also get current outlet HTML element like this:
+```javascript
+export let outlet
+console.log(outlet) // <div class="easyroute-outlet">...</div>
+```
+
 By default route info object is immutable, 
 however, you can see `meta` field in the example above. 
 

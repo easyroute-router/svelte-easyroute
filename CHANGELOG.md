@@ -1,7 +1,7 @@
 ### v2.1.3
 * Seamless compatibility with both Rollup and Webpack: building router with Rollup now;
 * renamed main router export file for TypeScript declarations reasons;
-* 
+* from now, you can access outlet HTML element in components inside the router-outlet
 
 ### v2.1.1
 * Building router with Webpack and ts-loader;
