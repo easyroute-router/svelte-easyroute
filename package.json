@@ -2,7 +2,7 @@
   "name": "svelte-easyroute",
   "description": "Config-based router for Svelte in style of Vue Router",
   "version": "2.1.3",
-  "main": "lib/dist/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lyohaplotinka/svelte-easyroute.git"
@@ -84,7 +84,9 @@
     "lint": "eslint '*/**/*.{js,ts}' --fix",
     "test": "jest"
   },
-  "dependencies": {},
+  "dependencies": {
+    "easyroute-core": "^1.0.0"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint && npm run test"
