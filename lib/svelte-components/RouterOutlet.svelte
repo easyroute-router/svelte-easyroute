@@ -9,7 +9,6 @@
     const context = getContext('easyrouteContext')
     const currentDepth = context ? context.depth + 1 || 0 : 0
     const _router = context ? context.router || router : router
-    let unsubscribe = undefined
     const transitionData = transition ? getTransitionDurations(transition) : null
 
     let currentComponent = null
@@ -17,6 +16,8 @@
     let transitionClassName = ''
     let prevRouteId = null
     let previousRutePath = null
+    let unsubscribe = undefined
+    let outletElement = null
 
     setContext('easyrouteContext', {
         depth: currentDepth,
@@ -68,6 +69,6 @@
     })
 </script>
 
-<div class="easyroute-outlet{ transitionClassName ? ` ${transitionClassName}` : '' }">
-    <svelte:component this={currentComponent} currentRoute={routeData} router={_router} />
+<div bind:this={outletElement} class="easyroute-outlet{ transitionClassName ? ` ${transitionClassName}` : '' }">
+    <svelte:component this={currentComponent} currentRoute={routeData} router={_router} outlet={outletElement} />
 </div>
