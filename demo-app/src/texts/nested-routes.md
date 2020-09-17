@@ -27,7 +27,7 @@ import { RouterOutlet } from 'svelte-easyroute'
 
 <RouterOutlet />
 ```
-No props required here. Now you will see both rendered
+Now you will see both rendered
 components on the screen.
 
 #### Important:

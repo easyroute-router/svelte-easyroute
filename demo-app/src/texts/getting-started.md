@@ -44,21 +44,33 @@ props: {
 }
 ```
 
+Then, in your root component, wrap all data in EasyrouteProvider component and pass
+router instance to it as a prop. Don't worry: it
+doesn't create a real DOM element ant won't break your styles, it is just a logical wrapper.
+```javascript
+<script>
+// ./App.svelte
+import { EasyrouteProvider } from 'svelte-easyroute'
+export let router;
+</script>
+
+<EasyrouteProvider {router}>
+    ...
+</EasyrouteProvider>
+```
+**It is important** to wrap your **root** component with `<EasyrouteProvider>`. Without it 
+`<RouterOutlet>` and `<RouterLink>` will have no access to the router instance.
+
 ### Last step
 If you will try to launch your app after creating router 
 instance you will see errors in console. This happening 
 because there is no outlet - a container for router 
-components. To create one, open your main component 
-(f.e. "App.svelte") and add this:
+components. To create one, add this to your component:
 
 ```javascript
 <script>
 import { RouterOutlet } from 'svelte-easyroute'
-...
-export let router
 </script>
 
-<RouterOutlet router={router} />
+<RouterOutlet />
 ```
-Make sure you passed router instance as a prop to first `RouterOutlet`.
-In nested routes it is not necessary. 

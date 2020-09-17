@@ -6,10 +6,17 @@
     export let transition = null
     export let forceRemount = false
 
+    if (router) {
+        console.warn('[Easyroute] Passing router as a prop in outlet is deprecated in v2.1.5.' +
+            'Use <EasyrouteProvider> component instead. This will break in the next version.')
+    }
+
     const context = getContext('easyrouteContext')
     const currentDepth = context ? context.depth + 1 || 0 : 0
     const _router = context ? context.router || router : router
     const transitionData = transition ? getTransitionDurations(transition) : null
+    const attrs = Object.assign({}, $$props)
+    const passedClasses = attrs.class
 
     let currentComponent = null
     let routeData = {}
@@ -18,6 +25,11 @@
     let previousRutePath = null
     let unsubscribe = undefined
     let outletElement = null
+
+    if (!_router) {
+        throw new Error('[Easyroute] RouterOutlet: no router instance found. Did you forget to wrap your ' +
+            'root component with <EasyrouteProvider>?')
+    }
 
     setContext('easyrouteContext', {
         depth: currentDepth,
@@ -37,7 +49,7 @@
             transitionClassName = `${transition}-enter-active`
             currentComponent = component
             transitionClassName += ` ${transition}-enter-to`
-            await delay(transitionData.enteringDuration)
+            await delay(transitionData.enteringDuration + 10)
             transitionClassName = ''
         }
         prevRouteId = currentRouteId
@@ -60,6 +72,18 @@
         }
     }
 
+    function sanitizeAttrs() {
+        delete attrs.to
+        delete attrs.$$slots
+        delete attrs.$$scope
+        delete attrs.router
+        delete attrs.transition
+        delete attrs.forceRemount
+        delete attrs.class
+    }
+
+    sanitizeAttrs()
+
     onDestroy(() => {
         unsubscribe && unsubscribe()
     })
@@ -69,6 +93,10 @@
     })
 </script>
 
-<div bind:this={outletElement} class="easyroute-outlet{ transitionClassName ? ` ${transitionClassName}` : '' }">
+<div
+    bind:this={outletElement}
+    class="easyroute-outlet{ passedClasses ? ` ${passedClasses}` : '' }{ transitionClassName ? ` ${transitionClassName}` : '' }"
+    {...attrs}
+>
     <svelte:component this={currentComponent} currentRoute={routeData} router={_router} outlet={outletElement} />
 </div>
