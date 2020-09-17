@@ -21,7 +21,10 @@ TL;DR Features:
 * Hash, history and silent modes
 * CSS transitions
 
-Why you should try it? 
+### Looking for demo? 
+Try [this code sandbox](https://codesandbox.io/s/svelte-easyroute-simpliest-demo-10ppi?file=/App.svelte)
+
+### Why you should try it? 
 
 >**1. Well-known syntax**  
 >It was inspired by the router for Vue.js, so this router will be understandable to many of you.
@@ -32,7 +35,7 @@ Why you should try it?
 >**3. Community-friendly**  
 >Repository cloning and pull requests are welcome! Together we can make the perfect tool for developing on Svelte
 
-## How to use?
+### How to use?
 
 Please see [DOCUMENTATION](https://easyroute.lyoha.info). Router is still developing and new features are coming out frequently.
 
