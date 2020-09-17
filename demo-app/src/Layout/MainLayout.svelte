@@ -1,11 +1,19 @@
 <script>
     import {RouterOutlet, RouterLink} from "../../../lib";
     import MainMenu from "../Components/MainMenu.svelte";
+    import { onMount } from 'svelte'
+    import logo from '../assets/logo.png'
     const pkg = require('../../../package.json')
 
-    import logo from '../assets/logo.png'
-
     export let currentRoute = null
+
+    onMount(() => {
+        const githubScript = document.createElement('script')
+        githubScript.src = 'https://buttons.github.io/buttons.js'
+        githubScript.async = true
+        document.body.append(githubScript)
+    })
+
     $: activeRoute = currentRoute.name
 </script>
 
@@ -36,7 +44,7 @@
         <div class="uk-width-expand">
             <main>
                 <div class="uk-card uk-card-default uk-card-body">
-                    <RouterOutlet transition="fade" forceRemount={true} />
+                    <RouterOutlet transition="fade" forceRemount={true} class="test-class" />
                 </div>
             </main>
         </div>

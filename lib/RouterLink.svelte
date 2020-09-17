@@ -3,8 +3,13 @@
     export let to;
 
     const context = getContext('easyrouteContext')
-    const router = context.router
+    const router = context ? context.router : null
     const attrs = Object.assign({}, $$props)
+
+    if (!router) {
+        throw new Error('[Easyroute] RouterLink: no router instance found. Did you forget to wrap your ' +
+            'root component with <EasyrouteProvider>?')
+    }
 
     function routerNavigate(evt) {
         evt.preventDefault()

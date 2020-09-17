@@ -1,7 +1,7 @@
 {
   "name": "svelte-easyroute",
   "description": "Config-based router for Svelte in style of Vue Router",
-  "version": "2.1.4-1",
+  "version": "2.1.5",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -77,10 +77,6 @@
   "scripts": {
     "build:app": "webpack --mode=production --progress --config config/webpack.config.js",
     "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
-    "dev:router:webpack": "webpack --mode=development --progress --watch --config config/webpack.config.router.js",
-    "dev:router": "rollup -c ./config/rollup.config.js -w",
-    "build:router:webpack": "webpack --mode=production --progress --config config/webpack.config.router.js",
-    "build:router": "rollup -c ./config/rollup.config.js",
     "lint": "eslint '*/**/*.{js,ts}' --fix",
     "test": "jest"
   },
