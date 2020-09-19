@@ -1,3 +1,7 @@
+### v2.1.6
+* `easyroute-core` updated to 1.0.2;
+* fixed premature afterHook trigger with lazy loaded components.
+
 ### v2.1.5
 * Fixed: unable to use RouterLink outside of RouterOutlet (via EasyrouteProvider, see next);
 * EasyrouteProvider component: top-level wrapper for app which provides all required data

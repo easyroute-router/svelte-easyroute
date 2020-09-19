@@ -59,12 +59,7 @@
         const currentRoute = routes.find(route => route.nestingDepth === currentDepth)
         if (currentRoute) {
             const component = currentRoute.component
-            try {
-                const value = await component()
-                changeComponent(value.default, currentRoute.id)
-            } catch (e) {
-                changeComponent(component, currentRoute.id)
-            }
+            changeComponent(component, currentRoute.id)
             await delay(transitionData ? transitionData.leavingDuration : 0)
             routeData = _router.currentRoute
         } else {
