@@ -25,6 +25,23 @@ const routes = [
         meta: {
           test: 'test'
         },
+        beforeEnter: async (to, from, next) => {
+          console.log(`[beforeEnter hook]: fetching page data`)
+          const { slug } = to.params
+          try {
+            to.meta.pageText = await fetchSlugMarkdown(slug)
+            const titlePart = to.meta.pageText
+              .split('\n')[0]
+              .replace(/^(#+ )/, '')
+            document.title = titlePart
+              ? `${titlePart} | Svelte Easyroute`
+              : 'Svelte Easyroute'
+            next()
+          } catch (e) {
+            console.error(e)
+            next('/not-found')
+          }
+        },
         component: () =>
           import(/*webpackChunkName: "mdpage" */ '../Pages/Markdown.svelte')
       },
@@ -63,26 +80,11 @@ const router = new Router({
 
 router.beforeEach = async (to, from, next) => {
   nprogress.start()
-  if (to.name === 'Page') {
-    console.log(`[BeforeEachHook]: fetching page data`)
-    const { slug } = to.params
-    try {
-      to.meta.pageText = await fetchSlugMarkdown(slug)
-      const titlePart = to.meta.pageText.split('\n')[0].replace(/^(#+ )/, '')
-      document.title = titlePart
-        ? `${titlePart} | Svelte Easyroute`
-        : 'Svelte Easyroute'
-      next()
-    } catch (e) {
-      console.error(e)
-      next('/not-found')
-    }
-  } else {
-    document.title = to.meta.title
-      ? `${to.meta.title} | Svelte Easyroute`
-      : 'Svelte Easyroute'
-    next()
-  }
+  if (to.name === 'Page') next()
+  document.title = to.meta.title
+    ? `${to.meta.title} | Svelte Easyroute`
+    : 'Svelte Easyroute'
+  next()
 }
 
 router.afterEach = () => {
