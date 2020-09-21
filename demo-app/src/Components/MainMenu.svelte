@@ -1,63 +1,84 @@
 <script>
-    import { RouterLink } from '../../../lib'
+    import { RouterLink, useCurrentRoute } from '../../../lib'
+    import { onDestroy } from 'svelte'
+    let routePath = ''
+
+    const unsubscribe = useCurrentRoute((route) => {
+        routePath = route.fullPath
+    })
+
+    const menu = [
+        {
+            url: '/page/installation',
+            title: 'Installation'
+        },
+        {
+            url: '/page/getting-started',
+            title: 'Getting started'
+        },
+        {
+            title: 'divider'
+        },
+        {
+            url: '/page/dynamic-matching',
+            title: 'Dynamic route matching'
+        },
+        {
+            url: '/page/current-route-info',
+            title: 'Current route info'
+        },
+        {
+            url: '/page/router-links',
+            title: 'Router links'
+        },
+        {
+            url: '/page/programmatic-navigation',
+            title: 'Programmatic navigation'
+        },
+        {
+            url: '/page/nested-routes',
+            title: 'Nested routes'
+        },
+        {
+            url: '/page/navigation-guards',
+            title: 'Navigation guards'
+        },
+        {
+            url: '/page/css-transitions',
+            title: 'CSS transitions'
+        },
+        {
+            url: '/page/named-outlets',
+            title: 'Named outlets (views)'
+        },
+        {
+            url: '/page/silent-mode',
+            title: 'Silent mode'
+        },
+        {
+            title: 'divider'
+        },
+        {
+            url: '/playground/demo/params?text=query',
+            title: 'Playground'
+        }
+    ]
+
+    onDestroy(unsubscribe)
 </script>
 
 <ul class="uk-nav uk-nav-default">
-    <li class="uk-active">
-        <RouterLink to="/page/installation">
-            Installation
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/getting-started">
-            Getting started
-        </RouterLink>
-    </li>
-    <li class="uk-nav-divider"></li>
-    <li>
-        <RouterLink to="/page/dynamic-matching">
-            Dynamic route matching
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/current-route-info">
-            Current route info
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/router-links">
-            Router links
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/programmatic-navigation">
-            Programmatic navigation
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/nested-routes">
-            Nested routes
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/navigation-guards">
-            Navigation guards
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/css-transitions">
-            CSS transitions
-        </RouterLink>
-    </li>
-    <li>
-        <RouterLink to="/page/silent-mode">
-            Silent mode
-        </RouterLink>
-    </li>
-    <li class="uk-nav-divider"></li>
-    <li>
-        <RouterLink to="/playground/demo/params?text=query">
-            Playground
-        </RouterLink>
-    </li>
+
+    {#each menu as item}
+        {#if item.title === 'divider'}
+            <li class="uk-nav-divider"></li>
+        {:else}
+            <li class:uk-active={ routePath === item.url }>
+                <RouterLink to="{ item.url }">
+                    { item.title }
+                </RouterLink>
+            </li>
+        {/if}
+    {/each}
+
 </ul>

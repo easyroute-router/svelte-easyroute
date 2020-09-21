@@ -105,6 +105,7 @@ module.exports = (env, argv) => {
             '/page/css-transitions',
             '/page/navigation-guards',
             '/page/silent-mode',
+            '/page/named-outlets',
             '/playground/demo/params'
           ]
         })

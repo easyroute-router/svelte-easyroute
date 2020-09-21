@@ -1,12 +1,17 @@
 ## Current route info
 From every child component you can access current 
-route state. Just put in the <script> tag:
+route state. There are two ways to do this:
+
+### 1. Export variable in outlet's child component
+
+If your component is direct child of `<RouterOutlet>`,
+ust put in the <script> tag:
 ```javascript
 export let currentRoute
 ```
 That's it! 
 
-### Example
+#### Example:
 ```javascript
 {
   "fullPath": "/test/value?name=Alex&age=23",
@@ -22,6 +27,32 @@ That's it!
   }
 }
 ```
+
+### 2. useCurrentRoute hook
+In any component wrapped with `<EasyrouteProvider>`, 
+on any level of nesting, you can use `useCurrentRoute`
+hook. It is a custom implementation of Observable
+pattern, so you can "subscribe" to current route
+object. It goes like this:
+
+```html
+<script>
+    // Component.svelte
+
+    import { useCurrentRoute } from "svelte-easyroute"
+    import { onDestroy } from "svelte"
+    
+    const unsubscribe = useCurrentRoute((currentRoute) => {
+        console.log(currentRoute)
+    })
+    
+    onDestroy(unsubscribe)
+</script>
+```
+**Don't forget** to `unsibscribe` when leaving your component!
+If you will not, it can cause memory leak.
+
+### Bonus
 
 You can also get current outlet HTML element like this:
 ```javascript

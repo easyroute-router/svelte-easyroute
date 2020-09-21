@@ -27,6 +27,12 @@
         <li>
             Named routes
         </li>
+        <li>
+            Named outlets (views)
+        </li>
+        <li>
+            Global and individual navigation hooks
+        </li>
         <li>Hash, history and silent modes</li>
     </ul>
 

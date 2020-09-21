@@ -1,5 +1,6 @@
 <script>
-    import Router from 'easyroute-core'
+    // import Router from 'easyroute-core'
+    import Router from '../../easyroute/lib/dist/index'
     import { setContext } from 'svelte'
     export let router = null
 

@@ -5,6 +5,7 @@
     export let router = null
     export let transition = null
     export let forceRemount = false
+    export let name = 'default'
 
     if (router) {
         console.warn('[Easyroute] Passing router as a prop in outlet is deprecated in v2.1.5.' +
@@ -58,7 +59,9 @@
     async function pickRoute(routes) {
         const currentRoute = routes.find(route => route.nestingDepth === currentDepth)
         if (currentRoute) {
-            const component = currentRoute.component
+            let component
+            if (name === 'default') component = currentRoute.component || currentRoute.components.default
+            else component = currentRoute.components ? currentRoute.components[name] : null
             changeComponent(component, currentRoute.id)
             await delay(transitionData ? transitionData.leavingDuration : 0)
             routeData = _router.currentRoute

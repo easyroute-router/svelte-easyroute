@@ -1,9 +1,11 @@
 ## Navigation guards
 
-f you want to do something before component is 
+If you want to do something before component is 
 changed by router, you can add navigation guards.
 
-For now there are two navigation 
+### Global guards and hooks
+
+There are two global navigation 
 hooks: beforeEach and afterEach.
 
 You can specify them like that: 
@@ -25,6 +27,26 @@ continues transition. If you will not put "next()"
 in beforeEach methond - transition will NEVER 
 complete.
 
+### Individual route guard
+You can set an individual guard for each route:
+```javascript
+const router = new Router({
+    // ...
+    routes: [
+        {
+            path: '/path',
+            component: Component,
+            beforeEnter: (to, from, next) {
+                console.log('I am here!')
+                next()
+            }   
+        }
+    ]
+})
+```
+These guards have the exact same signature as global before guards.
+
+**Note**: all router guards functions can be `async`.
 ### More control
 
 `next` can be used without arguments, then route 
