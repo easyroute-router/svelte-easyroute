@@ -1,3 +1,11 @@
+### v2.2.0
+* `easyroute-core` updated to 1.1.0;
+* named outlets - use two `RouterOutlet` on a single
+page, declare components for them by name;
+* individual beforeEnter hooks for routes;
+* `useCurrentRoute` hook for easy access to current
+route object in every route.
+
 ### v2.1.6
 * `easyroute-core` updated to 1.0.2;
 * fixed premature afterHook trigger with lazy loaded components.
