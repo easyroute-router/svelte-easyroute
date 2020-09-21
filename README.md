@@ -18,6 +18,8 @@ TL;DR Features:
 * Lazy route component loading outside the box
 * Programmatic navigation
 * Named routes
+* Named views (outlets)
+* Global and individual navigation hooks
 * Hash, history and silent modes
 * CSS transitions
 
