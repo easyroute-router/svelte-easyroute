@@ -4,5 +4,6 @@ module.exports = {
     '^.+\\.jsx?$': 'babel-jest'
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.js?$',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  transformIgnorePatterns: ['/node_modules/(?!easyroute-core).+\\.js$']
 }

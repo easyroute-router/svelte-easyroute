@@ -1,3 +1,7 @@
+### v2.2.1
+* `easyroute-core` updated to 1.2.0: size reducing 
+[(see changelog)](https://github.com/lyohaplotinka/easyroute-core/blob/master/CHANGELOG.md#v120)
+
 ### v2.2.0
 * `easyroute-core` updated to 1.1.0;
 * named outlets - use two `RouterOutlet` on a single

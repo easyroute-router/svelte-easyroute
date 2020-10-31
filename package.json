@@ -1,7 +1,7 @@
 {
   "name": "svelte-easyroute",
   "description": "Config-based router for Svelte in style of Vue Router",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "author": "Lyoha Plotinka",
   "license": "MIT",
   "devDependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.10.3",
     "@rollup/plugin-typescript": "^6.0.0",
     "@testing-library/svelte": "^3.0.0",
@@ -81,7 +82,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "easyroute-core": "1.1.0"
+    "easyroute-core": "1.2.0"
   },
   "husky": {
     "hooks": {
