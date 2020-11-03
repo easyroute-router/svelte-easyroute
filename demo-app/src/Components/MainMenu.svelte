@@ -1,5 +1,5 @@
 <script>
-    import { RouterLink, useCurrentRoute } from '../../../lib'
+    import { RouterLink, useCurrentRoute } from '@router'
     import { onDestroy } from 'svelte'
     let routePath = ''
 
