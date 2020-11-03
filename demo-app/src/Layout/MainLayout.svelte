@@ -1,5 +1,5 @@
 <script>
-    import {RouterOutlet, RouterLink} from "../../../lib";
+    import { RouterOutlet, RouterLink } from "@router";
     import MainMenu from "../Components/MainMenu.svelte";
     import { onMount } from 'svelte'
     import logo from '../assets/logo.png'

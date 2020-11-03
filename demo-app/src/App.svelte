@@ -1,5 +1,5 @@
 <script>
-    import {RouterOutlet, EasyrouteProvider} from '../../lib'
+    import {RouterOutlet, EasyrouteProvider} from '@router'
     export let router = null
 </script>
 

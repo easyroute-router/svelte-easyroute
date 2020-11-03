@@ -1,7 +1,3 @@
-<script>
-    import RouterOutlet from '../../../lib'
-</script>
-
 <article>
     <h2>Welcome to Svelte Easyroute homepage!</h2>
 

@@ -32,6 +32,7 @@
     "@types/url-join": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
+    "axios": "^0.21.0",
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
@@ -78,11 +79,14 @@
   "scripts": {
     "build:app": "webpack --mode=production --progress --config config/webpack.config.js",
     "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
+    "build:ssr": "webpack --progress --config config/webpack.config.ssr.js",
     "lint": "eslint '*/**/*.{js,ts}' --fix",
     "test": "jest"
   },
   "dependencies": {
-    "easyroute-core": "1.2.0"
+    "condense": "0.0.1",
+    "easyroute-core": "1.2.0",
+    "tern": "^0.24.3"
   },
   "husky": {
     "hooks": {
