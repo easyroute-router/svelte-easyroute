@@ -52,6 +52,7 @@
     "jest-transform-svelte": "^2.1.1",
     "markdown-it": "^11.0.0",
     "mini-css-extract-plugin": "^0.6.0",
+    "nodemon": "^2.0.6",
     "nprogress": "^0.2.0",
     "path-to-regexp": "^6.1.0",
     "prerender-spa-plugin": "^3.4.0",
@@ -80,13 +81,12 @@
     "build:app": "webpack --mode=production --progress --config config/webpack.config.js",
     "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
     "build:ssr": "webpack --progress --config config/webpack.config.ssr.js",
+    "dev:ssr": "nodemon ./demo-app/server.js",
     "lint": "eslint '*/**/*.{js,ts}' --fix",
     "test": "jest"
   },
   "dependencies": {
-    "condense": "0.0.1",
-    "easyroute-core": "1.2.0",
-    "tern": "^0.24.3"
+    "easyroute-core": "1.2.1"
   },
   "husky": {
     "hooks": {

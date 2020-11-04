@@ -1,12 +1,14 @@
-## Getting started
+## Введение
 
-### Creating a router
-To create a router, open your main file (f.e. "main.js") and add the following code:
+### Создаём роутер
+
+Чтобы создать экземпляр роутера, откройте файл, являющийся точкой входа 
+(к примеру, "main.js"), и добавьте в него код:
 ```javascript
 import Router from 'svelte-easyroute'
 
 const router = new Router({
-    mode: "hash", // "hash" or "history"
+    mode: "hash", // "hash", "history" или "silent"
     routes:[
         {
             path: '/',
@@ -27,14 +29,18 @@ const router = new Router({
 })
 ```
 
-"mode" key allows you to specify the navigation mode:
-* "hash": based on everything that comes after the "#" sign in the URL (window.location.hash)
-* "history": based on [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+Ключ "mode" позволяет вам выбрать режим навигации:
+* "hash": используется всё, что следует за знаком "#" в URL (window.location.hash)
+* "history": основан на [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+* "silent": тихий режим навигации без обновления URL в строке браузера
 
-### Adding routes
-"routes" key is array of registered routes. In the example above we defined two routes. Link `//yoursite.com/#/` will lead to Index component, and link `//yoursite.com/#/about/me` - to About component.
+### Добавление маршрутов
+Ключ "routes" - массив зарегистрированных маршрутов.
+В примере выше мы указали два маршрута. Ссылка `//yoursite.com/#/` 
+отобразит компонент Index, а ссылка `//yoursite.com/#/about/me` - 
+компонент About.
 
-### Next step
+### Следующий шаг
 After doing everything above, in your App class declaration, in "props" section, add new prop:
 ```javascript
 props: {

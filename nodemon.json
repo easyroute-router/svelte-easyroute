@@ -1,0 +1,4 @@
+{
+  "watch": ["demo-app/public/", "demo-app/ssr/"],
+  "ext": "js, css, html"
+}

@@ -1,14 +1,30 @@
+const express = require('express')
+const app = express()
+const fs = require('fs')
 const demoApp = require('./ssr/demo-app.ssr').default
-const configureEasyrouteSSR = require('../lib/ssr')
-const renderer = configureEasyrouteSSR()
+const renderer = require('../lib/ssr')()
 
-async function main() {
+app.use('/', express.static(__dirname + '/public'))
+
+const html = fs.readFileSync(__dirname + '/public/app.html', 'utf8')
+
+function insertRendered(rendered, template) {
+  return template
+    .replace('{$ HTML $}', rendered.html)
+    .replace('{$ STYLES $}', rendered.css.code)
+    .replace('{$ HEAD $}', rendered.head)
+}
+
+app.get('*', async (req, res) => {
   const rendered = await renderer({
     component: demoApp,
     props: {},
-    url: '/'
+    url: req.url
   })
-  console.log(rendered)
-}
+  const ssrHtml = insertRendered(rendered, html)
+  res.send(ssrHtml)
+})
 
-main()
+app.listen(3456, () => {
+  console.log('Svelte Easyroute demo app started!')
+})

@@ -51,13 +51,18 @@ module.exports = (env, argv) => {
           test: /\.(png|jpe?g|gif|svg)$/i,
           loader: 'file-loader',
           options: {
-            name: 'assets/[name].[contenthash].[ext]'
+            name: 'files/assets/[name].[contenthash].[ext]'
           }
         }
       ]
     },
     mode: 'production',
-    plugins: [new CleanWebpackPlugin()],
+    plugins: [
+      new CleanWebpackPlugin(),
+      new MiniCssExtractPlugin({
+        filename: 'files/css/[name].[contenthash].css'
+      })
+    ],
     devtool: false,
     target: 'node',
     optimization: {
