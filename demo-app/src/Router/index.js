@@ -3,6 +3,7 @@ import NotFound from '../Pages/NotFound.svelte'
 import { fetchSlugMarkdown } from './utils'
 import Router from '@router'
 import nprogress from 'nprogress'
+import { langStore } from '../Store'
 
 const routes = [
   {
@@ -79,6 +80,10 @@ const router = new Router({
 })
 
 router.beforeEach = async (to, from, next) => {
+  const { lang } = to.query
+  if (lang === 'ru' || lang === 'en') langStore.set(lang)
+  else langStore.set('en')
+
   nprogress.start()
   if (to.name === 'Page') next()
   document.title = to.meta.title

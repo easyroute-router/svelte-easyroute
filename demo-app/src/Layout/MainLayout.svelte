@@ -6,8 +6,6 @@
     import { langStore } from '../Store'
     const pkg = require('../../../package.json')
 
-    export let currentRoute = null
-
     onMount(() => {
         const githubScript = document.createElement('script')
         githubScript.src = 'https://buttons.github.io/buttons.js'
@@ -16,15 +14,13 @@
     })
 
     const changeLang = (lang) => langStore.set(lang)
-
-    $: activeRoute = currentRoute.name
 </script>
 
 <div class="main-layout">
     <header>
         <div class="uk-navbar-container uk-navbar">
             <div class="uk-navbar-left">
-                <RouterLink class="uk-navbar-item uk-logo" to="/"><img alt="easyroute-logo" style="width: 25rem" src="{ logo }"></RouterLink>
+                <RouterLink class="uk-navbar-item uk-logo" to="/?lang={ $langStore }"><img alt="easyroute-logo" style="width: 25rem" src="{ logo }"></RouterLink>
             </div>
             <div class="uk-navbar-right">
                 <button type="button" on:click={ () => changeLang('ru') }>RU</button>

@@ -5,6 +5,7 @@ import Markdown from '../Pages/Markdown.svelte'
 import Playground from '../Pages/Playground.svelte'
 import { fetchSlugMarkdown } from './utils'
 import Router from '@router'
+import { langStore } from '../Store'
 
 const routes = [
   {
@@ -68,5 +69,12 @@ const router = new Router({
   mode: 'history',
   routes
 })
+
+router.beforeEach = (to, from, next) => {
+  const { lang } = to.query
+  if (lang === 'ru' || lang === 'en') langStore.set(lang)
+  else langStore.set('en')
+  next()
+}
 
 export default router
