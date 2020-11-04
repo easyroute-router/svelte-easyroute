@@ -3,6 +3,7 @@
     import MainMenu from "../Components/MainMenu.svelte";
     import { onMount } from 'svelte'
     import logo from '../assets/logo.png'
+    import { langStore } from '../Store'
     const pkg = require('../../../package.json')
 
     export let currentRoute = null
@@ -14,6 +15,8 @@
         document.body.append(githubScript)
     })
 
+    const changeLang = (lang) => langStore.set(lang)
+
     $: activeRoute = currentRoute.name
 </script>
 
@@ -24,6 +27,8 @@
                 <RouterLink class="uk-navbar-item uk-logo" to="/"><img alt="easyroute-logo" style="width: 25rem" src="{ logo }"></RouterLink>
             </div>
             <div class="uk-navbar-right">
+                <button type="button" on:click={ () => changeLang('ru') }>RU</button>
+                <button type="button" on:click={ () => changeLang('en') }>EN</button>
                 <div style="margin-right: 2rem">
                     <span style="color:lightgray; margin-right: 1rem">v{ pkg.version }</span>
                     <a class="github-button" href="https://github.com/lyohaplotinka/svelte-easyroute" data-size="large" data-show-count="true" aria-label="Star lyohaplotinka/svelte-easyroute on GitHub">GitHub</a>

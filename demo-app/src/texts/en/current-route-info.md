@@ -52,16 +52,3 @@ object. It goes like this:
 **Don't forget** to `unsibscribe` when leaving your component!
 If you will not, it can cause memory leak.
 
-### Bonus
-
-You can also get current outlet HTML element like this:
-```javascript
-export let outlet
-console.log(outlet) // <div class="easyroute-outlet">...</div>
-```
-
-By default route info object is immutable, 
-however, you can see `meta` field in the example above. 
-
-Just like in VueRouter, you can pass any data to route
-with this field. You can also add data in `beforeEach` hook.

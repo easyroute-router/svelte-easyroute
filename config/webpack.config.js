@@ -24,8 +24,8 @@ module.exports = (env, argv) => {
     },
     output: {
       path: __dirname + './../demo-app/public',
-      filename: 'js/[name].[contenthash].js',
-      chunkFilename: 'js/[name].[contenthash].js',
+      filename: 'files/js/[name].[contenthash].js',
+      chunkFilename: 'files/js/[name].[contenthash].js',
       publicPath: '/'
     },
     module: {
@@ -56,7 +56,7 @@ module.exports = (env, argv) => {
           test: /\.(png|jpe?g|gif|svg)$/i,
           loader: 'file-loader',
           options: {
-            name: 'assets/[name].[contenthash].[ext]'
+            name: 'files/assets/[name].[contenthash].[ext]'
           }
         }
       ]
@@ -65,52 +65,24 @@ module.exports = (env, argv) => {
     plugins: [
       new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
-        filename: 'css/[name].[contenthash].css'
+        filename: 'files/css/[name].[contenthash].css'
       }),
       new HtmlWebpackPlugin({
         template: 'demo-app/src/index_template.ejs',
-        title: 'Svelte Easyroute'
+        title: 'Svelte Easyroute',
+        filename: prod ? 'app.html' : 'index.html'
       }),
       new CopyPlugin({
         patterns: [
-          { from: '*', to: 'pages', context: 'demo-app/src/texts' },
+          { from: '**/*', to: 'files/pages', context: 'demo-app/src/texts' },
           {
             from: '*',
             to: './',
             context: 'demo-app/src/assets/favicons'
           }
         ]
-      }),
-      prod &&
-        new PrerenderSPAPlugin({
-          staticDir: path.join(__dirname, './../demo-app/public'),
-          minify: {
-            collapseBooleanAttributes: true,
-            collapseWhitespace: true,
-            decodeEntities: true,
-            keepClosingSlash: true,
-            sortAttributes: true
-          },
-          renderer: new Renderer({
-            renderAfterTime: 1000
-          }),
-          routes: [
-            '/',
-            '/page/installation',
-            '/page/getting-started',
-            '/page/dynamic-matching',
-            '/page/current-route-info',
-            '/page/router-links',
-            '/page/programmatic-navigation',
-            '/page/nested-routes',
-            '/page/css-transitions',
-            '/page/navigation-guards',
-            '/page/silent-mode',
-            '/page/named-outlets',
-            '/playground/demo/params'
-          ]
-        })
-    ].filter(Boolean),
+      })
+    ],
     devtool: prod ? false : 'source-map',
     devServer: {
       historyApiFallback: true

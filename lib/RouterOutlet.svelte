@@ -1,6 +1,6 @@
 <script>
     import { setContext, getContext, onDestroy, onMount } from 'svelte'
-    import { getTransitionDurations, delay, isBrowser } from '/Users/alexeysolovjov/CODE/Github/easyroute-all/easyroute-core/lib/utils'
+    import { getTransitionDurations, delay, isBrowser } from 'easyroute-core/lib/utils'
 
     export let router = null
     export let transition = null
