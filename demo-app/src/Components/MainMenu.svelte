@@ -39,9 +39,15 @@
             <li class="uk-nav-divider"></li>
         {:else}
             <li class:uk-active={ routePath === item.url }>
-                <RouterLink to="{ withParams(item.url) }">
-                    {@html item.title }
-                </RouterLink>
+                {#if item.url.includes('http')}
+                    <a href="{item.url}" target="_blank">
+                        {@html item.title}
+                    </a>
+                {:else}
+                    <RouterLink to="{ withParams(item.url) }">
+                        {@html item.title }
+                    </RouterLink>
+                {/if}
             </li>
         {/if}
     {/each}
