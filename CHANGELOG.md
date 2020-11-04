@@ -1,3 +1,7 @@
+### v3.0.0
+* SSR is here;
+* documentation app translated to russian language
+
 ### v2.2.1
 * `easyroute-core` updated to 1.2.0: size reducing 
 [(see changelog)](https://github.com/lyohaplotinka/easyroute-core/blob/master/CHANGELOG.md#v120)

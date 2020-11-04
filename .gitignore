@@ -4,5 +4,6 @@ Makefile
 /testapp/node_modules/
 .idea
 demo-app/public
+demo-app/ssr
 router-builds
 test-rollup

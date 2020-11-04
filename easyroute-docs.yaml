@@ -1,0 +1,10 @@
+apps:
+  - script: 'server.js'
+    cwd: './demo-app'
+    name: 'SvelteEasyroute'
+    args: '--mode="production"'
+    max_memory_restart: '1G'
+    watch: false
+    autorestart: true
+    env:
+      TZ: 'Europe/Moscow'
