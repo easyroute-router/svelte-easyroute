@@ -23,9 +23,23 @@
                 <RouterLink class="uk-navbar-item uk-logo" to="/?lang={ $langStore }"><img alt="easyroute-logo" style="width: 25rem" src="{ logo }"></RouterLink>
             </div>
             <div class="uk-navbar-right">
-                <button type="button" on:click={ () => changeLang('ru') }>RU</button>
-                <button type="button" on:click={ () => changeLang('en') }>EN</button>
-                <div style="margin-right: 2rem">
+                <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid" style="padding-right: 20px">
+                    <label on:click={ () => changeLang('en') }>
+                        <input
+                          class="uk-radio"
+                          type="radio"
+                          name="radio2"
+                          checked={$langStore === 'en'}
+                        > EN
+                    </label>
+                    <label on:click={ () => changeLang('ru') }>
+                        <input
+                          class="uk-radio"
+                          type="radio"
+                          name="radio2"
+                          checked={$langStore === 'ru'}
+                        > RU
+                    </label>
                     <span style="color:lightgray; margin-right: 1rem">v{ pkg.version }</span>
                     <a class="github-button" href="https://github.com/lyohaplotinka/svelte-easyroute" data-size="large" data-show-count="true" aria-label="Star lyohaplotinka/svelte-easyroute on GitHub">GitHub</a>
                 </div>
