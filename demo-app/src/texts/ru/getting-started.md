@@ -41,37 +41,30 @@ const router = new Router({
 компонент About.
 
 ### Следующий шаг
-After doing everything above, in your App class declaration, in "props" section, add new prop:
-```javascript
-props: {
-		//your props
-		...
-		router
-}
-```
+Далее, в вашем компоненте верхнего уровня, оберните все элементы в EasyrouteProvider, и 
+передайте в него экземпляр роутера. Не волнуйтесь: он не создать DOM-элемент и не нарушит
+ваши стили. Это всего лишь логическая обёртка.
 
-Then, in your root component, wrap all data in EasyrouteProvider component and pass
-router instance to it as a prop. Don't worry: it
-doesn't create a real DOM element ant won't break your styles, it is just a logical wrapper.
 ```javascript
 <script>
 // ./App.svelte
 import { EasyrouteProvider } from 'svelte-easyroute'
-export let router;
+import router from './router.js'
 </script>
 
 <EasyrouteProvider {router}>
     ...
 </EasyrouteProvider>
 ```
-**It is important** to wrap your **root** component with `<EasyrouteProvider>`. Without it 
-`<RouterOutlet>` and `<RouterLink>` will have no access to the router instance.
 
-### Last step
-If you will try to launch your app after creating router 
-instance you will see errors in console. This happening 
-because there is no outlet - a container for router 
-components. To create one, add this to your component:
+**Очень важно** обернуть ваш **корневой** компонент в `<EasyrouteProvider>`. Без этого
+`<RouterOutlet>` и `<RouterLink>` не будут иметь доступа к экземпляру роутера.
+
+### Последний шаг
+Сейчас если вы запустите ваше приложение, вы увидите ошибки
+в консоли. Это происходит из-за того, что мы не добавили
+представление - контейнер для компонентов роутера. Чтобы 
+его создать, добавьте это в ваш компонент:
 
 ```javascript
 <script>
