@@ -14534,9 +14534,11 @@ const MainLayout = create_ssr_component(($$result, $$props, $$bindings, $$slots)
 			default: () => `<img alt="${"easyroute-logo"}" style="${"width: 25rem"}"${add_attribute("src", logo, 0)}>`
 		}
 	)}</div>
-            <div class="${"uk-navbar-right"}"><button type="${"button"}">RU</button>
-                <button type="${"button"}">EN</button>
-                <div style="${"margin-right: 2rem"}"><span style="${"color:lightgray; margin-right: 1rem"}">v${internal_escape(pkg.version)}</span>
+            <div class="${"uk-navbar-right"}"><div class="${"uk-margin uk-grid-small uk-child-width-auto uk-grid"}" style="${"padding-right: 20px"}"><label><input class="${"uk-radio"}" type="${"radio"}" name="${"radio2"}" ${$langStore === "en" ? "checked" : ""}> EN
+                    </label>
+                    <label><input class="${"uk-radio"}" type="${"radio"}" name="${"radio2"}" ${$langStore === "ru" ? "checked" : ""}> RU
+                    </label>
+                    <span style="${"color:lightgray; margin-right: 1rem"}">v${internal_escape(pkg.version)}</span>
                     <a class="${"github-button"}" href="${"https://github.com/lyohaplotinka/svelte-easyroute"}" data-size="${"large"}" data-show-count="${"true"}" aria-label="${"Star lyohaplotinka/svelte-easyroute on GitHub"}">GitHub</a></div></div></div></header>
     <div uk-grid style="${"margin-top: 2rem"}"><div class="${"uk-width-1-4@m"}"><nav><div class="${"uk-card uk-card-default uk-card-body"}"><div>${validate_component(Components_MainMenu_svelte, "MainMenu").$$render($$result, {}, {}, {})}</div></div></nav></div>
         <div class="${"uk-width-expand"}"><main><div class="${"uk-card uk-card-default uk-card-body"}">${validate_component(RouterOutlet_svelte, "RouterOutlet").$$render(
