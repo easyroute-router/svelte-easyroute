@@ -1,7 +1,7 @@
 {
   "name": "svelte-easyroute",
-  "description": "Config-based router for Svelte in style of Vue Router",
-  "version": "2.2.1",
+  "description": "Config-based router for Svelte in style of Vue Router with SSR support",
+  "version": "3.0.0",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -16,7 +16,8 @@
     "router",
     "route",
     "framework",
-    "javascript"
+    "javascript",
+    "ssr"
   ],
   "author": "Lyoha Plotinka",
   "license": "MIT",
@@ -82,6 +83,7 @@
     "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
     "build:ssr": "webpack --progress --config config/webpack.config.ssr.js",
     "dev:ssr": "nodemon ./demo-app/server.js",
+    "build:all": "npm run build:app && npm run build:ssr",
     "lint": "eslint '*/**/*.{js,ts}' --fix",
     "test": "jest"
   },

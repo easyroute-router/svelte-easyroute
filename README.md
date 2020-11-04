@@ -18,10 +18,11 @@ TL;DR Features:
 * Lazy route component loading outside the box
 * Programmatic navigation
 * Named routes
-* Named views (outlets)
+* Named outlets (views)
 * Global and individual navigation hooks
+* Controlling data loading via route metadata
+* Server side rendering (SSR) that is easy to configure `v3.0.0+`
 * Hash, history and silent modes
-* CSS transitions
 
 ### Looking for demo? 
 Try [this code sandbox](https://codesandbox.io/s/svelte-easyroute-simpliest-demo-10ppi?file=/App.svelte)
@@ -39,7 +40,11 @@ Try [this code sandbox](https://codesandbox.io/s/svelte-easyroute-simpliest-demo
 
 ### How to use?
 
-Please see [DOCUMENTATION](https://easyroute.lyoha.info). Router is still developing and new features are coming out frequently.
+Please see Documentation: 
+* [English](https://easyroute.lyoha.info/?lang=en)
+* [Russian](https://easyroute.lyoha.info/?lang=ru)
+
+Router is still developing and new features are coming out frequently.
 
 ### Under the hood
 This is Svelte bindings for [Easyroute](https://github.com/lyohaplotinka/easyroute) framework-agnostic
