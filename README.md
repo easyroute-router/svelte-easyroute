@@ -1,8 +1,8 @@
-![alt text](https://img.shields.io/npm/v/svelte-easyroute.svg "npm stats")
-
+| ![npm version](https://img.shields.io/npm/v/svelte-easyroute.svg "npm stats")  | ![bundle size](https://badgen.net/bundlephobia/minzip/svelte-easyroute) |
+|---|---|
 ### Habitual router in your projects
 
-![alt text](https://easyroute.lyoha.info/assets/logo.640381ffb6b33843108bca9c5601e46f.png "Easyroute Logo")
+![alt text](https://easyroute.lyoha.info/files/assets/logo.640381ffb6b33843108bca9c5601e46f.png "Easyroute Logo")
 
 
 **Svelte Easyroute** - is a simple and convenient 
