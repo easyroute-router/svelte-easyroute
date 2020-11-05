@@ -27,6 +27,9 @@ TL;DR Features:
 ### Looking for demo? 
 Try [this code sandbox](https://codesandbox.io/s/svelte-easyroute-simpliest-demo-10ppi?file=/App.svelte)
 
+### Looking for SSR example? 
+See [this template repository](https://github.com/lyohaplotinka/svelte-easyroute-ssr-template)
+
 ### Why you should try it? 
 
 >**1. Well-known syntax**  
