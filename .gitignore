@@ -7,3 +7,4 @@ demo-app/public
 demo-app/ssr
 router-builds
 test-rollup
+package-lock.json
