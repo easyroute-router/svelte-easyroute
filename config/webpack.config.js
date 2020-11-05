@@ -3,8 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
-const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
 
 module.exports = (env, argv) => {
   const mode = argv.mode
