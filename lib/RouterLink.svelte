@@ -17,7 +17,7 @@
         if (!router) {
             throw new Error('[Easyroute] Router instance not found in RouterLink')
         }
-        router.navigate(to)
+        router.push(to)
     }
 
     function sanitizeAttrs() {

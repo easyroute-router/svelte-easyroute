@@ -1,3 +1,8 @@
+### v3.0.1
+* Size reducing;
+* `easyroute-core` updated to 1.3.0;
+* RouterLink now uses `router.push()` method due to `easyroute-core` updates.
+
 ### v3.0.0
 * SSR is here;
 * documentation app translated to russian language
