@@ -2,19 +2,14 @@
     import { setContext, getContext, onDestroy, onMount } from 'svelte'
     import { getTransitionDurations, delay, isBrowser } from 'easyroute-core/lib/utils'
 
-    export let router = null
     export let transition = null
     export let forceRemount = false
     export let name = 'default'
 
-    if (router) {
-        console.warn('[Easyroute] Passing router as a prop in outlet is deprecated in v2.1.5.' +
-            'Use <EasyrouteProvider> component instead. This will break in the next version.')
-    }
     const SSR_CONTEXT = !isBrowser()
     const context = getContext('easyrouteContext')
     const currentDepth = context ? context.depth + 1 || 0 : 0
-    const _router = context ? context.router || router : router
+    const _router = context ? context.router : null
     const attrs = Object.assign({}, $$props)
     const passedClasses = attrs.class
     const transitionData = SSR_CONTEXT ?

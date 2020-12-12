@@ -1,3 +1,9 @@
+### v3.0.2
+* `easyroute-core` updated to 1.3.1;
+* fixed errors when using `base` option;
+* passing router as a prop inside RouterOutlet has been removed;
+* updated test suites.
+
 ### v3.0.1
 * Size reducing;
 * `easyroute-core` updated to 1.3.0;
