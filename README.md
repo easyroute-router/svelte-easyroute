@@ -2,7 +2,7 @@
 |---|---|
 ### Habitual router in your projects
 
-![alt text](https://easyroute.lyoha.info/files/assets/logo.640381ffb6b33843108bca9c5601e46f.png "Easyroute Logo")
+![Svelte Easyroute logo](https://shared.lyoha.info/pictures/easyroute/svelte-easyroute.png "Easyroute Logo")
 
 
 **Svelte Easyroute** - is a simple and convenient 
