@@ -53,7 +53,7 @@ export const router = new Router({
 ```svelte
 <script>
   import { EasyrouteProvider } from 'svelte-easyroute'
-  import router from './router.js'
+  import { router } from './router.js'
 </script>
 
 <EasyrouteProvider {router}>
