@@ -2,15 +2,17 @@
 
 ### Создаём роутер
 
-Чтобы создать экземпляр роутера, откройте файл, являющийся точкой 
-входа вашего приложения, и добавьте в него код:
+Для создания экземпляра роутера, необходимо указать его режим работы и
+сопоставления между путями и соответствующими этим путям компопонентами:
 
-**main.js** или **index.js**
+**router.js**
 ```javascript
 import Router from 'svelte-easyroute'
+import Index from './pages/Index.svelte'
+import About from './pages/About.svelte'
 
-const router = new Router({
-    mode: "hash", // "hash", "history" или "silent"
+export const router = new Router({
+    mode: "history", // "history" (default), "hash" или "silent"
     routes:[
         {
             path: '/',
@@ -24,7 +26,7 @@ const router = new Router({
         },
         {
             path: '/lazy-load',
-            component: () => import('src/LazyPage.svelte'),
+            component: () => import('src/pages/LazyPage.svelte'),
             name: 'This is a lazy-loading page'
         }
     ]
@@ -32,8 +34,8 @@ const router = new Router({
 ```
 
 Ключ `mode` позволяет вам выбрать режим навигации:
+* `history`: основан на [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) (значение по умолчанию)
 * `hash`: используется всё, что следует за знаком `#` в URL (`window.location.hash`)
-* `history`: основан на [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 * `silent`: тихий режим навигации без обновления URL в строке браузера
 
 ### Добавление маршрутов
@@ -86,5 +88,5 @@ const router = new Router({
 
 Если под текущий URL сопоставлено сразу несколько компонент из `routes`, 
 то выбрать конкретное сопоставление можно с помощью свойства `name`:
-`<RouterOutlet name="..."/>`, иначе будет вставлен первый подошедший 
-под сопоставление.
+`<RouterOutlet name="..."/>`, иначе будет вставлен первый компонент, 
+подходящий под сопоставление.
