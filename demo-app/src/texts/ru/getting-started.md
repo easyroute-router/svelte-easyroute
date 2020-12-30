@@ -12,7 +12,7 @@ import Index from './pages/Index.svelte'
 import About from './pages/About.svelte'
 
 export const router = new Router({
-    mode: "history", // "history" (default), "hash" или "silent"
+    mode: "hash", // "hash", "history" или "silent"
     routes:[
         {
             path: '/',
@@ -34,8 +34,8 @@ export const router = new Router({
 ```
 
 Ключ `mode` позволяет вам выбрать режим навигации:
-* `history`: основан на [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) (значение по умолчанию)
 * `hash`: используется всё, что следует за знаком `#` в URL (`window.location.hash`)
+* `history`: основан на [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 * `silent`: тихий режим навигации без обновления URL в строке браузера
 
 ### Добавление маршрутов
