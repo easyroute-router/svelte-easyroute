@@ -1,11 +1,17 @@
 ## Getting started
 
 ### Creating a router
-To create a router, create a file (for example, "router.js") and add the following code:
+
+In order to create a router instance we need to specify routing mode and 
+matches between URL paths and rendered components:
+
+**router.js**
 ```javascript
 import Router from 'svelte-easyroute'
+import Index from './pages/Index.svelte'
+import About from './pages/About.svelte'
 
-const router = new Router({
+export const router = new Router({
     mode: "hash", // "hash", "history" or "silent"
     routes:[
         {
@@ -25,46 +31,56 @@ const router = new Router({
         }
     ]
 })
-
-export default router
 ```
 
-"mode" key allows you to specify the navigation mode:
-* "hash": based on everything that comes after the "#" sign in the URL (window.location.hash)
-* "history": based on [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
-* "silent": navigation mode without updating the URL in the browser bar
+The `mode` key allows you to specify the navigation mode:
+* `hash`: based on everything that comes after the "#" sign in the URL (`window.location.hash`)
+* `history`: based on [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+* `silent`: navigation mode without updating the URL in the browser bar
 
 ### Adding routes
-"routes" key is array of registered routes. In the example above we defined two routes. Link `//yoursite.com/#/` will lead to Index component, and link `//yoursite.com/#/about/me` - to About component.
+The `routes` key is an array of the registered routes.
+In the example above we defines two routes:
+- link `//yoursite.com/#/` will render the `Index` component
+- link `//yoursite.com/#/about/me` will render the `About` component
 
 ### Next step
-Then, in your root component, wrap all data in EasyrouteProvider component and pass
-router instance to it as a prop. Don't worry: it
-doesn't create a real DOM element ant won't break your styles, it is just a logical wrapper.
-```javascript
+Then, in your root component, wrap all data in `EasyrouteProvider` component and pass
+the router instance as a prop. Don't worry: it doesn't create a real DOM-element and  won't break your styles, it's just a logical wrapper.
+
+**App.svelte**
+```svelte
 <script>
-// ./App.svelte
-import { EasyrouteProvider } from 'svelte-easyroute'
-import router from './router.js'
+  import { EasyrouteProvider } from 'svelte-easyroute'
+  import { router } from './router.js'
 </script>
 
 <EasyrouteProvider {router}>
-    ...
+  ...
 </EasyrouteProvider>
 ```
-**It is important** to wrap your **root** component with `<EasyrouteProvider>`. Without it 
-`<RouterOutlet>` and `<RouterLink>` will have no access to the router instance.
+**It is important** to wrap your **root** component with `<EasyrouteProvider>`. Without it the `<RouterOutlet>` and `<RouterLink>` will have no access to the router instance.
 
 ### Last step
-If you will try to launch your app after creating router 
-instance you will see errors in console. This happening 
-because there is no outlet - a container for router 
-components. To create one, add this to your component:
+Now, when you start an app, you will see errors in console.
+This is happening because you don't specify the place where to
+render a component matched with the current URL path.
 
-```javascript
+To specify the place where to put matched router component we do this with the `<RouterOutlet />` element. Put it in any level inside the `<EasyrouteProvider/>`:
+
+**Layout.svelte**
+```svelte
 <script>
-import { RouterOutlet } from 'svelte-easyroute'
+  import { RouterOutlet, RouterLink } from 'svelte-easyroute'
 </script>
 
-<RouterOutlet />
+<main>
+  <RouterOutlet />
+</main>  
+<aside>
+  <RouterLink to={'/anotherPage'} />
+</aside>
 ```
+
+If the current URL path matched with several components from the `routes` array,
+you can provide the `name` prop in `<RouterOutlet name="..."/>` to select the appropriate route. Otherwise the first mathed component will be rendered.
