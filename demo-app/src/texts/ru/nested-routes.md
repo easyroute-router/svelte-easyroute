@@ -34,5 +34,4 @@ import { RouterOutlet } from 'svelte-easyroute'
 
 #### Важно: 
 Svelte Easyroute использует [Svelte context API](https://ru.svelte.dev/docs#setContext).
-Имя контекста - `easyrouteContext`. Никогда не пеЖреопределяйте 
-его в компонентах!
+Имя контекста - `easyrouteContext`. Никогда не переопределяйте его в компонентах!
