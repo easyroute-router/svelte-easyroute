@@ -1,3 +1,7 @@
+### v3.0.3
+* `easyroute-core` updated to 1.3.2;
+* updated docs (https://github.com/easyroute-router/svelte-easyroute/pull/23).
+
 ### v3.0.2
 * `easyroute-core` updated to 1.3.1;
 * fixed errors when using `base` option;
