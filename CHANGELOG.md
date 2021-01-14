@@ -1,3 +1,6 @@
+### v3.0.4
+* `easyroute-core` updated to 1.3.3 ([changelog](https://github.com/easyroute-router/easyroute-core/blob/master/CHANGELOG.md#v133)).
+
 ### v3.0.3
 * `easyroute-core` updated to 1.3.2;
 * updated docs (https://github.com/easyroute-router/svelte-easyroute/pull/23).
