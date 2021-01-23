@@ -38,7 +38,7 @@
         {:else if item.title === 'divider'}
             <li class="uk-nav-divider"></li>
         {:else}
-            <li class:uk-active={ routePath === item.url }>
+            <li class:uk-active={ routePath.includes(item.url) }>
                 {#if item.url.includes('http')}
                     <a href="{item.url}" target="_blank">
                         {@html item.title}

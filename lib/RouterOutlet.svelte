@@ -25,6 +25,7 @@
     let previousRutePath = null
     let unsubscribe = undefined
     let outletElement = null
+    let firstRouteResolved = false
 
     if (!_router) {
         throw new Error('[Easyroute] RouterOutlet: no router instance found. Did you forget to wrap your ' +
@@ -63,7 +64,11 @@
             else component = currentRoute.components ? currentRoute.components[name] : null
             changeComponent(component, currentRoute.id)
             await delay(transitionData ? transitionData.leavingDuration : 0)
-            routeData = _router.currentRoute
+            routeData = {
+                ..._router.currentRoute,
+                WARNING: 'Accessing the current route object via the "currentRoute" property is deprecated and will be removed in the next MINOR version. Use the "useCurrentRoute" hook instead (https://easyroute.lyoha.info/page/current-route-info)'
+            }
+            firstRouteResolved = true
         } else {
             currentComponent = null
         }
@@ -100,5 +105,7 @@
     class="easyroute-outlet{ passedClasses ? ` ${passedClasses}` : '' }{ transitionClassName ? ` ${transitionClassName}` : '' }"
     {...attrs}
 >
-    <svelte:component this={currentComponent} currentRoute={routeData} router={_router} outlet={outletElement} />
+    {#if firstRouteResolved}
+        <svelte:component this={currentComponent} currentRoute={routeData} router={_router} outlet={outletElement} />
+    {/if}
 </div>
