@@ -70,7 +70,8 @@
             }
             firstRouteResolved = true
         } else {
-            currentComponent = null
+            changeComponent(null, `${Date.now()}-nonexistent-route`)
+            console.warn('[Easyroute] Warning: route not found')
         }
     }
 
