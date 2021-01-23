@@ -2,7 +2,6 @@
 * fix: `currentRoute` empty on startup (#26);
 * `currentRoute` prop is deprecated and will be removed in 3.1.0;
 
-
 ### v3.0.4
 * `easyroute-core` updated to 1.3.3 ([changelog](https://github.com/easyroute-router/easyroute-core/blob/master/CHANGELOG.md#v133)).
 
