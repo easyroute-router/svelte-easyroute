@@ -25,7 +25,7 @@
     let previousRutePath = null
     let unsubscribe = undefined
     let outletElement = null
-    let firstRouteResolved = false
+    let firstRouteResolved = SSR_CONTEXT
 
     if (!_router) {
         throw new Error('[Easyroute] RouterOutlet: no router instance found. Did you forget to wrap your ' +
