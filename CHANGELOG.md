@@ -1,3 +1,6 @@
+### v3.0.7
+* easyroute-core updated to v1.3.5 (fix `from` object issue).
+
 ### v3.0.6
 * easyroute-core updated to v1.3.4-1;
 * introducing `omitTrailingSlash` option;
