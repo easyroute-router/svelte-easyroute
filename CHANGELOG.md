@@ -1,4 +1,4 @@
-### v3.0.5-1
+### v3.0.6
 * easyroute-core updated to v1.3.4-1;
 * introducing `omitTrailingSlash` option;
 * route paths fixed in demo-app.
