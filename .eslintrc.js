@@ -20,7 +20,7 @@ module.exports = {
     '**/config/**',
     '**/public/**',
     '**/router-builds/**',
-    '**/demo-app/ssr/**',
+    '**/docs-app/ssr/**',
     '**/__tests__/**'
   ]
 }

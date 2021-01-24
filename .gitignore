@@ -3,8 +3,8 @@ Makefile
 ./dist
 /testapp/node_modules/
 .idea
-demo-app/public
-demo-app/ssr
+docs-app/public
+docs-app/ssr
 router-builds
 test-rollup
 package-lock.json

@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const fs = require('fs')
-const demoApp = require('./ssr/demo-app.ssr').default
-const renderer = require('../lib/ssr')()
+const demoApp = require('./ssr/docs-app.ssr').default
+const renderer = require('../ssr')()
 
 app.use('/', express.static(__dirname + '/public'))
 

@@ -1,6 +1,6 @@
 <script>
     import {RouterOutlet, EasyrouteProvider} from '@router'
-    export let router = null
+    import router from './Router'
 </script>
 
 <EasyrouteProvider {router}>

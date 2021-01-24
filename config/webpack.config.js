@@ -10,18 +10,18 @@ module.exports = (env, argv) => {
   console.log('Building DEMO app for', mode)
   return {
     entry: {
-      bundle: ['./demo-app/src/main.js']
+      bundle: ['./docs-app/src/main.js']
     },
     resolve: {
       alias: {
         svelte: path.resolve('node_modules', 'svelte'),
-        '@router': path.resolve('lib')
+        '@router': path.resolve('.')
       },
       extensions: ['.mjs', '.js', '.svelte'],
       mainFields: ['svelte', 'browser', 'module', 'main']
     },
     output: {
-      path: __dirname + './../demo-app/public',
+      path: __dirname + './../docs-app/public',
       filename: 'files/js/[name].[contenthash].js',
       chunkFilename: 'files/js/[name].[contenthash].js',
       publicPath: '/'
@@ -66,17 +66,17 @@ module.exports = (env, argv) => {
         filename: 'files/css/[name].[contenthash].css'
       }),
       new HtmlWebpackPlugin({
-        template: 'demo-app/src/index_template.ejs',
+        template: 'docs-app/src/index_template.ejs',
         title: 'Svelte Easyroute',
         filename: prod ? 'app.html' : 'index.html'
       }),
       new CopyPlugin({
         patterns: [
-          { from: '**/*', to: 'files/pages', context: 'demo-app/src/texts' },
+          { from: '**/*', to: 'files/pages', context: 'docs-app/src/texts' },
           {
             from: '*',
             to: './',
-            context: 'demo-app/src/assets/favicons'
+            context: 'docs-app/src/assets/favicons'
           }
         ]
       })

@@ -2,7 +2,7 @@
   "name": "svelte-easyroute",
   "description": "Config-based router for Svelte in style of Vue Router with SSR support",
   "version": "3.0.7",
-  "main": "lib/index.js",
+  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lyohaplotinka/svelte-easyroute.git"
@@ -79,9 +79,9 @@
   },
   "scripts": {
     "build:app": "webpack --mode=production --progress --config config/webpack.config.js",
-    "dev:app": "webpack-dev-server --content-base demo-app/public --config config/webpack.config.js",
+    "dev:app": "webpack-dev-server --content-base docs-app/public --config config/webpack.config.js",
     "build:ssr": "webpack --progress --config config/webpack.config.ssr.js",
-    "dev:ssr": "nodemon ./demo-app/server.js",
+    "dev:ssr": "nodemon ./docs-app/server.js",
     "build:all": "npm run build:app && npm run build:ssr",
     "lint": "eslint '*/**/*.{js,ts}' --fix",
     "test": "jest"
