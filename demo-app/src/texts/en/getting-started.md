@@ -13,6 +13,8 @@ import About from './pages/About.svelte'
 
 export const router = new Router({
     mode: "hash", // "hash", "history" or "silent"
+    omitTrailingSlash: true, // should we remove the last slash in the url, 
+                             // e.g. "/my/path/" => "/my/path"
     routes:[
         {
             path: '/',

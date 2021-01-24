@@ -61,21 +61,12 @@ const routes = [
         component: NotFound
       }
     ]
-  },
-  {
-    path: '(.*)',
-    component: MainLayout,
-    children: [
-      {
-        path: '(.*)',
-        component: NotFound
-      }
-    ]
   }
 ]
 
 const router = new Router({
   mode: 'history',
+  omitTrailingSlash: true,
   routes
 })
 
