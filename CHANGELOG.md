@@ -1,3 +1,8 @@
+### v4.0.0
+* Reorganized directory structure; 
+* better tree-shaking support: ssr functionality and 
+  `useCurrentRoute` hook are no longer part of the main library;
+
 ### v3.0.7
 * easyroute-core updated to v1.3.5 (fix `from` object issue).
 
