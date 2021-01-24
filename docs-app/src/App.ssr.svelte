@@ -1,6 +1,7 @@
 <script context="module">
     import router from './Router/index.ssr'
-    import {RouterOutlet, EasyrouteProvider, registerRouterSSR} from '../../lib'
+    import {RouterOutlet, EasyrouteProvider} from '@router'
+    import registerRouterSSR from '@router/ssr/registerRouterSSR'
 
     registerRouterSSR(router)
 </script>

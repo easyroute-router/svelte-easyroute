@@ -1,4 +1,4 @@
 {
-  "watch": ["demo-app/public/", "demo-app/ssr/"],
+  "watch": ["docs-app/public/", "docs-app/ssr/"],
   "ext": "js, css, html"
 }

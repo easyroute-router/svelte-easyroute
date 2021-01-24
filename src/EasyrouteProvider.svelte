@@ -1,10 +1,10 @@
 <script>
-    import Router from 'easyroute-core'
+    import Router from '../index'
     import { setContext } from 'svelte'
     export let router = null
 
     if (!router || !(router instanceof Router)) {
-        throw new Error('[Easyroute] EasyrouteProvider: no router instance passed into EasyrouteProvider')
+        throw new Error('[Easyroute] no router instance passed into EasyrouteProvider')
     }
 
     setContext('easyrouteContext', {

@@ -6,19 +6,19 @@ module.exports = (env, argv) => {
   console.log('Building DEMO app for SSR')
   return {
     entry: {
-      bundle: ['./demo-app/src/App.ssr.svelte']
+      bundle: ['./docs-app/src/App.ssr.svelte']
     },
     resolve: {
       alias: {
         svelte: path.resolve('node_modules', 'svelte'),
-        '@router': path.resolve('lib')
+        '@router': path.resolve('.')
       },
       extensions: ['.mjs', '.js', '.svelte'],
       mainFields: ['svelte', 'browser', 'module', 'main']
     },
     output: {
-      path: __dirname + './../demo-app/ssr',
-      filename: 'demo-app.ssr.js',
+      path: __dirname + './../docs-app/ssr',
+      filename: 'docs-app.ssr.js',
       publicPath: '/',
       libraryTarget: 'commonjs'
     },

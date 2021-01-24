@@ -1,5 +1,6 @@
 <script>
-    import { RouterLink, useCurrentRoute } from '@router'
+    import { RouterLink } from '@router'
+    import useCurrentRoute from '@router/useCurrentRoute'
     import { onDestroy } from 'svelte'
     import { langStore } from '../Store'
     import menuData from './menuData'

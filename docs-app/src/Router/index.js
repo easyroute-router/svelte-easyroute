@@ -1,7 +1,7 @@
 import MainLayout from '../Layout/MainLayout.svelte'
 import NotFound from '../Pages/NotFound.svelte'
 import { fetchSlugMarkdown } from './utils'
-import Router from '@router'
+import Router from '../../../index'
 import nprogress from 'nprogress'
 import { langStore } from '../Store'
 
