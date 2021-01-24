@@ -11,7 +11,7 @@
     const currentDepth = context ? context.depth + 1 || 0 : 0
     const _router = context ? context.router : null
     const attrs = Object.assign({}, $$props)
-    const passedClasses = attrs.class
+    const passedClasses = $$restProps.class
     const transitionData = SSR_CONTEXT ?
       null :
       transition ?
@@ -26,6 +26,8 @@
     let unsubscribe = undefined
     let outletElement = null
     let firstRouteResolved = SSR_CONTEXT
+
+    delete attrs.class
 
     if (!_router) {
         throw new Error('[Easyroute] RouterOutlet: no router instance found. Did you forget to wrap your ' +
@@ -73,18 +75,6 @@
             changeComponent(null, `${Date.now()}-nonexistent-route`)
         }
     }
-
-    function sanitizeAttrs() {
-        delete attrs.to
-        delete attrs.$$slots
-        delete attrs.$$scope
-        delete attrs.router
-        delete attrs.transition
-        delete attrs.forceRemount
-        delete attrs.class
-    }
-
-    sanitizeAttrs()
 
     onDestroy(() => {
         unsubscribe && unsubscribe()
