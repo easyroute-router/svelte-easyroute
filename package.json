@@ -1,8 +1,9 @@
 {
   "name": "svelte-easyroute",
   "description": "Config-based router for Svelte in style of Vue Router with SSR support",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "main": "./index.js",
+  "types": "./types.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lyohaplotinka/svelte-easyroute.git"

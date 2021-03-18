@@ -1,3 +1,8 @@
+### v3.1.1
+* fix: removed circular dependency in EasyrouteProvider;
+* fix: correct type definitions for registerRouterSSR;
+* feat: added type definitions for usage with TypeScript.
+
 ### v3.1.0
 * **breaking**: easyroute-core updated to 1.4.0 - difference in hooks definitions ([changelog](https://github.com/easyroute-router/easyroute-core/blob/master/CHANGELOG.md#v140));
 * **beraking**: removed current route info access method via `export let currentRoute`;

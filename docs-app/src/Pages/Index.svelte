@@ -44,6 +44,9 @@
         <li>
             Hash, history and silent modes
         </li>
+        <li>
+            Svelte + TypeScript support <code>v3.1.1+</code>
+        </li>
     </ul>
 
     <p>Why you should try it?</p>
@@ -102,6 +105,9 @@
             </li>
             <li>
                 Режими hash, history и "тихий"
+            </li>
+            <li>
+                Поддержка Svelte + TypeScript <code>v3.1.1+</code>
             </li>
         </ul>
 
