@@ -23,6 +23,7 @@ TL;DR Features:
 * Controlling data loading via route metadata
 * Server side rendering (SSR) that is easy to configure `v3.0.0+`
 * Hash, history and silent modes
+* Svelte + TypeScript support
 
 ### Looking for demo? 
 Try [this code sandbox](https://codesandbox.io/s/svelte-easyroute-simpliest-demo-10ppi?file=/App.svelte)
