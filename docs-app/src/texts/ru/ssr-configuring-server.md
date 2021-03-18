@@ -9,7 +9,7 @@ Svelte Easyroute позволяет использовать любой Node.js 
 и создать рендерер:
 
 ```javascript
-const renderer = require('svelte-easyroute/lib/ssr')()
+const renderer = require('svelte-easyroute/ssr')()
 ```
 
 Дальше, импортируйте собранное для SSR приложение:

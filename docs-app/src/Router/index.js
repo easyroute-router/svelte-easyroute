@@ -70,7 +70,7 @@ const router = new Router({
   routes
 })
 
-router.beforeEach = async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const { lang } = to.query
   if (lang === 'ru' || lang === 'en') langStore.set(lang)
   else langStore.set('en')
@@ -81,10 +81,10 @@ router.beforeEach = async (to, from, next) => {
     ? `${to.meta.title} | Svelte Easyroute`
     : 'Svelte Easyroute'
   next()
-}
+})
 
-router.afterEach = () => {
+router.afterEach(() => {
   nprogress.done()
-}
+})
 
 export default router

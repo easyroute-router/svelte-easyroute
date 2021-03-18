@@ -1,8 +1,10 @@
-### v4.0.0
-* Reorganized directory structure; 
-* better tree-shaking support: ssr functionality and 
+### v3.1.0
+* **breaking**: easyroute-core updated to 1.4.0 - difference in hooks definitions ([changelog](https://github.com/easyroute-router/easyroute-core/blob/master/CHANGELOG.md#v140));
+* **beraking**: removed current route info access method via `export let currentRoute`;
+* **breaking**: better tree-shaking support: ssr functionality and
   `useCurrentRoute` hook are no longer part of the main library;
-* RouterOutlet now uses `$$restProps` svelte feautre;
+* refactor: reorganized directory structure;
+* RouterOutlet now uses `$$restProps` svelte feature;
 
 ### v3.0.7
 * easyroute-core updated to v1.3.5 (fix `from` object issue).

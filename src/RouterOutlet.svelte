@@ -19,7 +19,6 @@
         null
 
     let currentComponent = null
-    let routeData = {}
     let transitionClassName = ''
     let prevRouteId = null
     let previousRutePath = null
@@ -39,14 +38,22 @@
         router: _router
     })
 
-    async function changeComponent(component, currentRouteId) {
-        if (prevRouteId === currentRouteId && !forceRemount) return
+    async function changeComponent(component, currentRoute) {
+        if (prevRouteId === currentRoute.id && !forceRemount) return
         if (!transitionData) {
             currentComponent = component
         } else {
             transitionClassName = `${transition}-leave-active ${transition}-leave-to`
             await delay(transitionData.leavingDuration + 10)
             transitionClassName += ` ${transition}-leave`
+            const hooksArray = [..._router.transitionOutHooks]
+            if (currentRoute.transitionOut) hooksArray.push(currentRoute.transitionOut)
+            await _router.runHooksArray(
+              hooksArray,
+              _router.currentRouteData.getValue,
+              _router.currentRouteFromData.getValue,
+              'transition'
+            )
             await delay(5)
             transitionClassName = `${transition}-enter`
             transitionClassName = `${transition}-enter-active`
@@ -55,7 +62,7 @@
             await delay(transitionData.enteringDuration + 10)
             transitionClassName = ''
         }
-        prevRouteId = currentRouteId
+        prevRouteId = currentRoute.id
     }
 
     async function pickRoute(routes) {
@@ -64,12 +71,8 @@
             let component
             if (name === 'default') component = currentRoute.component || currentRoute.components.default
             else component = currentRoute.components ? currentRoute.components[name] : null
-            changeComponent(component, currentRoute.id)
+            changeComponent(component, currentRoute)
             await delay(transitionData ? transitionData.leavingDuration : 0)
-            routeData = {
-                ..._router.currentRoute,
-                WARNING: 'Accessing the current route object via the "currentRoute" property is deprecated and will be removed in the next MINOR version. Use the "useCurrentRoute" hook instead (https://easyroute.lyoha.info/page/current-route-info)'
-            }
             firstRouteResolved = true
         } else {
             changeComponent(null, `${Date.now()}-nonexistent-route`)
@@ -82,7 +85,6 @@
 
     if (SSR_CONTEXT) {
         pickRoute(_router.currentMatched.getValue)
-        routeData = _router.currentRoute
     }
 
     onMount(() => {
@@ -96,6 +98,6 @@
     {...attrs}
 >
     {#if firstRouteResolved}
-        <svelte:component this={currentComponent} currentRoute={routeData} router={_router} outlet={outletElement} />
+        <svelte:component this={currentComponent} router={_router} outlet={outletElement} />
     {/if}
 </div>

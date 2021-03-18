@@ -6,25 +6,36 @@
 
 ### Глобальные хуки
 
-Существует два глобальных хука: beforeEach и afterEach.
+Существует три типа глобальных хука: beforeEach, afterEach и transitionOut.
 
 Вы можете назначить их так:
 ```javascript
-router.beforeEach = (to,from,next) => {
-	console.log(to.fullPath)
-	console.log(from.fullPath)
-	next()
-}
+router.beforeEach((to, from, next) => {
+  console.log(to.fullPath)
+  console.log(from.fullPath)
+  next()
+})
 
-router.afterEach = (to,from) => {
-	console.log('Мы на новой странице!')
-}
+router.afterEach((to, from) => {
+  console.log('Мы на новой странице!')
+
+})
+
+router.transitionOut((to, from, next) => {
+  console.log('Страница "уплыла": можно что-то сделать!')
+  next()
+})
 ```
 
 "to" и "from" - объекты с информацией о маршрутах, следующем 
 и текущем. "next" - это функция, которая разрешает Promise хука
 и продолжает процесс перехода. Если вы не вызовете "next", переход
 не завершится никогда.
+
+transitionOut - хук, который выполняется после того, как 
+завершилась анимация "ухода" роутера, но до начала 
+анимации "входа". Если для RouterOutlet не настроен переход, 
+хук игнорируется.
 
 ### Индивидуальный хук маршрутов
 
@@ -40,7 +51,11 @@ const router = new Router({
             beforeEnter: (to, from, next) {
                 console.log('I am here!')
                 next()
-            }   
+            },
+            transitionOut: (to, from, next) {
+                console.log('Анимация ухода завершилась!')
+                next()
+            }
         }
     ]
 })

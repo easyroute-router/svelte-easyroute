@@ -70,11 +70,11 @@ const router = new Router({
   routes
 })
 
-router.beforeEach = (to, from, next) => {
+router.beforeEach((to, from, next) => {
   const { lang } = to.query
   if (lang === 'ru' || lang === 'en') langStore.set(lang)
   else langStore.set('en')
   next()
-}
+})
 
 export default router
