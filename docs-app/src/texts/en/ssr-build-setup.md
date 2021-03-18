@@ -20,7 +20,7 @@ then call the special registration method:
 ```html
 <script context = "module">
 import router from './Router/index.ssr'
-import { registerRouterSSR } from 'svelte-easyroute'
+import registerRouterSSR from 'svelte-easyroute/ssr/registerRouterSSR'
 
 registerRouterSSR (router)
 </script>

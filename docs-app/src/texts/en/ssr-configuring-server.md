@@ -9,7 +9,7 @@ a view engine for Express, so you need to import
 and create a renderer:
 
 ```javascript
-const renderer = require('svelte-easyroute/lib/ssr')()
+const renderer = require('svelte-easyroute/ssr')()
 ```
 
 Next, import the application built for SSR:
