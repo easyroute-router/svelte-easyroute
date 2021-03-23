@@ -1,3 +1,6 @@
+### v3.1.2
+* `easyroute-core` updated to 1.4.4 (vite compatibility; better types).
+
 ### v3.1.1
 * fix: removed circular dependency in EasyrouteProvider;
 * fix: correct type definitions for registerRouterSSR;
