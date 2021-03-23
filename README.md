@@ -24,12 +24,14 @@ TL;DR Features:
 * Server side rendering (SSR) that is easy to configure `v3.0.0+`
 * Hash, history and silent modes
 * Svelte + TypeScript support
+* Webpack, Rollup and Vite support (yes, with SSR)
 
 ### Looking for demo? 
 Try [this code sandbox](https://codesandbox.io/s/svelte-easyroute-simpliest-demo-10ppi?file=/App.svelte)
 
 ### Looking for SSR example? 
-See [this template repository](https://github.com/lyohaplotinka/svelte-easyroute-ssr-template)
+* See [this template repository](https://github.com/lyohaplotinka/svelte-easyroute-ssr-template) for Rollup
+* See [this template repository](https://github.com/lyohaplotinka/svelte-easyroute-ssr-template-vite) for Vite
 
 ### Why you should try it? 
 
